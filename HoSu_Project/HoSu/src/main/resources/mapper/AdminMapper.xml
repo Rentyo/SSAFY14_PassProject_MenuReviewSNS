@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 
+    AdmintMapper 인터페이스와 매핑되는 SQL을 작성합니다.
+    namespace: Mapper 인터페이스의 전체 경로
+-->
+<mapper namespace="com.ssafy.admin.mapper.AdminMapper">
+
+    <!-- resultMap: DB 컬럼과 DTO 필드를 매핑 -->
+    <resultMap id="openRequestResultMap" type="com.ssafy.admin.dto.OpenRequest">
+        <id property="reqId" column="req_id"/>
+        <result property="restaurantName" column="nickname"/>
+        <result property="address" column="address"/>
+        <result property="category" column="category"/>
+        <result property="userNo" column="user_no"/>
+        <result property="date" column="created_at"/>
+        <result property="isApprove" column="is_approve"/>
+        <result property="description" column="description"/>
+        
+    </resultMap> 
+    
+    <!-- 관리자가 식당 개시 요청을 조회합니다 -->
+    <select id="getOpenRequests" resultMap="openRequestResultMap">
+	    SELECT
+	        o.*,
+	        u.nickname
+	    FROM open_request o
+	    JOIN user u
+	      ON o.user_no = u.user_no
+	    <where>
+	        <!-- ✅ 거부(-1)는 무조건 숨김 -->
+	        o.is_approve != -1
+	
+	        <if test="type != null and type != '' and type != 'ALL'">
+	            <choose>
+	                <when test="type == 'APPROVED'"> AND o.is_approve = 1 </when>
+	                <when test="type == 'PENDING'">  AND o.is_approve = 0 </when>
+	
+	                <!-- 거부 탭은 아예 안 보여줄 거라면 -->
+	                <when test="type == 'REJECTED'"> AND 1 = 0 </when>
+	
+	                <!-- type이 '1','0' 같은 숫자 문자열로 올 때 -->
+	                <otherwise> AND o.is_approve = #{type} </otherwise>
+	            </choose>
+	        </if>
+	    </where>
+	    ORDER BY o.req_id DESC
+	    LIMIT #{size} OFFSET #{offset}
+	</select>
+	
+	<select id="countOpenRequests" resultType="long">
+	    SELECT COUNT(*)
+	    FROM open_request o
+	    <where>
+	        o.is_approve != -1
+	        <if test="type != null and type != '' and type != 'ALL'">
+	            <choose>
+	                <when test="type == 'APPROVED'"> AND o.is_approve = 1 </when>
+	                <when test="type == 'PENDING'">  AND o.is_approve = 0 </when>
+	                <when test="type == 'REJECTED'"> AND 1 = 0 </when>
+	                <otherwise> AND o.is_approve = #{type} </otherwise>
+	            </choose>
+	        </if>
+	    </where>
+	</select>
+	
+	<select id="getOpenRequestStats" resultType="com.ssafy.admin.dto.OpenRequestStats">
+	    SELECT
+	        COUNT(*) AS allCount,
+	        SUM(CASE WHEN is_approve = 0 THEN 1 ELSE 0 END) AS penCount,
+	        SUM(CASE WHEN is_approve = 1 THEN 1 ELSE 0 END) AS appCount
+	    FROM open_request
+	    WHERE is_approve != -1
+	</select>
+		    
+    <!-- 관리자가 요청을 승인합니다 -->
+    <update id="approveOpenRequests" parameterType="long">
+        UPDATE open_request
+		SET
+		    is_approve = 1
+			WHERE req_id = #{reqId}
+    </update>
+    
+    <!-- 관리자가 요청을 거절합니다 -->
+    <update id="rejectRequests" parameterType="long">
+        UPDATE open_request
+		SET
+		    is_approve = -1
+			WHERE req_id = #{reqId}
+    </update>
+    
+</mapper>

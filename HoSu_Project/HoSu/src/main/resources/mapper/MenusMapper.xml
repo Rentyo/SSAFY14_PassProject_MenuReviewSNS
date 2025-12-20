@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 
+    MenuMapper 인터페이스와 매핑되는 SQL을 작성합니다.
+    namespace: Mapper 인터페이스의 전체 경로
+-->
+<mapper namespace="com.ssafy.menu.mapper.MenuMapper">
+
+    <!-- resultMap: DB 컬럼과 DTO 필드를 매핑 -->
+    <resultMap id="menuResultMap" type="com.ssafy.menu.dto.InsertMenu">
+    	<id property="menuId" column="menu_id"/>
+        <result property="restaurantId" column="restaurant_id"/>
+        <result property="menuName" column="menu_name"/>
+        <result property="price" column="price"/>
+        <result property="description" column="description"/>
+    </resultMap>
+    
+    <resultMap id="menuTagMappingResultMap" type="com.ssafy.menu.dto.InsertMenuTagMapping">
+        <result property="menuId" column="menu_id"/>
+        <result property="tagId" column="tag_id"/>
+    </resultMap>
+    
+    <resultMap id="updateMenuResultMap" type="com.ssafy.menu.dto.UpdateMenuReq">
+        <id property="menuId" column="menu_id"></id>
+        <result property="menuName" column="menu_name"/>
+        <result property="price" column="price"/>
+        <result property="description" column="description"/>
+    </resultMap>
+    
+    <resultMap id="selectMenuResultMap" type="com.ssafy.menu.dto.Menu">
+        <id property="menuId" column="menu_id"></id>
+        <result property="restaurantId" column="restaurant_id"></result>
+        <result property="menuName" column="menu_name"/>
+        <result property="price" column="price"/>
+        <result property="description" column="description"/>
+        <result property="totalRating" column="total_rating"/>
+        <result property="reviewCount" column="review_count"/>
+        <result property="isActive" column="is_active"/>
+        <collection property="tags" ofType="com.ssafy.menu.dto.Tag">
+	        <id property="tagId" column="tag_id"/>
+	        <result property="tagName" column="tag_name"/>
+	    </collection>
+    </resultMap>
+
+
+    <!-- 관리자가 식당 메뉴를 입력합니다 -->
+    <insert id="insertMenu" parameterType="InsertMenu" useGeneratedKeys="true" keyProperty="menuId">
+        INSERT INTO menu(restaurant_id, menu_name, price, description) VALUES(#{restaurantId}, #{menuName}, #{price}, #{description}) 
+    </insert>
+    
+    <!-- 관리자가 메뉴와 태그 매핑을 추가합니다 -->
+    <insert id="insertMenuTagMapping" parameterType="InsertMenuTagMapping">
+        INSERT INTO menu_tags_mapping(menu_id, tag_id) VALUES(#{menuId}, #{tagId}) 
+    </insert>
+    
+    
+    <!-- 관리자가 메뉴를 수정합니다 -->
+    <update id="updateMenu" parameterType="UpdateMenuReq" useGeneratedKeys="true" keyProperty="menuId">
+        UPDATE menu
+		SET
+		    menu_name = #{menuName},
+		    price =  #{price},
+		    description =  #{description}
+			WHERE menu_id = #{menuId}
+    </update>
+    
+    <!-- 관리자가 태그를 수정하기 전에 기존 태그를 삭제합니다 -->
+    <delete id="deleteMenuTagMapping" parameterType="Long">
+    	DELETE FROM menu_tags_mapping WHERE menu_id=#{id} 
+    </delete>
+    
+    
+    <!-- 관리자가 메뉴를 삭제합니다 -->
+    <delete id="deleteMenu" parameterType="Long">
+        DELETE FROM menu WHERE menu_id = #{id} 
+    </delete>
+    
+    <!-- 관리자가 메뉴 태그를 추가합니다. -->
+    <insert id="insertTag" parameterType="InsertTagReq">
+        INSERT INTO menu_tags(tag_name,category) VALUES(#{tagName}, #{category}) 
+    </insert>
+    
+    <!-- 관리자가 메뉴 태그를 수정합니다 -->
+    <update id="updateTag" parameterType="UpdateTagReq">
+        UPDATE menu_tags
+		SET
+		    tag_name = #{tagName},
+		    category =  #{category}
+		WHERE tag_id = #{tagId}
+    </update>
+    
+    <!-- 관리자가 태그를 삭제합니다 -->
+    <delete id="deleteTag" parameterType="Long">
+        DELETE FROM menu_tags WHERE tag_id = #{id} 
+    </delete>
+    
+    
+    <!-- 식당 번호로 메뉴 조회 -->
+    <select id="getMenus" parameterType="Long" resultMap="selectMenuResultMap">
+        SELECT m.*, t.* FROM menu m
+        LEFT JOIN menu_tags_mapping mtm ON m.menu_id = mtm.menu_id
+		LEFT JOIN menu_tags t ON mtm.tag_id = t.tag_id
+		WHERE m.restaurant_id = #{restaurantId}
+		ORDER BY m.menu_id;
+    </select>
+    
+    
+    <!-- 메뉴 활성화 비활성화 -->
+    <update id="activeMenuChange">
+        UPDATE menu
+		SET
+		    is_active = #{active}
+	    WHERE menu_id = #{menuId}
+    </update>
+</mapper>

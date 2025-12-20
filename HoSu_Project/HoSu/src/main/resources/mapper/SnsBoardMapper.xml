@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.sns.mapper.SnsBoardMapper">
+
+
+    <!-- 게시물 작성 -->
+    <insert id="insertBoard" parameterType="com.ssafy.sns.dto.SnsBoard" useGeneratedKeys="true" keyProperty="boardId">
+        INSERT INTO sns_board (user_no, restaurant_id, title, content, board_img, board_tag, created_at, updated_at)
+        VALUES (#{userNo}, #{restaurantId}, #{title}, #{content}, #{boardImg}, #{boardTag}, now(), now())
+    </insert>
+
+    <!-- 게시물 수정 -->
+    <update id="updateBoard" parameterType="com.ssafy.sns.dto.SnsBoard">
+        UPDATE sns_board
+        SET title = #{title},
+            content = #{content},
+            title = #{title},
+            board_img = #{boardImg},
+            updated_at = NOW()
+        WHERE board_id = #{boardId}
+    </update>
+    
+    <!-- 게시물 삭제하기 전 메뉴 총 평점 및 리뷰 개수 조정 -->
+    <update id = "deleteChangeMenuRating">
+    	UPDATE menu m
+		JOIN (
+		    SELECT 
+		        menu_id,
+		        SUM(menu_rating) AS rating_sum,
+		        COUNT(*) AS img_count
+		    FROM sns_board_image
+		    WHERE board_id = #{boardId}
+		    GROUP BY menu_id
+		) AS img ON m.menu_id = img.menu_id
+		SET 
+		    m.total_rating  = m.total_rating  - img.rating_sum,
+		    m.review_count = m.review_count - img.img_count;
+    </update>
+    
+    <!-- 게시물 삭제하기 전 식당 총 평점 및 리뷰 개수 조정 -->
+    <update id = "deleteChangeRestaurantRating">
+	    UPDATE restaurants r
+		JOIN (
+		    SELECT 
+		        b.restaurant_id,
+		        COALESCE(SUM(i.menu_rating), 0) AS rating_sum,
+		        COUNT(i.image_id) AS image_count
+		    FROM sns_board b
+		    LEFT JOIN sns_board_image i ON b.board_id = i.board_id
+		    WHERE b.board_id = #{boardId}
+		    GROUP BY b.restaurant_id
+		) AS x ON r.restaurant_id = x.restaurant_id
+		SET 
+		    r.total_rating = r.total_rating - x.rating_sum,
+		    r.total_contents = GREATEST(r.total_contents - 1, 0),
+		    r.review_counts = GREATEST(r.review_counts - x.image_count, 0);
+    </update>
+    
+    <!-- 게시물 삭제 -->
+    <delete id="deleteBoard">
+        DELETE FROM sns_board
+        WHERE board_id = #{boardId}
+    </delete>
+
+    <!-- 게시물 단건 조회 -->
+    <select id="selectBoardById" resultType="com.ssafy.sns.dto.SnsBoardResp">
+        SELECT
+            b.board_id AS boardId,
+            b.restaurant_id AS restaurantId,
+            b.title,
+            b.content,
+            r.restaurant_name AS restaurantName,
+            b.board_img AS boardImg,
+            b.board_tag AS boardTag,
+            b.created_at AS createdAt,
+            b.updated_at AS updatedAt,
+            b.user_no AS userNo,
+            u.nickname AS nickName,
+            u.user_img AS userImg,
+            (SELECT COUNT(*) FROM sns_like WHERE board_id = b.board_id) AS likeCount,
+            (SELECT COUNT(*) FROM sns_comment WHERE board_id = b.board_id) AS commentCount,
+            EXISTS(
+                SELECT 1 FROM sns_like
+                WHERE board_id = b.board_id AND user_no = #{myUserNo}
+            ) AS isLiked
+        FROM sns_board b
+        INNER JOIN user u ON b.user_no = u.user_no
+        LEFT JOIN restaurants r ON b.restaurant_id = r.restaurant_id
+        WHERE b.board_id = #{boardId}
+    </select>
+
+    <!-- 게시물 목록 조회 (피드) -->
+    <select id="selectBoardList" resultType="com.ssafy.sns.dto.SnsBoardResp">
+        SELECT
+            b.board_id AS boardId,
+            b.title,
+            b.content,
+            b.restaurant_id AS restaurantId,
+            r.restaurant_name AS restaurantName,
+            r.category AS category,
+            b.board_img AS boardImg,
+            b.board_tag AS boardTag,
+            b.created_at AS createdAt,
+            b.updated_at AS updatedAt,
+            b.user_no AS userNo,
+            u.nickname AS nickName,
+            u.user_img AS userImg,
+            (SELECT COUNT(*) FROM sns_like WHERE board_id = b.board_id) AS likeCount,
+            (SELECT COUNT(*) FROM sns_comment WHERE board_id = b.board_id) AS commentCount,
+            EXISTS(
+                SELECT 1 FROM sns_like
+                WHERE board_id = b.board_id AND user_no = #{myUserNo}
+            ) AS isLiked
+        FROM sns_board b
+        INNER JOIN user u ON b.user_no = u.user_no
+        LEFT JOIN restaurants r ON b.restaurant_id = r.restaurant_id
+        ORDER BY b.created_at DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <!-- 특정 유저 게시물 목록 -->
+    <select id="selectBoardListByUser" resultType="com.ssafy.sns.dto.SnsBoardResp">
+        SELECT
+            b.board_id AS boardId,
+            b.title,
+            b.content,
+            b.restaurant_id AS restaurantId,
+            r.restaurant_name AS restaurantName,
+            b.board_img AS boardImg,
+            b.board_tag AS boardTag,
+            b.created_at AS createdAt,
+            b.updated_at AS updatedAt,
+            b.user_no AS userNo,
+            u.nickname AS nickName,
+            u.user_img AS userImg,
+            (SELECT COUNT(*) FROM sns_like WHERE board_id = b.board_id) AS likeCount,
+            (SELECT COUNT(*) FROM sns_comment WHERE board_id = b.board_id) AS commentCount,
+            EXISTS(
+                SELECT 1 FROM sns_like
+                WHERE board_id = b.board_id AND user_no = #{myUserNo}
+            ) AS isLiked
+        FROM sns_board b
+        INNER JOIN user u ON b.user_no = u.user_no
+        LEFT JOIN restaurants r ON b.restaurant_id = r.restaurant_id
+        WHERE b.user_no = #{userNo}
+        ORDER BY b.created_at DESC
+    </select>
+
+    <!-- 팔로잉 피드 조회 (여러 유저의 게시물) -->
+    <select id="selectBoardListByUserIds" resultType="com.ssafy.sns.dto.SnsBoardResp">
+        SELECT
+            b.board_id AS boardId,
+            b.title,
+            b.content,
+            b.restaurant_id AS restaurantId,
+            r.restaurant_name AS restaurantName,
+            b.board_img AS boardImg,
+            b.board_tag AS boardTag,
+            b.created_at AS createdAt,
+            b.updated_at AS updatedAt,
+            b.user_no AS userNo,
+            u.nickname AS nickName,
+            u.user_img AS userImg,
+            (SELECT COUNT(*) FROM sns_like WHERE board_id = b.board_id) AS likeCount,
+            (SELECT COUNT(*) FROM sns_comment WHERE board_id = b.board_id) AS commentCount,
+            EXISTS(
+                SELECT 1 FROM sns_like
+                WHERE board_id = b.board_id AND user_no = #{myUserNo}
+            ) AS isLiked
+        FROM sns_board b
+        INNER JOIN user u ON b.user_no = u.user_no
+        LEFT JOIN restaurants r ON b.restaurant_id = r.restaurant_id
+        WHERE b.user_no IN
+        <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+        ORDER BY b.created_at DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <!-- 식당별 게시물 목록 조회 -->
+    <select id="selectBoardListByRestaurant" resultType="com.ssafy.sns.dto.SnsBoardResp">
+        SELECT
+            b.board_id AS boardId,
+            b.title,
+            r.restaurant_name AS restaurantName,
+            b.content,
+            b.restaurant_id AS restaurantId,
+            b.board_img AS boardImg,
+            b.board_tag AS boardTag,
+            b.created_at AS createdAt,
+            b.updated_at AS updatedAt,
+            b.user_no AS userNo,
+            u.nickname AS nickName,
+            u.user_img AS userImg,
+            (SELECT COUNT(*) FROM sns_like WHERE board_id = b.board_id) AS likeCount,
+            (SELECT COUNT(*) FROM sns_comment WHERE board_id = b.board_id) AS commentCount,
+            EXISTS(
+                SELECT 1 FROM sns_like
+                WHERE board_id = b.board_id AND user_no = #{myUserNo}
+            ) AS isLiked
+        FROM sns_board b
+        INNER JOIN user u ON b.user_no = u.user_no
+        LEFT JOIN restaurants r ON b.restaurant_id = r.restaurant_id
+        WHERE b.restaurant_id = #{restaurantId}
+        ORDER BY b.created_at DESC
+    </select>
+
+    <!-- 랜덤 게시물 목록 조회 -->
+    <select id="selectRandomBoards" resultType="com.ssafy.sns.dto.SnsBoardResp">
+        SELECT
+            b.board_id AS boardId,
+            b.title,
+            b.content,
+            r.restaurant_name AS restaurantName,
+            b.restaurant_id AS restaurantId,
+            b.board_img AS boardImg,
+            b.board_tag AS boardTag,
+            b.created_at AS createdAt,
+            b.updated_at AS updatedAt,
+            b.user_no AS userNo,
+            u.nickname AS nickName,
+            u.user_img AS userImg,
+            (SELECT COUNT(*) FROM sns_like WHERE board_id = b.board_id) AS likeCount,
+            (SELECT COUNT(*) FROM sns_comment WHERE board_id = b.board_id) AS commentCount,
+            EXISTS(
+                SELECT 1 FROM sns_like
+                WHERE board_id = b.board_id AND user_no = #{myUserNo}
+            ) AS isLiked
+        FROM sns_board b
+        INNER JOIN user u ON b.user_no = u.user_no
+        LEFT JOIN restaurants r ON b.restaurant_id = r.restaurant_id
+        <where>
+            <if test="myUserNo != null">
+                b.user_no != #{myUserNo}
+            </if>
+        </where>
+        ORDER BY RAND()
+        LIMIT #{limit}
+    </select>
+
+    <!-- ==================== 이미지 ==================== -->
+
+    <!-- 이미지 추가 -->
+    <insert id="insertImage" parameterType="com.ssafy.sns.dto.SnsBoardImage">
+        INSERT INTO sns_board_image (board_id, image_url, image_order)
+        VALUES (#{boardId}, #{imageUrl}, #{imageOrder})
+    </insert>
+
+    <!-- 이미지 일괄 추가 -->
+    <insert id="insertImages">
+	    INSERT INTO sns_board_image (
+	        board_id,
+	        image_url,
+	        image_order,
+	        menu_rating,
+	        menu_id,
+	        one_line_review,
+	        created_at
+	    )
+	    VALUES
+	    <foreach collection="menus" item="image" index="idx" separator=",">
+	        (
+	            #{boardId},
+	            #{image.imageUrl},
+	            (#{idx} + 1),
+	            #{image.menuRating},
+	            #{image.menuId},
+	            #{image.oneLineReview},
+	            NOW()
+	        )
+	    </foreach>
+	</insert>
+	
+	<!-- 이미지 수정하기 전 메뉴 평점 가져오기 -->
+	<select id="getNowMenuRating" resultType="Double" parameterType="Long">
+	    SELECT menu_rating
+	    FROM sns_board_image
+	    WHERE image_id = #{imageId}
+	</select>
+	
+	
+	
+	<!-- 이미지 수정 -->
+	<update id="updateImagesByImageId">
+	    UPDATE sns_board_image
+	    SET
+	        menu_rating = #{snsBoardImageUpdateReq.menuRating},
+	        one_line_review = #{snsBoardImageUpdateReq.oneLineReview},
+	        image_url = #{snsBoardImageUpdateReq.imageUrl} 
+	    WHERE image_id = #{snsBoardImageUpdateReq.imageId}
+	</update>
+	
+	<!--  리뷰를 수정하면서 메뉴의 평점 합 수정  -->
+	<update id="updateChangeMenuRating">
+	    UPDATE menu
+	    SET
+	        total_rating = COALESCE(total_rating, 0) + #{diff}
+	    WHERE menu_id = #{menuId}
+	</update>
+	
+	
+	<!-- 리뷰를 수정하면서 식당의 평점 합 수정 -->
+	<update id="updateChangeRestaurantRating">
+	    UPDATE restaurants
+	    SET
+	        total_rating = COALESCE(total_rating, 0)   + #{totalDiff}
+	    WHERE restaurant_id = #{restaurantId}
+	</update>
+	
+	
+	<!--  리뷰를 작성하면서 메뉴에 리뷰 작성 개수와 평점 합 수정  -->
+	<update id="insertChangeMenuRating">
+	    UPDATE menu
+	    SET
+	        total_rating = COALESCE(total_rating, 0) + #{rating},
+	        review_count = COALESCE(review_count, 0) + 1
+	    WHERE menu_id = #{menuId}
+	</update>
+	
+	<!-- 리뷰를 작성하면서 식당에 리뷰 작성 개수와 평점 합 수정 -->
+	<update id="insertChangeRestaurantRating">
+	    UPDATE restaurants
+	    SET
+	        total_rating   = COALESCE(total_rating, 0)   + #{sumRating},
+	        review_counts   = COALESCE(review_counts, 0)   + #{count},
+	        total_contents = COALESCE(total_contents, 0) + 1
+	    WHERE restaurant_id = #{restaurantId}
+	</update>	
+
+    <!-- 이미지 삭제 -->
+    <delete id="deleteImagesByBoardId">
+        DELETE FROM sns_board_image
+        WHERE board_id = #{boardId}
+    </delete>
+
+    <!-- 이미지 조회 -->
+    <select id="selectImagesByBoardId" resultType="com.ssafy.sns.dto.SnsBoardImage">
+        SELECT
+            sbi.image_id AS imageId,
+            sbi.board_id AS boardId,
+            sbi.menu_id AS menuId,
+            sbi.image_url AS imageUrl,
+            sbi.image_order AS imageOrder,
+            sbi.created_at AS createdAt,
+            sbi.menu_rating AS menuRating,
+            sbi.one_line_review AS oneLineReview,
+            m.menu_name AS menuName
+        FROM sns_board_image sbi
+        LEFT JOIN menu m
+        	ON sbi.menu_id = m.menu_id
+        WHERE board_id = #{boardId}
+        ORDER BY image_order ASC
+    </select>
+
+</mapper>

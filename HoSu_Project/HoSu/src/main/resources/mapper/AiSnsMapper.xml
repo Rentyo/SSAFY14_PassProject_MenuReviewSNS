@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.aiSns.mapper.AISnsMapper">
+
+	<select id="findSidoNoByName" resultType="Long">
+	    SELECT s.sido_no
+	    FROM sido s
+	    WHERE REPLACE(s.sido_name, ' ', '') LIKE CONCAT('%', REPLACE(#{sidoName}, ' ', ''), '%')
+	    ORDER BY LENGTH(s.sido_name) ASC
+	    LIMIT 1
+	  </select>
+	
+	  <select id="findGunguCodeByName" resultType="Long">
+	    SELECT g.gungu_code
+	    FROM gungu g
+	    WHERE g.sido_no = #{sidoNo}
+	      AND REPLACE(g.gungu_name, ' ', '') LIKE CONCAT('%', REPLACE(#{gunguName}, ' ', ''), '%')
+	    ORDER BY LENGTH(g.gungu_name) ASC
+	    LIMIT 1
+	  </select>
+
+	  <select id="findTop5BoardIdsByCond"
+		          parameterType="com.ssafy.aiSns.dto.AiExtractResult"
+		          resultType="long">
+		
+		    SELECT b.board_id
+		    FROM sns_board b
+		    JOIN restaurants r ON r.restaurant_id = b.restaurant_id
+		    LEFT JOIN sns_board_image bi ON bi.board_id = b.board_id
+		    LEFT JOIN menu m ON m.menu_id = bi.menu_id
+		    LEFT JOIN menu_tags_mapping mtm ON mtm.menu_id = m.menu_id
+		    LEFT JOIN menu_tags t ON t.tag_id = mtm.tag_id
+		
+		    <where>
+		      1=1
+		      <trim prefix="AND (" suffix=")" prefixOverrides="OR">
+		        <if test="sidoNo != null">OR r.sido_no = #{sidoNo}</if>
+		        <if test="gunguCode != null and gunguCode != ''">OR r.gungu_code = #{gunguCode}</if>
+		        <if test="restaurantName != null and restaurantName != ''">
+		          OR r.restaurant_name LIKE CONCAT('%', #{restaurantName}, '%')
+		        </if>
+		        <if test="categories != null and categories.size() > 0">
+		          OR r.category IN
+		          <foreach collection="categories" item="c" open="(" separator="," close=")">#{c}</foreach>
+		        </if>
+		        <if test="menuNames != null and menuNames.size() > 0">
+		          <foreach collection="menuNames" item="mn">
+		            OR m.menu_name LIKE CONCAT('%', #{mn}, '%')
+		          </foreach>
+		        </if>
+		        <if test="tagNames != null and tagNames.size() > 0">
+		          <foreach collection="tagNames" item="tn">
+		            OR t.tag_name LIKE CONCAT('%', #{tn}, '%')
+		          </foreach>
+		        </if>
+		        <if test="features != null and features.size() > 0">
+		          <foreach collection="features" item="fw">
+		            OR b.content LIKE CONCAT('%', #{fw}, '%')
+		            OR bi.one_line_review LIKE CONCAT('%', #{fw}, '%')
+		          </foreach>
+		        </if>
+		      </trim>
+		    </where>
+		
+		    GROUP BY b.board_id
+		
+		    ORDER BY
+		    (
+		      0
+		      <if test="sidoNo != null">+ MAX(CASE WHEN r.sido_no = #{sidoNo} THEN 5 ELSE 0 END)</if>
+		      <if test="gunguCode != null and gunguCode != ''">+ MAX(CASE WHEN r.gungu_code = #{gunguCode} THEN 5 ELSE 0 END)</if>
+		
+		      <if test="restaurantName != null and restaurantName != ''">
+		        + MAX(CASE WHEN r.restaurant_name LIKE CONCAT('%', #{restaurantName}, '%') THEN 10 ELSE 0 END)
+		      </if>
+		
+		      <if test="categories != null and categories.size() > 0">
+		        + MAX(CASE WHEN r.category IN
+		          <foreach collection="categories" item="c" open="(" separator="," close=")">#{c}</foreach>
+		        THEN 6 ELSE 0 END)
+		      </if>
+		
+		      <if test="menuNames != null and menuNames.size() > 0">
+		        + LEAST(16, (
+		          COUNT(DISTINCT CASE
+		            <foreach collection="menuNames" item="mn">
+		              WHEN m.menu_name LIKE CONCAT('%', #{mn}, '%') THEN m.menu_id
+		            </foreach>
+		            ELSE NULL
+		          END) * 8
+		        ))
+		      </if>
+		
+		      <if test="tagNames != null and tagNames.size() > 0">
+		        + LEAST(12, (
+		          COUNT(DISTINCT CASE
+		            <foreach collection="tagNames" item="tn">
+		              WHEN t.tag_name LIKE CONCAT('%', #{tn}, '%') THEN t.tag_id
+		            </foreach>
+		            ELSE NULL
+		          END) * 4
+		        ))
+		      </if>
+		
+		      <if test="features != null and features.size() > 0">
+		        <foreach collection="features" item="fw">
+		          + MAX(CASE WHEN b.content LIKE CONCAT('%', #{fw}, '%') THEN 2 ELSE 0 END)
+		          + MAX(CASE WHEN bi.one_line_review LIKE CONCAT('%', #{fw}, '%') THEN 2 ELSE 0 END)
+		        </foreach>
+		      </if>
+		    ) DESC,
+		    b.created_at DESC
+		    LIMIT 5
+		  </select>
+		  
+		  <select id="selectBoardsByIds" resultType="com.ssafy.sns.dto.SnsBoardResp">
+		    SELECT
+		        b.board_id AS boardId,
+		        b.title,
+		        b.content,
+		        r.restaurant_name AS restaurantName,
+		        b.restaurant_id AS restaurantId,
+		        r.category AS category,
+		        b.board_img AS boardImg,
+		        b.board_tag AS boardTag,
+		        b.created_at AS createdAt,
+		        b.updated_at AS updatedAt,
+		        b.user_no AS userNo,
+		        u.nickname AS nickName,
+		        u.user_img AS userImg,
+		        (SELECT COUNT(*) FROM sns_like WHERE board_id = b.board_id) AS likeCount,
+		        (SELECT COUNT(*) FROM sns_comment WHERE board_id = b.board_id) AS commentCount,
+		        FALSE AS isLiked
+		    FROM sns_board b
+		    INNER JOIN user u ON b.user_no = u.user_no
+		    LEFT JOIN restaurants r ON b.restaurant_id = r.restaurant_id
+		    WHERE b.board_id IN
+		    <foreach collection="boardIds" item="id" open="(" separator="," close=")">
+		        #{id}
+		    </foreach>
+		
+		    <!-- ✅ AI가 준 순서 유지 -->
+		    ORDER BY FIELD(b.board_id
+		    <foreach collection="boardIds" item="id" separator="">
+		        , #{id}
+		    </foreach>
+		    )
+		</select>
+    
+	    <!-- 이미지 조회 -->
+	    <select id="selectImagesByBoardId" resultType="com.ssafy.sns.dto.SnsBoardImage">
+	        SELECT
+	            sbi.image_id AS imageId,
+	            sbi.board_id AS boardId,
+	            sbi.menu_id AS menuId,
+	            sbi.image_url AS imageUrl,
+	            sbi.image_order AS imageOrder,
+	            sbi.created_at AS createdAt,
+	            sbi.menu_rating AS menuRating,
+	            sbi.one_line_review AS oneLineReview,
+	            m.menu_name AS menuName
+	        FROM sns_board_image sbi
+	        LEFT JOIN menu m
+	        	ON sbi.menu_id = m.menu_id
+	        WHERE board_id = #{boardId}
+	        ORDER BY image_order ASC
+	    </select>
+		  
+
+</mapper>

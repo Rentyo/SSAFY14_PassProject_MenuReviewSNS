@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 
+    RestaurantMapper 인터페이스와 매핑되는 SQL을 작성합니다.
+    namespace: Mapper 인터페이스의 전체 경로
+-->
+<mapper namespace="com.ssafy.restaurant.mapper.RestaurantMapper">
+
+    <!-- resultMap: DB 컬럼과 DTO 필드를 매핑 -->
+    <resultMap id="restaurantResultMap" type="com.ssafy.restaurant.dto.Restaurant">
+        <id property="id" column="restaurant_id"/>
+        <result property="name" column="restaurant_name"/>
+        <result property="address" column="address"/>
+        <result property="category" column="category"/>
+        <result property="sidoNo" column="sido_no"/>
+        <result property="gunguCode" column="gungu_code"/>
+        <result property="lat" column="lat"/>
+        <result property="lng" column="lng"/>
+        <result property="phone" column="phone"/>
+        <result property="mainImage" column="main_image"/>
+        <result property="totalRating" column="total_rating"/>
+        <result property="totalContents" column="total_contents"/>
+        <result property="viewCount" column="view_count"/>
+        <result property="reviewCounts" column="review_counts"/>
+        <result property="userNo" column="user_no"/>
+    </resultMap>
+    
+    <resultMap id="snsboardResultMap" type="com.ssafy.sns.dto.SnsBoardInRestaurant">
+        <id property="boardId" column="board_id"/>
+        <result property="boardImg" column="board_img"/>
+    </resultMap>
+    
+    <resultMap id="noticeResultMap" type="com.ssafy.restaurant.dto.Notice">
+        <id property="restaurantNoticeId" column="restaurant_notice_id"/>
+        <result property="restaurantId" column="restaurant_id"/>
+        <result property="title" column="title"/>
+        <result property="importance" column="importance"/>
+        <result property="content" column="content"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="viewCount" column="view_count"/>
+    </resultMap>
+
+    <!-- 관리자가 식당을 입력합니다 -->
+    <insert id="insertRestaurant" parameterType="Restaurant">
+        INSERT INTO restaurants(
+         restaurant_name,
+         category,
+         address,
+         sido_no,
+         gungu_code,
+         lat,
+         lng,
+         phone,
+         main_image,
+         total_rating,
+         total_contents,
+         view_count,
+         user_no,
+         review_counts)
+         VALUES (
+         #{name},
+         #{category},
+         #{address},
+         #{sidoNo}, 
+         #{gunguCode},
+         #{lat},
+         #{lng},
+         #{phone},
+         #{mainImage},
+         #{totalRating},
+         #{totalContents},
+         #{viewCount},
+         #{userNo},
+         #{reviewCounts})
+    </insert>
+    
+    <!-- 관리자가 식당을 입력한 후 사장님의 닉네임을 가게 이름으로 변경합니다. -->
+    <update id="updateNickName">
+        UPDATE user
+		SET
+		    nickname = #{restaurantName}
+		WHERE user_no = #{userNo}
+    </update>
+    
+    <update id="updateImage">
+        UPDATE restaurants
+		SET
+		    main_image = (SELECT user_img FROM user WHERE user_no = #{userNo} LIMIT 1)
+		WHERE user_no = #{userNo}
+    </update>
+
+    <!-- 관리자가 식당을 수정합니다 -->
+    <update id="updateRestaurant" parameterType="Restaurant">
+        UPDATE restaurants
+		SET
+		    restaurant_name = #{name},
+		    category = #{category},
+		    address = #{address},
+		    sido_no = #{sidoNo}, 
+		    gungu_code = #{gunguCode}, 
+		    lat = #{lat},
+		    lng = #{lng},
+		    phone =  #{phone},
+		    main_image =  #{mainImage}
+			WHERE restaurant_id = #{id}
+    </update>
+    
+    <!-- 관리자가 식당을 삭제합니다 -->
+    <delete id="deleteRestaurant" parameterType="Restaurant">
+        DELETE FROM restaurants WHERE restaurant_id = #{id} 
+    </delete>
+    
+    <insert id="insertOpenRequest" parameterType="RestaurantOpenRequest">
+        INSERT INTO open_request(
+         address,
+         category,
+         user_no,
+         created_at,
+         description)
+         VALUES (
+         #{address},
+         #{category},
+         #{userNo},
+         now(), 
+         #{description})
+    </insert>
+    
+    <select id="selectRestaurantById" parameterType="Long" resultMap="restaurantResultMap">
+        SELECT * FROM restaurants WHERE restaurant_id = #{restaurantId} 
+    </select>
+    
+    <select id="selectSnsBoardInRestaurantsById" parameterType="Long" resultMap="snsboardResultMap">
+        SELECT board_id, board_img FROM sns_board WHERE restaurant_id = #{restaurantId} 
+    </select>
+    
+    <!-- 사용자 번호로 식당 번호 조회 -->
+    <select id="selectRestaurantIdByUserNo" parameterType="Long" resultType="Long">
+        SELECT restaurant_id FROM restaurants WHERE user_no = #{userNo} 
+    </select>
+    
+    <!-- 식당 번호로 공지글 조회 -->
+    <select id="selectNoticesIdByRestaurantId" parameterType="Long" resultMap="noticeResultMap">
+        SELECT * FROM restaurant_notice  WHERE  restaurant_id = #{restaurantId} 
+    </select>
+    
+    <!-- 공지글 입력 -->
+    <insert id="insertNotice" parameterType="com.ssafy.restaurant.dto.insertNoticeReq">
+        INSERT INTO restaurant_notice (
+	        restaurant_id,
+	        title,
+	        importance,
+	        content,
+	        created_at,
+	        view_count
+	    )
+	    VALUES (
+	        #{restaurantId},
+	        #{title},
+	        #{importance},
+	        #{content},
+	        NOW(),
+	        0
+	    );
+
+    </insert>
+    
+    <!-- 식당 사장님이 공지를 수정합니다 -->
+    <update id="updateNotice" parameterType="com.ssafy.restaurant.dto.UpdateNoticeReq">
+        UPDATE restaurant_notice
+		SET
+		    title = #{title},
+		    content = #{content},  
+		    importance = #{importance}
+		WHERE restaurant_notice_id = #{restaurantNoticeId}
+    </update>
+    
+    <!-- 식당 사장님이 공지을 삭제합니다 -->
+    <delete id="deleteNotice" parameterType="Long">
+        DELETE FROM restaurant_notice WHERE restaurant_notice_id = #{restaurantNoticeId}
+    </delete>
+    
+    <!-- 식당 리스트 클릭 시 조회수를 1 증가 시킵니다. -->
+    <update id="viewCountUp" parameterType="Long">
+        UPDATE restaurants
+		SET
+		    view_count = view_count + 1
+		WHERE restaurant_id = #{restaurantId}
+    </update>
+    
+    <!-- 사장님이 식당을 보유하고 있는 경우 -->
+    <select id="existRestaurantOwn" parameterType="Long" resultType="int">
+        SELECT COUNT(*) FROM restaurants WHERE user_no = #{userNo} 
+    </select>
+    
+    <!-- 사장님이 식당을 요청하고 있는 경우 -->
+    <select id="existRestaurantRequest" parameterType="Long" resultType="int">
+        SELECT COUNT(*)  FROM open_request WHERE user_no = #{userNo} AND is_approve = 0 
+    </select> 
+    
+    
+    
+       
+    
+</mapper>

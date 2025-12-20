@@ -1,0 +1,9 @@
+/.metadata/
+
+
+# API 키 보안 파일 제외
+application-API-KEY.properties
+.DS_Store
+
+# 로컬 환경변수 파일 제외
+.env

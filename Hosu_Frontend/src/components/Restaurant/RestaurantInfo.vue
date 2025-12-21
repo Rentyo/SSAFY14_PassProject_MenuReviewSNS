@@ -57,7 +57,7 @@ const props = defineProps({
 .info-container {
   padding: 0;
   background: transparent;
-  color: #2D3436;
+  color: #593527;
   max-height: 600px;
   overflow-y: auto;
 }
@@ -68,48 +68,52 @@ const props = defineProps({
 }
 
 .info-container::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(89, 53, 39, 0.05);
   border-radius: 4px;
 }
 
 .info-container::-webkit-scrollbar-thumb {
-  background: #FFE4CC;
+  background: #F2DCB3;
   border-radius: 4px;
   transition: background 0.3s ease;
 }
 
 .info-container::-webkit-scrollbar-thumb:hover {
-  background: #FF6B6B;
+  background: #F29F05;
 }
 
 .info-group {
   margin-bottom: 32px;
-  padding: 20px;
-  background: #FFF5E6;
-  border-radius: 12px;
-  border: 1px solid #FFE4CC;
+  padding: 24px;
+  background: #FFFFFF;
+  border-radius: 16px;
+  border: 1px solid #F2DCB3;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(89, 53, 39, 0.04);
 }
 
 .info-group:hover {
   background: #FFFFFF;
-  border-color: #FF6B6B;
-  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.15);
+  border-color: #F29F05;
+  box-shadow: 0 8px 20px rgba(89, 53, 39, 0.08);
+  transform: translateY(-2px);
 }
 
 .info-group h3 {
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 800;
   margin-bottom: 16px;
-  color: #2D3436;
-  padding-bottom: 10px;
-  border-bottom: 2px solid #FFE4CC;
+  color: #593527;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #F2DCB3;
 }
 
 .info-group p {
-  color: #636E72;
+  color: #593527;
+  opacity: 0.8;
   line-height: 1.7;
-  font-size: 15px;
+  font-size: 16px;
+  font-weight: 500;
 }
 
 

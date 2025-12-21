@@ -420,22 +420,20 @@ onMounted(() => {
 }
 
 .review-edit-container {
+  /* Custom Requested Palette */
+  --color-bg: #F2F2F2;
+  --color-emphasis: #593527;
+  --color-main: #F29F05;
+  --color-sub-1: #F2DCB3;
+  --color-sub-2: #D97904;
+
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   width: 100%;
-  background: linear-gradient(
-    135deg,
-    #FFF8F0 0%,
-    #FFF8F0 25%,
-    #FFF8F0 50%,
-    #FFF8F0 75%,
-    #FFF8F0 100%
-  );
-  
-  
+  background: var(--color-bg);
   display: flex;
   flex-direction: column;
   overflow-y: auto;
@@ -454,13 +452,12 @@ onMounted(() => {
   min-height: 80px;
   flex-shrink: 0;
   padding: 0 2rem;
-  background: #FFF5E6;
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: #FFFFFF;
+  border-bottom: 2px solid var(--color-sub-1);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(89, 53, 39, 0.08);
 }
 
 .hosu-logo {
@@ -478,17 +475,14 @@ onMounted(() => {
 .logo-main {
   font-weight: 800;
   font-size: 1.75rem;
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFA94D 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--color-main);
   letter-spacing: -0.5px;
 }
 
 .logo-sub {
   font-size: 0.7rem;
-  color: #95A5A6;
-  font-weight: 500;
+  color: var(--color-emphasis);
+  font-weight: 600;
   letter-spacing: 2px;
   text-transform: uppercase;
 }
@@ -503,10 +497,10 @@ onMounted(() => {
   width: 90%;
   max-width: 1000px;
   margin: 40px auto 80px;
-  background: #FFFFFF;  border-radius: 24px;
-  border: 1px solid #FFE4CC;
-  box-shadow: 0 4px 20px rgba(255, 107, 107, 0.15),
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+  background: #FFFFFF;
+  border-radius: 24px;
+  border: 1px solid var(--color-sub-1);
+  box-shadow: 0 10px 30px rgba(89, 53, 39, 0.08);
   overflow: visible;
 }
 
@@ -531,8 +525,8 @@ onMounted(() => {
   height: 50px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid rgba(255, 107, 107, 0.15);
-  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.15);
+  border: 4px solid var(--color-sub-1);
+  box-shadow: 0 4px 15px rgba(89, 53, 39, 0.1);
 }
 
 .author-details {
@@ -542,14 +536,14 @@ onMounted(() => {
 }
 
 .author-name {
-  font-weight: 600;
-  color: #2D3436;
+  font-weight: 700;
+  color: var(--color-emphasis);
   font-size: 16px;
 }
 
 .review-date {
   font-size: 14px;
-  color: #95A5A6;
+  color: #ADB5BD;
 }
 
 .review-image-main {
@@ -557,7 +551,7 @@ onMounted(() => {
   width: 100%;
   padding-top: 75%;
   overflow: hidden;
-  background: #FFF5E6;
+  background: #F8F9FA;
 }
 
 .review-image-main img {
@@ -594,18 +588,19 @@ onMounted(() => {
 .title-input {
   width: 100%;
   font-size: 28px;
-  font-weight: 700;
+  font-weight: 800;
   border: none;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 2px solid var(--color-sub-1);
   padding: 12px 0;
-  color: #2D3436;
+  color: var(--color-emphasis);
   background: transparent;
   box-sizing: border-box;
+  transition: all 0.3s;
 }
 
 .title-input:focus {
   outline: none;
-  border-bottom-color: #60a5fa;
+  border-bottom-color: var(--color-main);
 }
 
 .title-input::placeholder {
@@ -620,21 +615,23 @@ onMounted(() => {
   width: 100%;
   font-size: 16px;
   line-height: 1.8;
-  border: 1.5px solid rgba(255, 255, 255, 0.2);
-  background: #FFF5E6;
-  border-radius: 12px;
-  padding: 16px;
-  color: #2D3436;
+  border: 2px solid transparent;
+  background: #F8F9FA;
+  border-radius: 16px;
+  padding: 20px;
+  color: var(--color-emphasis);
   resize: vertical;
   font-family: inherit;
   box-sizing: border-box;
-  min-height: 150px;
+  min-height: 180px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .content-textarea:focus {
   outline: none;
-  border-color: #FF6B6B;
+  border-color: var(--color-main);
   background: #FFFFFF;
+  box-shadow: 0 0 0 4px rgba(242, 159, 5, 0.1);
 }
 
 .carousel-controls {
@@ -712,9 +709,10 @@ onMounted(() => {
 
 .section-title {
   font-size: 20px;
-  font-weight: 700;
-  margin-bottom: 20px;
-  color: #2D3436;
+  font-weight: 800;
+  margin-bottom: 24px;
+  color: var(--color-emphasis);
+  letter-spacing: -0.5px;
 }
 
 .menu-list-items {
@@ -724,12 +722,12 @@ onMounted(() => {
 }
 
 .menu-edit-item {
-  padding: 20px;
-  border: 1px solid #FFE4CC;
-  background: #FFF5E6;
-  border-radius: 12px;
+  padding: 24px;
+  border: 1px solid var(--color-sub-1);
+  background: #F8F9FA;
+  border-radius: 16px;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .menu-edit-item:hover {
@@ -738,8 +736,9 @@ onMounted(() => {
 }
 
 .menu-edit-item.active {
-  border-color: #FF6B6B;
-  background: rgba(255, 107, 107, 0.15);
+  border-color: var(--color-main);
+  background: #FFFFFF;
+  box-shadow: 0 4px 15px rgba(242, 159, 5, 0.1);
 }
 
 .menu-header {
@@ -752,18 +751,18 @@ onMounted(() => {
 }
 
 .menu-id {
-  font-weight: 700;
+  font-weight: 800;
   font-size: 16px;
-  color: #FF6B6B;
+  color: var(--color-main);
 }
 
 .menu-rating-display {
   display: flex;
   align-items: center;
   gap: 4px;
-  background: #FFF5E6;
-  padding: 4px 8px;
-  border-radius: 12px;
+  background: var(--color-sub-1);
+  padding: 5px 12px;
+  border-radius: 20px;
 }
 
 .star-icon {
@@ -771,9 +770,9 @@ onMounted(() => {
 }
 
 .rating-val {
-  font-weight: 700;
+  font-weight: 800;
   font-size: 14px;
-  color: #2D3436;
+  color: var(--color-emphasis);
 }
 
 .edit-fields {
@@ -790,24 +789,25 @@ onMounted(() => {
 
 .field-group label {
   font-size: 13px;
-  font-weight: 600;
-  color: #636E72;
+  font-weight: 700;
+  color: var(--color-emphasis);
 }
 
 .input-field {
-  padding: 10px 12px;
-  border: 1.5px solid rgba(255, 255, 255, 0.2);
-  background: #FFF5E6;
-  color: #2D3436;
-  border-radius: 8px;
+  padding: 12px 14px;
+  border: 2px solid transparent;
+  background: #FFFFFF;
+  border-radius: 10px;
   font-size: 14px;
-  transition: border-color 0.2s;
+  color: var(--color-emphasis);
+  transition: all 0.2s;
 }
 
 .input-field:focus {
   outline: none;
-  border-color: #FF6B6B;
-  background: #FFFFFF;
+  background: white;
+  border-color: var(--color-main);
+  box-shadow: 0 0 0 4px rgba(242, 159, 5, 0.1);
 }
 
 /* 이미지 업로드 */
@@ -825,62 +825,64 @@ onMounted(() => {
 
 .file-label {
   padding: 10px 16px;
-  background: rgba(255, 107, 107, 0.15);
-  color: #FF6B6B;
-  border: 1.5px solid rgba(255, 107, 107, 0.15);
+  background: #F8F9FA;
+  color: var(--color-emphasis);
+  border: 1.5px solid var(--color-sub-1);
   border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   transition: all 0.3s ease;
   display: inline-block;
 }
 
 .file-label:hover {
-  background: rgba(255, 107, 107, 0.15);
-  border-color: #FF6B6B;
+  background: white;
+  border-color: var(--color-main);
 }
 
 .btn-upload-menu {
-  padding: 10px 16px;
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFA94D 100%);
-  color: #2D3436;
+  padding: 10px 20px;
+  background: var(--color-main);
+  color: #FFFFFF;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+  box-shadow: 0 4px 10px rgba(242, 159, 5, 0.2);
 }
 
 .btn-upload-menu:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+  background: var(--color-sub-2);
+  box-shadow: 0 6px 15px rgba(217, 121, 4, 0.3);
 }
 
 .btn-upload-menu:disabled {
-  background: rgba(255, 255, 255, 0.1);
-  color: #95A5A6;
+  background: #ccc;
+  color: #ffffff;
   cursor: not-allowed;
   box-shadow: none;
 }
 
 .btn-remove-menu-img {
   padding: 10px 16px;
-  background: rgba(239, 68, 68, 0.15);
-  color: #fca5a5;
-  border: 1.5px solid rgba(239, 68, 68, 0.3);
+  background: #F1F3F5;
+  color: #ADB5BD;
+  border: 1.5px solid #E0E0E0;
   border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   transition: all 0.3s ease;
 }
 
 .btn-remove-menu-img:hover {
-  background: rgba(239, 68, 68, 0.25);
-  border-color: #ef4444;
+  background: #FFF5F5;
+  color: #f44336;
+  border-color: #f44336;
 }
 
 .menu-image-preview {
@@ -916,12 +918,13 @@ onMounted(() => {
 
 .error-message {
   padding: 14px 16px;
-  background: rgba(239, 68, 68, 0.1);
-  color: #fca5a5;
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  border-radius: 8px;
+  background: #FFF5F5;
+  color: #f44336;
+  border: 1px solid rgba(244, 67, 54, 0.2);
+  border-radius: 12px;
   font-size: 14px;
   margin-bottom: 20px;
+  text-align: center;
 }
 
 .button-group {
@@ -942,30 +945,32 @@ onMounted(() => {
 }
 
 .btn-cancel {
-  background: #FFF5E6;
-  color: #636E72;
-  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  background: var(--color-sub-1);
+  color: var(--color-emphasis);
+  font-weight: 700;
 }
 
 .btn-cancel:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: #E8CC9F;
   transform: translateY(-2px);
 }
 
 .btn-submit {
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFA94D 100%);
-  color: #2D3436;
-  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+  background: var(--color-main);
+  color: #FFFFFF;
+  font-weight: 800;
+  box-shadow: 0 4px 15px rgba(242, 159, 5, 0.3);
 }
 
 .btn-submit:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+  background: var(--color-sub-2);
+  box-shadow: 0 6px 20px rgba(217, 121, 4, 0.4);
 }
 
 .btn-submit:disabled {
-  background: rgba(255, 255, 255, 0.1);
-  color: #95A5A6;
+  background: #ccc;
+  color: #ffffff;
   cursor: not-allowed;
   box-shadow: none;
 }

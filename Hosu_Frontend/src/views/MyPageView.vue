@@ -255,25 +255,29 @@ watch(userProfile, (newVal) => {
 
 <style scoped>
 .mypage-container {
+  /* Custom Requested Palette */
+  --color-bg: #F2F2F2;
+  --color-emphasis: #593527;
+  --color-main: #F29F05;
+  --color-sub-1: #F2DCB3;
+  --color-sub-2: #D97904;
+
+  --bg-base: var(--color-bg);
+  --bg-active: #FFFFFF;
+  --text-primary: var(--color-emphasis);
+  --border-color: var(--color-sub-1);
+
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   width: 100%;
-  background: linear-gradient(
-    135deg,
-    #FFF8F0 0%,
-    #FFF8F0 25%,
-    #FFF8F0 50%,
-    #FFF8F0 75%,
-    #FFF8F0 100%
-  );
-  
-  
+  background: var(--bg-base);
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  color: var(--text-primary);
 }
 
 @keyframes gradientShift {
@@ -287,12 +291,12 @@ watch(userProfile, (newVal) => {
   min-height: 80px;
   flex-shrink: 0;
   padding: 0 2rem;
-  background: #FFFFFF;
-  border-bottom: 1px solid #FFE4CC;
+  background: var(--bg-active);
+  border-bottom: 2px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 12px rgba(255, 107, 107, 0.08);
+  box-shadow: 0 2px 8px rgba(31, 18, 7, 0.05);
 }
 
 .hosu-logo {
@@ -310,17 +314,17 @@ watch(userProfile, (newVal) => {
 .logo-main {
   font-weight: 800;
   font-size: 1.75rem;
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFA94D 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--color-main);
+  background: none;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: unset;
   letter-spacing: -0.5px;
 }
 
 .logo-sub {
   font-size: 0.7rem;
-  color: #95A5A6;
-  font-weight: 500;
+  color: var(--text-primary);
+  font-weight: 600;
   letter-spacing: 2px;
   text-transform: uppercase;
 }
@@ -329,9 +333,10 @@ watch(userProfile, (newVal) => {
   width: 60%;
   max-width: 1400px;
   margin: 40px auto;
-  background: rgba(255, 255, 255, 0.1);  border: 1px solid #FFE4CC;
+  background: #FFFFFF;
+  border: 1px solid var(--border-color);
   border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(255, 107, 107, 0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   padding: 40px 80px;
   flex-shrink: 0;
 }
@@ -339,7 +344,8 @@ watch(userProfile, (newVal) => {
 .loading {
   text-align: center;
   padding: 40px;
-  color: #636E72;
+  color: var(--text-primary);
+  opacity: 0.6;
 }
 
 /* 프로필 헤더 */
@@ -348,7 +354,7 @@ watch(userProfile, (newVal) => {
   align-items: center;
   gap: 30px;
   padding-bottom: 30px;
-  border-bottom: 2px solid #f0f0f0;
+  border-bottom: 1px solid var(--border-color);
   margin-bottom: 30px;
 }
 
@@ -363,8 +369,8 @@ watch(userProfile, (newVal) => {
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid rgba(255, 107, 107, 0.15);
-  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.15);
+  border: 4px solid var(--border-color);
+  box-shadow: 0 4px 12px rgba(89, 53, 39, 0.15);
   display: block;
 }
 
@@ -387,7 +393,7 @@ watch(userProfile, (newVal) => {
 
 .follow-btn {
   padding: 8px 12px;
-  border: 2px solid rgba(255, 255, 255, 0.8);
+  border: 2px solid var(--border-color);
   background: transparent;
   border-radius: 10px;
   cursor: pointer;
@@ -402,8 +408,8 @@ watch(userProfile, (newVal) => {
 }
 
 .follow-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 1);
+  background: var(--bg-base);
+  border-color: var(--color-main);
   transform: translateY(-2px);
 }
 
@@ -411,25 +417,27 @@ watch(userProfile, (newVal) => {
   width: 22px;
   height: 22px;
   object-fit: contain;
-  filter: brightness(0) invert(1);
   transition: all 0.3s ease;
+  filter: brightness(0.2); 
 }
 
 .follow-text {
   font-size: 10px;
-  color: #2D3436;
-  font-weight: 500;
+  color: var(--text-primary);
+  font-weight: 600;
   letter-spacing: 0.3px;
 }
 
 .follow-btn:hover .follow-icon {
   transform: scale(1.1);
+  filter: none;
 }
 
 .profile-info h2 {
   margin: 0;
   font-size: 28px;
-  color: #2D3436;
+  color: var(--text-primary);
+  font-weight: 800;
 }
 
 .role-badge {
@@ -465,16 +473,23 @@ watch(userProfile, (newVal) => {
   color: #FF6B6B;
 }
 
+.stat-number {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-main);
+}
+
 .stat-label {
   font-size: 14px;
-  color: #636E72;
+  color: var(--text-primary);
   font-weight: 500;
+  opacity: 0.7;
 }
 
 .stat-divider {
   width: 1px;
   height: 40px;
-  background-color: #e0e0e0;
+  background-color: var(--border-color);
 }
 
 /* 정보 섹션 */
@@ -564,10 +579,11 @@ watch(userProfile, (newVal) => {
 }
 
 .modal-content {
-  background: rgba(255, 255, 255, 0.1);  border: 1px solid #FFE4CC;
+  background: #FFFFFF;
+  border: 1px solid var(--border-color);
   padding: 30px;
   border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(255, 107, 107, 0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   width: 90%;
   max-width: 500px;
   max-height: 90vh;
@@ -577,7 +593,7 @@ watch(userProfile, (newVal) => {
 .modal-content h3 {
   margin: 0 0 20px 0;
   font-size: 24px;
-  color: #2D3436;
+  color: var(--text-primary);
 }
 
 .form-group {
@@ -587,29 +603,30 @@ watch(userProfile, (newVal) => {
 .form-group label {
   display: block;
   margin-bottom: 8px;
-  color: #2D3436;
-  font-weight: 500;
+  color: var(--text-primary);
+  font-weight: 600;
 }
 
 .form-group input {
   width: 100%;
   padding: 12px;
-  border: 1.5px solid rgba(255, 255, 255, 0.2);
-  background: #FFF5E6;
-  color: #2D3436;
+  border: 1.5px solid var(--border-color);
+  background: var(--bg-base);
+  color: var(--text-primary);
   border-radius: 8px;
   font-size: 14px;
   box-sizing: border-box;
 }
 
 .form-group input::placeholder {
-  color: #95A5A6;
+  color: var(--text-primary);
+  opacity: 0.5;
 }
 
 .form-group input:focus {
   outline: none;
-  border-color: #FF6B6B;
-  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--color-main);
+  background: #FFFFFF;
 }
 
 .error-message {
@@ -637,13 +654,17 @@ watch(userProfile, (newVal) => {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFA94D 100%);
-  color: #2D3436;
+  background: var(--color-main);
+  color: #FFFFFF;
+  font-weight: 600;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(242, 159, 5, 0.3);
 }
 
 .btn-primary:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+  box-shadow: 0 6px 20px rgba(242, 159, 5, 0.4);
+  background: var(--color-sub-2);
 }
 
 .btn-primary:disabled {
@@ -669,7 +690,7 @@ watch(userProfile, (newVal) => {
 
 .error p {
   margin-bottom: 20px;
-  color: #636E72;
+  color: var(--text-primary);
 }
 
 .btn-admin-dashboard {
@@ -681,9 +702,9 @@ watch(userProfile, (newVal) => {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s;
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFA94D 100%);
+  background: var(--color-emphasis);
   color: #FFFFFF;
-  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+  box-shadow: 0 2px 8px rgba(89, 53, 39, 0.3);
 }
 
 .btn-admin-dashboard:hover {
@@ -704,18 +725,18 @@ watch(userProfile, (newVal) => {
   align-items: center;
   margin-bottom: 30px;
   padding-bottom: 15px;
-  border-bottom: 2px solid #e0e0e0;
+  border-bottom: 2px solid var(--border-color);
 }
 
 .reviews-header h3 {
   font-size: 24px;
-  color: #2D3436;
+  color: var(--text-primary);
   margin: 0;
 }
 
 .review-count {
   font-size: 16px;
-  color: #FF6B6B;
+  color: var(--color-main);
   font-weight: bold;
 }
 
@@ -723,17 +744,18 @@ watch(userProfile, (newVal) => {
 .no-reviews {
   text-align: center;
   padding: 80px 20px;
-  background: #FFF5E6;
+  background: var(--bg-active);
   backdrop-filter: blur(10px);
-  border: 1px solid #FFE4CC;
+  border: 1px solid var(--border-color);
   border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
 }
 
 .no-reviews p {
   font-size: 18px;
-  color: #95A5A6;
+  color: var(--text-primary);
   margin-bottom: 20px;
+  opacity: 0.6;
 }
 
 .btn-write-review {
@@ -761,18 +783,19 @@ watch(userProfile, (newVal) => {
 
 /* 리뷰 카드 */
 .review-card {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
+  background: #FFFFFF;
   border-radius: 12px;
   overflow: hidden;
   cursor: pointer;
   transition: all 0.3s;
-  border: 2px solid rgba(139, 69, 19, 0.5);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
 .review-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 12px 30px rgba(89, 53, 39, 0.15);
+  border-color: var(--color-main);
 }
 
 /* 리뷰 이미지 */
@@ -781,7 +804,7 @@ watch(userProfile, (newVal) => {
   width: 100%;
   padding-top: 100%; /* 정사각형 비율 */
   overflow: hidden;
-  background: #f5f5f5;
+  background: var(--bg-base);
 }
 
 .review-image img {

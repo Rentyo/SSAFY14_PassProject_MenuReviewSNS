@@ -338,27 +338,46 @@ onMounted(() => {
 })
 </script>
 
+
 <style scoped>
 .review-detail-container {
+  /* Custom Requested Palette */
+  --color-bg: #F2F2F2;
+  --color-emphasis: #593527;
+  --color-main: #F29F05;
+  --color-sub-1: #F2DCB3;
+  --color-sub-2: #D97904;
+
+  --bg-base: var(--color-bg);
+  --bg-inactive: var(--color-bg);
+  --bg-active: #FFFFFF;
+  --sub-dark: var(--color-emphasis);
+  --sub-light: var(--color-sub-1);
+  --main-color: var(--color-sub-1);
+  --text-primary: var(--color-emphasis);
+  --border-color: var(--color-sub-1);
+
+  /* Mapping for decorative naming consistency */
+  --baltic-amber: var(--color-main);
+  --chocolate-martini: var(--color-emphasis);
+  --chanterelle: var(--color-sub-2);
+  --mocha-mousse: var(--color-emphasis);
+  --cream-tan: var(--color-sub-1);
+  --sirocco: var(--color-sub-1);
+  --safari: var(--color-sub-2);
+  --cannoli-cream: var(--color-bg);
+
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   width: 100%;
-  background: linear-gradient(
-    135deg,
-    #FFF8F0 0%,
-    #FFF8F0 25%,
-    #FFF8F0 50%,
-    #FFF8F0 75%,
-    #FFF8F0 100%
-  );
-  
-  
+  background: var(--bg-base);
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  color: var(--text-primary);
 }
 
 @keyframes gradientShift {
@@ -373,14 +392,12 @@ onMounted(() => {
   min-height: 80px;
   flex-shrink: 0;
   padding: 0 2rem;
-  background: #FFF5E6;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--bg-active);
+  border-bottom: 2px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(31, 18, 7, 0.05);
 }
 
 .hosu-logo {
@@ -397,33 +414,30 @@ onMounted(() => {
 
 .logo-main {
   font-weight: 800;
-  font-size: 1.5rem;
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFA94D 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-size: 1.75rem;
+  color: var(--color-main);
+  background: none;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: unset;
+  letter-spacing: -0.5px;
 }
 
 .logo-sub {
-  font-size: 0.75rem;
-  color: #95A5A6;
+  font-size: 0.7rem;
+  color: var(--color-emphasis);
+  font-weight: 600;
   letter-spacing: 2px;
   text-transform: uppercase;
-}
-
-.loading {
-  text-align: center;
-  padding: 100px 20px;
-  color: #636E72;
 }
 
 .review-detail {
   width: 100%;
   max-width: 675px;
   margin: 0 auto 80px;
-  background: rgba(255, 255, 255, 0.1);  border: 2px solid #FFE4CC;
+  background: #FFFFFF;
+  border: 1px solid var(--color-sub-1);
   border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(255, 107, 107, 0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
 
@@ -462,9 +476,9 @@ onMounted(() => {
 
 .review-title {
   font-size: 32px;
-  font-weight: bold;
+  font-weight: 800;
   margin: 0;
-  color: #2D3436;
+  color: var(--color-emphasis);
   flex: 1;
 }
 
@@ -587,17 +601,17 @@ onMounted(() => {
   gap: 10px;
   padding: 10px 20px;
   background: white;
-  border: 3px solid #000;
+  border: 1.5px solid var(--color-sub-1);
   border-radius: 24px;
   cursor: pointer;
   font-size: 18px;
-  color: #666;
+  color: var(--color-emphasis);
   transition: all 0.3s;
 }
 
 .stat-button:hover {
   background: #f5f5f5;
-  border-color: #ff6b6b;
+  border-color: var(--color-main);
 }
 
 .stat-icon {
@@ -608,15 +622,15 @@ onMounted(() => {
 
 .review-tags {
   font-size: 14px;
-  color: #FF6B6B;
+  color: var(--color-main);
   margin-bottom: 30px;
 }
 
 .restaurant-info {
   margin-bottom: 20px;
   padding: 12px 16px;
-  background: rgba(255, 107, 107, 0.15);
-  border: 1px solid rgba(255, 107, 107, 0.15);
+  background: var(--color-sub-1);
+  border: 1px solid var(--color-sub-1);
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -625,20 +639,20 @@ onMounted(() => {
 
 .restaurant-label {
   font-size: 14px;
-  color: #636E72;
+  color: var(--color-emphasis);
   font-weight: 500;
 }
 
 .restaurant-name {
   font-size: 16px;
-  color: #FF6B6B;
+  color: var(--color-emphasis);
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .restaurant-name:hover {
-  color: #93c5fd;
+  color: var(--color-main);
   text-decoration: underline;
 }
 
@@ -669,7 +683,7 @@ onMounted(() => {
   height: 50px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid rgba(255, 107, 107, 0.15);
+  border: 3px solid var(--color-sub-1);
 }
 
 .author-details {
@@ -680,7 +694,7 @@ onMounted(() => {
 
 .author-name {
   font-weight: 600;
-  color: #2D3436;
+  color: var(--color-emphasis);
   font-size: 16px;
 }
 
@@ -693,7 +707,7 @@ onMounted(() => {
 .review-text {
   font-size: 16px;
   line-height: 1.8;
-  color: #2D3436;
+  color: var(--color-emphasis);
   margin-bottom: 40px;
   white-space: pre-wrap;
 }
@@ -713,7 +727,7 @@ onMounted(() => {
   top: 50%;
   transform: translateY(-50%);
   background: rgba(0, 0, 0, 0.4);
-  color: #2D3436;
+  color: #FFFFFF;
   border: none;
   width: 40px;
   height: 40px;
@@ -776,7 +790,7 @@ onMounted(() => {
   font-size: 20px;
   font-weight: 700;
   margin-bottom: 20px;
-  color: #2D3436;
+  color: var(--color-emphasis);
 }
 
 .menu-list-items {
@@ -789,22 +803,22 @@ onMounted(() => {
   display: flex;
   gap: 20px;
   padding: 16px;
-  border: 1px solid #FFE4CC;
+  border: 1px solid var(--color-sub-1);
   border-radius: 12px;
-  background: #FFF5E6;
+  background: #FFFFFF;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .menu-review-item:hover {
-  border-color: rgba(255, 255, 255, 0.3);
-  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--color-main);
+  background: var(--bg-base);
 }
 
 .menu-review-item.active {
-  border-color: #FF6B6B;
-  background: rgba(255, 107, 107, 0.15);
-  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.15);
+  border-color: var(--color-main);
+  background: var(--color-sub-1);
+  box-shadow: 0 4px 15px rgba(242, 159, 5, 0.1);
 }
 
 
@@ -825,7 +839,7 @@ onMounted(() => {
 .menu-name {
   font-weight: 700;
   font-size: 16px;
-  color: #2D3436;
+  color: var(--color-emphasis);
 }
 
 .menu-rating {
@@ -851,12 +865,12 @@ onMounted(() => {
 .one-line-review {
   margin: 0;
   font-size: 14px;
-  color: #636E72;
+  color: var(--color-emphasis);
   line-height: 1.5;
   background: #FFF5E6;
   padding: 10px;
   border-radius: 8px;
-  border: 1px solid #FFE4CC;
+  border: 1.5px solid var(--color-sub-1);
 }
 
 /* 에러 */
@@ -872,8 +886,8 @@ onMounted(() => {
 
 .btn-primary {
   padding: 12px 30px;
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFA94D 100%);
-  color: #2D3436;
+  background: var(--color-main);
+  color: #FFFFFF;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -883,7 +897,8 @@ onMounted(() => {
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+  box-shadow: 0 6px 20px rgba(217, 121, 4, 0.4);
+  background: var(--color-sub-2);
 }
 
 /* 반응형 */

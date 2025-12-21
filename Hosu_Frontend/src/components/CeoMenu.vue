@@ -210,14 +210,15 @@ onMounted(() => {
 
 .menu-header h3 {
   font-size: 24px;
-  color: #2D3436;
+  color: var(--color-emphasis);
   margin: 0;
+  font-weight: 800;
 }
 
 .btn-add-menu {
   padding: 8px;
-  background: #FFF5E6;
-  border: 1px solid #FFE4CC;
+  background: var(--color-sub-1);
+  border: 1px solid var(--color-sub-1);
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s;
@@ -230,12 +231,14 @@ onMounted(() => {
   width: 24px;
   height: 24px;
   object-fit: contain;
-  filter: brightness(0.2);
+  filter: brightness(0) saturate(100%) invert(20%) sepia(12%) peachpuff(13%) hue-rotate(334deg) brightness(95%) contrast(92%); /* Approximating brown */
+  filter: brightness(0.5);
 }
 
 .btn-add-menu:hover {
   background: #FFFFFF;
-  border-color: #FF6B6B;
+  border-color: var(--color-main);
+  transform: translateY(-2px);
 }
 
 .loading {
@@ -267,19 +270,20 @@ onMounted(() => {
 
 .btn-create-menu {
   padding: 12px 30px;
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFA94D 100%);
+  background: var(--color-main);
   color: white;
   border: none;
   border-radius: 6px;
   font-size: 16px;
   cursor: pointer;
   transition: all 0.3s;
-  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+  box-shadow: 0 4px 12px rgba(242, 159, 5, 0.2);
 }
 
 .btn-create-menu:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+  background: var(--color-sub-2);
+  box-shadow: 0 6px 16px rgba(217, 121, 4, 0.3);
 }
 
 .menu-list {
@@ -295,7 +299,8 @@ onMounted(() => {
   background: white;
   border-radius: 12px;
   padding: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(89, 53, 39, 0.05);
+  border: 1px solid var(--color-sub-1);
   transition: all 0.3s;
 }
 
@@ -305,7 +310,7 @@ onMounted(() => {
 
 .menu-item:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 20px rgba(89, 53, 39, 0.12);
 }
 
 .menu-info {
@@ -321,8 +326,8 @@ onMounted(() => {
 
 .menu-name {
   font-size: 20px;
-  font-weight: 600;
-  color: #333;
+  font-weight: 700;
+  color: var(--color-emphasis);
   margin: 0;
 }
 
@@ -340,14 +345,14 @@ onMounted(() => {
 }
 
 .status-badge.inactive {
-  background: #ffebee;
-  color: #c62828;
+  background: var(--color-sub-1);
+  color: var(--color-emphasis);
 }
 
 .menu-price {
   font-size: 18px;
   font-weight: bold;
-  color: #667eea;
+  color: var(--color-sub-2);
   margin: 0 0 12px 0;
 }
 
@@ -360,18 +365,20 @@ onMounted(() => {
 .tag-bubble {
   display: inline-block;
   padding: 6px 14px;
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFA94D 100%);
-  color: white;
+  background: var(--color-sub-1);
+  color: var(--color-emphasis);
+  border: 1px solid var(--color-sub-1);
   border-radius: 20px;
   font-size: 13px;
-  font-weight: 500;
-  box-shadow: 0 2px 6px rgba(255, 107, 107, 0.3);
+  font-weight: 600;
   transition: all 0.2s;
 }
 
 .tag-bubble:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(255, 107, 107, 0.4);
+  background: white;
+  border-color: var(--color-main);
+  box-shadow: 0 4px 10px rgba(242, 159, 5, 0.2);
 }
 
 .menu-actions {
@@ -400,23 +407,23 @@ onMounted(() => {
 }
 
 .btn-edit {
-  background: #FFF5E6;
-  border: 1px solid #FFE4CC;
+  background: var(--color-sub-1);
+  border: 1px solid var(--color-sub-1);
 }
 
 .btn-edit:hover {
   background: #FFFFFF;
-  border-color: #FF6B6B;
+  border-color: var(--color-main);
 }
 
 .btn-delete {
-  background: #FFF5E6;
-  border: 1px solid #FFE4CC;
+  background: var(--color-sub-1);
+  border: 1px solid var(--color-sub-1);
 }
 
 .btn-delete:hover {
   background: #FFFFFF;
-  border-color: #FF6B6B;
+  border-color: var(--color-emphasis);
 }
 
 /* 반응형 */
@@ -458,14 +465,14 @@ onMounted(() => {
 }
 
 .filter-btn:hover {
-  border-color: #FF6B6B;
-  color: #FF6B6B;
+  border-color: var(--color-main);
+  color: var(--color-main);
 }
 
 .filter-btn.active {
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFA94D 100%);
+  background: var(--color-main);
   color: white;
   border-color: transparent;
-  box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3);
+  box-shadow: 0 4px 12px rgba(242, 159, 5, 0.2);
 }
 </style>

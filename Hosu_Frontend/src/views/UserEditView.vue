@@ -362,22 +362,20 @@ onMounted(() => {
 
 <style scoped>
 .edit-page {
+  /* Custom Requested Palette */
+  --color-bg: #F2F2F2;
+  --color-emphasis: #593527;
+  --color-main: #F29F05;
+  --color-sub-1: #F2DCB3;
+  --color-sub-2: #D97904;
+
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   width: 100%;
-  background: linear-gradient(
-    135deg,
-    #FFF8F0 0%,
-    #FFF8F0 25%,
-    #FFF8F0 50%,
-    #FFF8F0 75%,
-    #FFF8F0 100%
-  );
-  
-  
+  background: var(--color-bg);
   display: flex;
   flex-direction: column;
   overflow-y: auto;
@@ -395,11 +393,11 @@ onMounted(() => {
   flex-shrink: 0;
   padding: 0 2rem;
   background: #FFFFFF;
-  border-bottom: 1px solid #FFE4CC;
+  border-bottom: 2px solid var(--color-sub-1);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 12px rgba(255, 107, 107, 0.08);
+  box-shadow: 0 4px 15px rgba(89, 53, 39, 0.08);
 }
 
 .hosu-logo {
@@ -417,17 +415,14 @@ onMounted(() => {
 .logo-main {
   font-weight: 800;
   font-size: 1.75rem;
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFA94D 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--color-main);
   letter-spacing: -0.5px;
 }
 
 .logo-sub {
   font-size: 0.7rem;
-  color: #95A5A6;
-  font-weight: 500;
+  color: var(--color-emphasis);
+  font-weight: 600;
   letter-spacing: 2px;
   text-transform: uppercase;
 }
@@ -441,20 +436,22 @@ onMounted(() => {
 }
 
 .edit-box {
-  background: rgba(255, 255, 255, 0.1);  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #FFFFFF;
   padding: 40px;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(255, 107, 107, 0.15);
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(89, 53, 39, 0.08);
   width: 100%;
   max-width: 600px;
+  border: 1px solid var(--color-sub-1);
 }
 
 h2 {
   text-align: center;
   margin-bottom: 30px;
-  color: #2D3436;
+  color: var(--color-emphasis);
   font-size: 1.75rem;
-  font-weight: 700;
+  font-weight: 800;
+  letter-spacing: -0.5px;
 }
 
 .loading {
@@ -469,41 +466,41 @@ h2 {
 
 label {
   display: block;
-  margin-bottom: 8px;
-  color: #2D3436;
-  font-weight: 600;
+  margin-bottom: 10px;
+  color: var(--color-emphasis);
+  font-weight: 700;
   font-size: 14px;
 }
 
 input {
   width: 100%;
-  padding: 12px 14px;
-  border: 1.5px solid rgba(255, 255, 255, 0.2);
-  background: #FFF5E6;
-  color: #2D3436;
-  border-radius: 8px;
-  font-size: 14px;
+  padding: 14px 18px;
+  border: 2px solid transparent;
+  background: #F8F9FA;
+  color: var(--color-emphasis);
+  border-radius: 12px;
+  font-size: 15px;
   box-sizing: border-box;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 input::placeholder {
-  color: #95A5A6;
+  color: #ADB5BD;
 }
 
 input:focus {
   outline: none;
-  border-color: #FF6B6B;
-  background: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.15);
+  background: white;
+  border-color: var(--color-main);
+  box-shadow: 0 0 0 4px rgba(242, 159, 5, 0.1);
 }
 
 input:disabled {
-  background-color: #FFF5E6;
-  color: #636E72;
+  background-color: #F1F3F5;
+  color: #95A5A6;
   cursor: not-allowed;
   opacity: 0.7;
-  border-color: #FFE4CC;
+  border: none;
 }
 
 .input-hint {
@@ -542,30 +539,34 @@ input:disabled {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFA94D 100%);
-  color: #2D3436;
+  background: var(--color-main);
+  color: #FFFFFF;
+  font-weight: 800;
+  box-shadow: 0 4px 15px rgba(242, 159, 5, 0.3);
 }
 
 .btn-primary:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+  background: var(--color-sub-2);
+  box-shadow: 0 6px 20px rgba(217, 121, 4, 0.4);
 }
 
 .btn-primary:disabled {
-  background: rgba(255, 255, 255, 0.1);
-  color: #95A5A6;
+  background: #ccc;
+  color: #ffffff;
   cursor: not-allowed;
   transform: none;
+  box-shadow: none;
 }
 
 .btn-secondary {
-  background-color: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #2D3436;
+  background-color: var(--color-sub-1);
+  color: var(--color-emphasis);
+  font-weight: 700;
 }
 
 .btn-secondary:hover {
-  background-color: rgba(255, 255, 255, 0.15);
+  background-color: #E8CC9F;
   transform: translateY(-1px);
 }
 
@@ -581,8 +582,8 @@ input:disabled {
   height: 150px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid rgba(255, 107, 107, 0.15);
-  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.15);
+  border: 4px solid var(--color-sub-1);
+  box-shadow: 0 4px 15px rgba(89, 53, 39, 0.15);
 }
 
 .file-input-group {
@@ -597,16 +598,16 @@ input:disabled {
 
 .file-label {
   flex: 1;
-  padding: 12px 14px;
-  background: #FFF5E6;
-  border: 1.5px solid rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
+  padding: 14px 18px;
+  background: #F8F9FA;
+  border: 1.5px solid var(--color-sub-1);
+  border-radius: 12px;
   font-size: 14px;
   cursor: pointer;
   transition: all 0.2s ease;
   text-align: center;
-  color: #2D3436;
-  font-weight: 500;
+  color: var(--color-emphasis);
+  font-weight: 700;
 }
 
 .file-label:hover {
@@ -616,12 +617,12 @@ input:disabled {
 
 .btn-upload {
   padding: 12px 20px;
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  color: #2D3436;
+  background: var(--color-main);
+  color: #FFFFFF;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.3s;
   white-space: nowrap;
@@ -629,7 +630,8 @@ input:disabled {
 
 .btn-upload:hover:not(:disabled) {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+  background: var(--color-sub-2);
+  box-shadow: 0 4px 12px rgba(217, 121, 4, 0.3);
 }
 
 .btn-upload:disabled {
@@ -643,7 +645,7 @@ input:disabled {
 .delete-section {
   margin-top: 30px;
   padding-top: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--color-sub-1);
   text-align: center;
 }
 

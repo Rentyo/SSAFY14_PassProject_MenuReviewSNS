@@ -334,14 +334,27 @@ onMounted(() => {
 
 <style scoped>
 .comments-section {
+  /* Custom Requested Palette */
+  --color-bg: #F2F2F2;
+  --color-emphasis: #593527;
+  --color-main: #F29F05;
+  --color-sub-1: #F2DCB3;
+  --color-sub-2: #D97904;
+
+  --bg-base: var(--color-bg);
+  --bg-active: #FFFFFF;
+  --text-primary: var(--color-emphasis);
+  --border-color: var(--color-sub-1);
+
   padding: 40px;
-  border-top: 1px solid #FFE4CC;
+  border-top: 1px solid var(--border-color);
+  color: var(--text-primary);
 }
 
 .comments-section h3 {
   font-size: 20px;
   margin-bottom: 20px;
-  color: #2D3436;
+  color: var(--text-primary);
   font-weight: 700;
 }
 
@@ -353,11 +366,11 @@ onMounted(() => {
 .comment-form textarea {
   width: 100%;
   padding: 15px;
-  border: 1.5px solid #FFE4CC;
-  background: #FFF5E6;
+  border: 1.5px solid var(--border-color);
+  background: var(--bg-active);
   border-radius: 12px;
   font-size: 14px;
-  color: #2D3436;
+  color: var(--text-primary);
   resize: vertical;
   margin-bottom: 10px;
   font-family: inherit;
@@ -366,18 +379,19 @@ onMounted(() => {
 
 .comment-form textarea:focus {
   outline: none;
-  border-color: #FF6B6B;
+  border-color: var(--color-main);
   background: #FFFFFF;
-  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+  box-shadow: 0 0 0 3px rgba(242, 159, 5, 0.1);
 }
 
 .comment-form textarea::placeholder {
-  color: #95A5A6;
+  color: var(--text-primary);
+  opacity: 0.5;
 }
 
 .btn-submit {
   padding: 12px 24px;
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFA94D 100%);
+  background: var(--color-main);
   color: #FFFFFF;
   border: none;
   border-radius: 8px;
@@ -385,17 +399,19 @@ onMounted(() => {
   font-size: 14px;
   font-weight: 600;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+  box-shadow: 0 4px 15px rgba(242, 159, 5, 0.3);
 }
 
 .btn-submit:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+  box-shadow: 0 6px 20px rgba(242, 159, 5, 0.4);
+  background: var(--color-sub-2);
 }
 
 .btn-submit:disabled {
-  background: #E0E0E0;
-  color: #95A5A6;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  opacity: 0.5;
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
@@ -409,20 +425,22 @@ onMounted(() => {
 .loading {
   text-align: center;
   padding: 40px;
-  color: #95A5A6;
+  color: var(--text-primary);
+  opacity: 0.6;
 }
 
 .no-comments {
   text-align: center;
   padding: 40px;
-  color: #95A5A6;
+  color: var(--text-primary);
+  opacity: 0.6;
 }
 
 /* 댓글 아이템 */
 .comment-item {
   padding: 20px;
-  border: 1px solid #FFE4CC;
-  background: #FFF5E6;
+  border: 1px solid var(--border-color);
+  background: #FFFFFF;
   border-radius: 12px;
   margin-bottom: 15px;
   transition: all 0.3s ease;
@@ -430,13 +448,13 @@ onMounted(() => {
 
 .comment-item:hover {
   background: #FFFFFF;
-  border-color: #FF6B6B;
-  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.15);
+  border-color: var(--color-main);
+  box-shadow: 0 2px 8px rgba(242, 159, 5, 0.15);
 }
 
 .comment-item.reply {
   margin-left: 40px;
-  background: #FFFBF5;
+  background: var(--bg-base);
 }
 
 .comment-header {
@@ -451,7 +469,7 @@ onMounted(() => {
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid rgba(255, 107, 107, 0.3);
+  border: 2px solid var(--border-color);
 }
 
 .comment-info {
@@ -495,13 +513,14 @@ onMounted(() => {
 
 .comment-author {
   font-weight: 600;
-  color: #2D3436;
+  color: var(--text-primary);
   font-size: 14px;
 }
 
 .comment-date {
   font-size: 12px;
-  color: #95A5A6;
+  color: var(--text-primary);
+  opacity: 0.6;
 }
 
 /* 수정 폼 */
@@ -512,9 +531,9 @@ onMounted(() => {
 .edit-form textarea {
   width: 100%;
   padding: 12px;
-  border: 1.5px solid #FFE4CC;
-  background: #FFF5E6;
-  color: #2D3436;
+  border: 1.5px solid var(--border-color);
+  background: var(--bg-active);
+  color: var(--text-primary);
   border-radius: 8px;
   font-size: 14px;
   margin-bottom: 10px;
@@ -524,13 +543,14 @@ onMounted(() => {
 
 .edit-form textarea:focus {
   outline: none;
-  border-color: #FF6B6B;
+  border-color: var(--color-main);
   background: #FFFFFF;
-  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+  box-shadow: 0 0 0 3px rgba(242, 159, 5, 0.1);
 }
 
 .edit-form textarea::placeholder {
-  color: #95A5A6;
+  color: var(--text-primary);
+  opacity: 0.5;
 }
 
 .edit-buttons {
@@ -540,28 +560,28 @@ onMounted(() => {
 
 .comment-content {
   margin: 10px 0;
-  color: #636E72;
+  color: var(--text-primary);
   line-height: 1.6;
   white-space: pre-wrap;
 }
 
 .btn-reply {
   padding: 6px 14px;
-  background: #FFF5E6;
-  border: 1px solid #FFE4CC;
+  background: transparent;
+  border: 1px solid var(--border-color);
   border-radius: 6px;
   cursor: pointer;
   font-size: 12px;
-  color: #636E72;
+  color: var(--text-primary);
   margin-top: 5px;
   transition: all 0.2s ease;
-  font-weight: 500;
+  font-weight: 590;
 }
 
 .btn-reply:hover {
-  background: #FFFFFF;
-  border-color: #FF6B6B;
-  color: #FF6B6B;
+  background: var(--bg-active);
+  border-color: var(--color-main);
+  color: var(--color-main);
 }
 
 /* 대댓글 */
@@ -573,17 +593,17 @@ onMounted(() => {
 .reply-form {
   margin-top: 15px;
   padding: 15px;
-  background: #FFFBF5;
-  border: 1px solid #FFE4CC;
+  background: var(--bg-base);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
 }
 
 .reply-form textarea {
   width: 100%;
   padding: 12px;
-  border: 1.5px solid #FFE4CC;
-  background: #FFF5E6;
-  color: #2D3436;
+  border: 1.5px solid var(--border-color);
+  background: var(--bg-active);
+  color: var(--text-primary);
   border-radius: 8px;
   font-size: 14px;
   margin-bottom: 10px;
@@ -593,13 +613,14 @@ onMounted(() => {
 
 .reply-form textarea:focus {
   outline: none;
-  border-color: #FF6B6B;
+  border-color: var(--color-main);
   background: #FFFFFF;
-  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+  box-shadow: 0 0 0 3px rgba(242, 159, 5, 0.1);
 }
 
 .reply-form textarea::placeholder {
-  color: #95A5A6;
+  color: var(--text-primary);
+  opacity: 0.5;
 }
 
 .reply-buttons {
@@ -609,9 +630,9 @@ onMounted(() => {
 
 .btn-cancel {
   padding: 12px 24px;
-  background: #FFF5E6;
-  color: #636E72;
-  border: 1.5px solid #FFE4CC;
+  background: var(--bg-active);
+  color: var(--text-primary);
+  border: 1.5px solid var(--border-color);
   border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
@@ -621,7 +642,7 @@ onMounted(() => {
 
 .btn-cancel:hover {
   background: #FFFFFF;
-  border-color: #FF6B6B;
+  border-color: var(--color-main);
   transform: translateY(-2px);
 }
 

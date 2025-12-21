@@ -253,30 +253,35 @@ watch(userProfile, (newVal) => {
 }
 
 .mypage-container {
+  /* Custom Requested Palette */
+  --color-bg: #F2F2F2;
+  --color-emphasis: #593527;
+  --color-main: #F29F05;
+  --color-sub-1: #F2DCB3;
+  --color-sub-2: #D97904;
+
+  --bg-base: var(--color-bg);
+  --bg-active: #FFFFFF;
+  --text-primary: var(--color-emphasis);
+  --border-color: var(--color-sub-1);
+
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   width: 100%;
-  background: linear-gradient(
-    135deg,
-    #FFF8F0 0%,
-    #FFF8F0 25%,
-    #FFF8F0 50%,
-    #FFF8F0 75%,
-    #FFF8F0 100%
-  );
-  
-  
+  background: var(--bg-base);
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  color: var(--text-primary);
 }
 
 @keyframes gradientShift {
-  0%, 100% { background-position: 0% 50%; }
+  0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 /* Header */
@@ -287,13 +292,12 @@ watch(userProfile, (newVal) => {
   min-height: 80px;
   flex-shrink: 0;
   padding: 0 2rem;
-  background: #FFF5E6;
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--bg-active);
+  border-bottom: 2px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(31, 18, 7, 0.05);
 }
 
 .hosu-logo {
@@ -311,17 +315,17 @@ watch(userProfile, (newVal) => {
 .logo-main {
   font-weight: 800;
   font-size: 1.75rem;
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFA94D 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--color-main);
+  background: none;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: unset;
   letter-spacing: -0.5px;
 }
 
 .logo-sub {
   font-size: 0.7rem;
-  color: #95A5A6;
-  font-weight: 500;
+  color: var(--text-primary);
+  font-weight: 600;
   letter-spacing: 2px;
   text-transform: uppercase;
 }
@@ -331,17 +335,18 @@ watch(userProfile, (newVal) => {
   max-width: 1200px;
   margin: 40px auto 0;
   padding: 40px;
-  background: #FFFFFF;  border-radius: 24px;
-  border: 1px solid #FFE4CC;
-  box-shadow: 0 4px 20px rgba(255, 107, 107, 0.15),
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+  background: #FFFFFF;
+  border-radius: 24px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
 .loading {
   text-align: center;
   padding: 60px 20px;
-  color: #636E72;
+  color: var(--text-primary);
   font-size: 1.1rem;
+  opacity: 0.6;
 }
 
 .profile-section {
@@ -353,7 +358,7 @@ watch(userProfile, (newVal) => {
   gap: 30px;
   align-items: center;
   padding-bottom: 30px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .profile-image {
@@ -367,8 +372,8 @@ watch(userProfile, (newVal) => {
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid rgba(255, 107, 107, 0.15);
-  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.15);
+  border: 4px solid var(--border-color);
+  box-shadow: 0 4px 12px rgba(89, 53, 39, 0.15);
   display: block;
 }
 
@@ -391,7 +396,7 @@ watch(userProfile, (newVal) => {
 
 .follow-btn {
   padding: 8px 12px;
-  border: 2px solid rgba(255, 255, 255, 0.8);
+  border: 2px solid var(--border-color);
   background: transparent;
   border-radius: 10px;
   cursor: pointer;
@@ -406,8 +411,8 @@ watch(userProfile, (newVal) => {
 }
 
 .follow-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 1);
+  background: var(--bg-base);
+  border-color: var(--color-main);
   transform: translateY(-2px);
 }
 
@@ -415,24 +420,26 @@ watch(userProfile, (newVal) => {
   width: 22px;
   height: 22px;
   object-fit: contain;
-  filter: brightness(0) invert(1);
   transition: all 0.3s ease;
+  /* 아이콘 색상을 테마에 맞게 조정 (SVG가 아니므로 filter 사용 고려) */
+  filter: brightness(0.2); 
 }
 
 .follow-text {
   font-size: 10px;
-  color: #2D3436;
-  font-weight: 500;
+  color: var(--text-primary);
+  font-weight: 600;
   letter-spacing: 0.3px;
 }
 
 .follow-btn:hover .follow-icon {
   transform: scale(1.1);
+  filter: none; /* hover 시 원래 색상 혹은 강조 색상 */
 }
 
 .btn-restaurant {
   padding: 8px 12px;
-  border: 2px solid rgba(255, 255, 255, 0.8);
+  border: 2px solid var(--border-color);
   background: transparent;
   border-radius: 10px;
   cursor: pointer;
@@ -447,8 +454,8 @@ watch(userProfile, (newVal) => {
 }
 
 .btn-restaurant:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 1);
+  background: var(--bg-base);
+  border-color: var(--color-main);
   transform: translateY(-2px);
 }
 
@@ -456,26 +463,27 @@ watch(userProfile, (newVal) => {
   width: 22px;
   height: 22px;
   object-fit: contain;
-  filter: brightness(0) invert(1);
+  filter: brightness(0.2);
   transition: all 0.3s ease;
 }
 
 .restaurant-text {
   font-size: 10px;
-  color: #2D3436;
-  font-weight: 500;
+  color: var(--text-primary);
+  font-weight: 600;
   letter-spacing: 0.3px;
 }
 
 .btn-restaurant:hover .restaurant-icon {
   transform: scale(1.1);
+  filter: none;
 }
 
 .profile-info h2 {
   margin: 0;
   font-size: 28px;
-  color: #2D3436;
-  font-weight: 700;
+  color: var(--text-primary);
+  font-weight: 800;
 }
 
 .stats-section {
@@ -494,26 +502,27 @@ watch(userProfile, (newVal) => {
 .stat-number {
   font-size: 24px;
   font-weight: 700;
-  color: #FF6B6B;
+  color: var(--color-main);
 }
 
 .stat-label {
   font-size: 14px;
-  color: #95A5A6;
+  color: var(--text-primary);
   font-weight: 500;
+  opacity: 0.7;
 }
 
 .stat-divider {
   width: 1px;
   height: 30px;
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--border-color);
 }
 
 /* 리뷰 섹션 */
 .reviews-container {
   width: 90%;
   max-width: 1200px;
-  margin: 0 auto 40px;
+  margin: 30px auto 40px;
   padding: 0 20px;
 }
 
@@ -523,32 +532,35 @@ watch(userProfile, (newVal) => {
   align-items: center;
   margin-bottom: 30px;
   padding: 24px;
-  background: #FFFFFF;  border-radius: 12px;
-  border: 1px solid #FFE4CC;
-  box-shadow: 0 4px 20px rgba(255, 107, 107, 0.15);
+  background: #FFFFFF;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* Soft shadow */
 }
 
 .reviews-header h3 {
   font-size: 24px;
   font-weight: 700;
-  color: #2D3436;
+  color: var(--text-primary);
   margin: 0;
 }
 
 .review-count {
   font-size: 18px;
-  color: #636E72;
+  color: var(--text-primary);
   font-weight: 600;
+  opacity: 0.7;
 }
 
 .no-reviews {
   text-align: center;
   padding: 60px 20px;
-  color: #95A5A6;
+  color: var(--text-primary);
   font-size: 1.1rem;
-  background: #FFF5E6;
+  background: var(--bg-base);
   border-radius: 12px;
-  border: 1px solid #FFE4CC;
+  border: 1px solid var(--border-color);
+  opacity: 0.8;
 }
 
 .reviews-grid {
@@ -558,19 +570,20 @@ watch(userProfile, (newVal) => {
 }
 
 .review-card {
-  background: #FFFFFF;  border-radius: 12px;
+  background: #FFFFFF;
+  border-radius: 12px;
   overflow: hidden;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 20px rgba(255, 107, 107, 0.15);
-  border: 1px solid #FFE4CC;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border-color);
 }
 
 .review-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
-  border-color: #FF6B6B;
-  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 12px 30px rgba(89, 53, 39, 0.15);
+  border-color: var(--color-main);
+  background: #FFFFFF;
 }
 
 .review-image {
@@ -578,7 +591,7 @@ watch(userProfile, (newVal) => {
   width: 100%;
   padding-top: 100%;
   overflow: hidden;
-  background: #FFF5E6;
+  background: var(--bg-base);
 }
 
 .review-image img {
@@ -599,9 +612,8 @@ watch(userProfile, (newVal) => {
   text-align: center;
   padding: 60px 20px;
   background: #FFFFFF;
-  
   border-radius: 12px;
-  border: 1px solid #FFE4CC;
+  border: 1px solid var(--border-color);
 }
 
 .error p {
@@ -612,20 +624,21 @@ watch(userProfile, (newVal) => {
 
 .btn-primary {
   padding: 12px 24px;
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFA94D 100%);
-  color: #2D3436;
+  background: var(--color-main);
+  color: #FFFFFF;
   border: none;
   border-radius: 12px;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+  box-shadow: 0 4px 15px rgba(242, 159, 5, 0.3);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+  box-shadow: 0 6px 20px rgba(217, 121, 4, 0.4);
+  background: var(--color-sub-2);
 }
 
 /* 반응형 */

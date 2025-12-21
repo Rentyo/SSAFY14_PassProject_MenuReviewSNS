@@ -15,10 +15,22 @@
           </div>
           <div class="menu-meta">
             <span class="menu-price">{{ formatPrice(menu.price) }}원</span>
-            <span class="menu-rating">
-              <span class="rating-icon">★</span>
-              {{ calculateRating(menu.totalRating, menu.reviewCount) }}
-            </span>
+            <div class="menu-rating">
+              <div class="stars-container">
+                <div class="stars-bg">
+                  <span v-for="i in 5" :key="'bg-'+i">☆</span>
+                </div>
+                <div class="stars-fill" :style="{ width: (calculateRating(menu.totalRating, menu.reviewCount) / 5 * 100) + '%' }">
+                  <span v-for="i in 5" :key="'fill-'+i">★</span>
+                </div>
+              </div>
+              <span class="rating-value">
+                <template v-if="calculateRating(menu.totalRating, menu.reviewCount) > 0">
+                  {{ calculateRating(menu.totalRating, menu.reviewCount).toFixed(1) }}
+                </template>
+                <span v-else class="no-review-text">리뷰 없음</span>
+              </span>
+            </div>
           </div>
         </li>
       </ul>
@@ -61,8 +73,8 @@ const formatPrice = (price) => {
 }
 
 const calculateRating = (total, count) => {
-  if (!count || count === 0) return '0.0'
-  return (total / count).toFixed(1)
+  if (!count || count === 0) return 0
+  return total / count
 }
 
 onMounted(() => {
@@ -90,18 +102,18 @@ watch(() => props.restaurantId, () => {
 }
 
 .menu-container::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(89, 53, 39, 0.05);
   border-radius: 4px;
 }
 
 .menu-container::-webkit-scrollbar-thumb {
-  background: #FFE4CC;
+  background: #F2DCB3;
   border-radius: 4px;
   transition: background 0.3s ease;
 }
 
 .menu-container::-webkit-scrollbar-thumb:hover {
-  background: #FF6B6B;
+  background: #F29F05;
 }
 
 .menu-section {
@@ -110,15 +122,16 @@ watch(() => props.restaurantId, () => {
 
 .menu-section h3 {
   font-size: 22px;
-  font-weight: 700;
+  font-weight: 800;
   margin-bottom: 24px;
-  color: #2D3436;
+  color: #593527;
   padding-bottom: 12px;
-  border-bottom: 2px solid #FFE4CC;
+  border-bottom: 2px solid #F2DCB3;
 }
 
 .loading-text, .empty-text {
-  color: #95A5A6;
+  color: #593527;
+  opacity: 0.5;
   font-size: 15px;
   padding: 60px 0;
   text-align: center;
@@ -133,23 +146,25 @@ watch(() => props.restaurantId, () => {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 18px 16px;
-  border-bottom: 1px solid #FFE4CC;
+  padding: 24px 60px 24px 30px;
+  border-bottom: 1.5px solid #F2DCB3;
   transition: all 0.3s ease;
-  border-radius: 12px;
-  margin-bottom: 8px;
-  background: #FFF5E6;
+  background: #FFFFFF;
+  margin-bottom: 0;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  border-radius: 0;
 }
 
 .menu-list li:hover {
-  background: #FFFFFF;
-  border-color: #FF6B6B;
-  transform: translateX(4px);
-  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.15);
+  background: rgba(242, 159, 5, 0.02);
+  border-color: #F29F05;
+  padding-left: 40px;
 }
 
 .menu-list li:last-child {
-  border-bottom: none;
+  margin-bottom: 0;
 }
 
 .menu-info {
@@ -163,12 +178,13 @@ watch(() => props.restaurantId, () => {
 .menu-name {
   font-weight: 700;
   font-size: 18px;
-  color: #2D3436;
+  color: #593527;
 }
 
 .menu-desc {
   font-size: 14px;
-  color: #636E72;
+  color: #593527;
+  opacity: 0.7;
   line-height: 1.5;
 }
 
@@ -180,43 +196,76 @@ watch(() => props.restaurantId, () => {
 }
 
 .tag-badge {
-  font-size: 12px;
-  color: #FF6B6B;
-  background: rgba(255, 107, 107, 0.1);
-  border: 1px solid #FFE4CC;
+  font-size: 11px;
+  color: #593527;
+  background: #F2DCB3;
+  border: 1px solid #F2DCB3;
   padding: 4px 10px;
   border-radius: 6px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .menu-meta {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 6px;
-  min-width: 80px;
+  gap: 8px;
+  min-width: 140px;
+  border-left: 1px solid #F2DCB3;
+  padding-left: 30px;
 }
 
 .menu-price {
-  font-weight: 700;
-  color: #FF6B6B;
+  font-weight: 800;
+  color: #D97904;
   font-size: 17px;
 }
 
 .menu-rating {
-  font-size: 13px;
-  color: #FFA94D;
-  font-weight: 600;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-end;
   gap: 4px;
-  background: rgba(255, 169, 77, 0.1);
-  border: 1px solid #FFE4CC;
-  padding: 4px 8px;
-  border-radius: 12px;
+  background: transparent;
+  padding: 0;
+  margin-top: 4px;
 }
 
-.rating-icon {
-  font-size: 12px;
+.stars-container {
+  position: relative;
+  display: inline-block;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.stars-bg {
+  display: flex;
+  color: #FFFFFF;
+  letter-spacing: -2px;
+  -webkit-text-stroke: 0.5px #95A5A6;
+}
+
+.stars-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  color: var(--color-main);
+  overflow: hidden;
+  white-space: nowrap;
+  letter-spacing: -2px;
+}
+
+.rating-value {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--color-emphasis);
+  line-height: 1.2;
+}
+
+.no-review-text {
+  font-size: 14px;
+  color: #95A5A6;
+  font-weight: 500;
 }
 </style>

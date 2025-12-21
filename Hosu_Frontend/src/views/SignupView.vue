@@ -312,6 +312,13 @@ const handleSignup = async () => {
 }
 
 .signup-page {
+  /* Custom Requested Palette */
+  --color-bg: #F2F2F2;
+  --color-emphasis: #593527;
+  --color-main: #F29F05;
+  --color-sub-1: #F2DCB3;
+  --color-sub-2: #D97904;
+
   position: fixed;
   top: 0;
   left: 0;
@@ -321,33 +328,10 @@ const handleSignup = async () => {
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  background: #0f172a;
+  background: var(--color-bg);
 }
 
-/* Animated Gradient Background */
-.background-gradient {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 0;
-  background: linear-gradient(
-    135deg,
-    #FFF8F0 0%,
-    #FFF8F0 25%,
-    #FFF8F0 50%,
-    #FFF8F0 75%,
-    #FFF8F0 100%
-  );
-  
-  
-}
-
-@keyframes gradientShift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
+/* Removed animated gradient background */
 
 /* Header */
 .hosu-header {
@@ -357,13 +341,12 @@ const handleSignup = async () => {
   min-height: 80px;
   flex-shrink: 0;
   padding: 0 2rem;
-  background: #FFF5E6;
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: #FFFFFF;
+  border-bottom: 2px solid var(--color-sub-1);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(89, 53, 39, 0.08);
 }
 
 .hosu-logo {
@@ -381,17 +364,14 @@ const handleSignup = async () => {
 .logo-main {
   font-weight: 800;
   font-size: 1.75rem;
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFA94D 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--color-main);
   letter-spacing: -0.5px;
 }
 
 .logo-sub {
   font-size: 0.7rem;
-  color: #95A5A6;
-  font-weight: 500;
+  color: var(--color-emphasis);
+  font-weight: 600;
   letter-spacing: 2px;
   text-transform: uppercase;
 }
@@ -408,11 +388,11 @@ const handleSignup = async () => {
 
 /* Glassmorphism Signup Box */
 .signup-box {
-  background: #FFFFFF;  padding: 2.5rem 2.5rem;
+  background: #FFFFFF;
+  padding: 2.5rem 2.5rem;
   border-radius: 24px;
-  border: 1px solid #FFE4CC;
-  box-shadow: 0 4px 20px rgba(255, 107, 107, 0.15),
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--color-sub-1);
+  box-shadow: 0 10px 30px rgba(89, 53, 39, 0.1);
   width: 100%;
   max-width: 500px;
   animation: fadeInUp 0.6s ease-out;
@@ -436,15 +416,16 @@ const handleSignup = async () => {
 
 h2 {
   font-size: 2rem;
-  font-weight: 700;
-  color: #2D3436;
+  font-weight: 800;
+  color: var(--color-emphasis);
   margin: 0 0 0.5rem 0;
-  letter-spacing: -0.5px;
+  letter-spacing: -1px;
 }
 
 .subtitle {
   font-size: 0.95rem;
-  color: #95A5A6;
+  color: var(--color-emphasis);
+  opacity: 0.8;
   margin: 0;
   font-weight: 400;
 }
@@ -454,10 +435,10 @@ h2 {
   display: flex;
   gap: 0.75rem;
   margin-bottom: 2rem;
-  background: #FFF5E6;
+  background: var(--color-bg);
   padding: 0.375rem;
   border-radius: 14px;
-  border: 1px solid #FFE4CC;
+  border: 1px solid var(--color-sub-1);
 }
 
 .user-type-tabs .tab {
@@ -489,9 +470,9 @@ h2 {
 }
 
 .user-type-tabs .tab.active {
-  background: rgba(255, 107, 107, 0.15);
-  color: #FF6B6B;
-  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.15);
+  background: var(--color-main);
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(242, 159, 5, 0.2);
 }
 
 .form-group {
@@ -501,8 +482,8 @@ h2 {
 .field-label {
   display: block;
   margin-bottom: 0.625rem;
-  color: #636E72;
-  font-weight: 600;
+  color: var(--color-emphasis);
+  font-weight: 700;
   font-size: 0.875rem;
 }
 
@@ -517,34 +498,36 @@ h2 {
   left: 1rem;
   width: 20px;
   height: 20px;
-  color: #95A5A6;
+  color: var(--color-emphasis);
+  opacity: 0.5;
   pointer-events: none;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
   z-index: 1;
 }
 
 .styled-input {
   width: 100%;
   padding: 0.875rem 0.875rem 0.875rem 3rem;
-  background: #FFF5E6;
-  border: 1.5px solid #FFE4CC;
+  background: #FFFFFF;
+  border: 1.5px solid var(--color-sub-1);
   border-radius: 12px;
   font-size: 0.9rem;
-  color: #2D3436;
+  color: var(--color-emphasis);
   box-sizing: border-box;
   transition: all 0.3s ease;
   font-weight: 400;
 }
 
 .styled-input::placeholder {
-  color: #95A5A6;
+  color: var(--color-emphasis);
+  opacity: 0.4;
 }
 
 .styled-input:focus {
   outline: none;
   background: #FFFFFF;
-  border-color: #FF6B6B;
-  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.15);
+  border-color: var(--color-main);
+  box-shadow: 0 0 0 3px rgba(242, 159, 5, 0.15);
 }
 
 /* Override browser autofill styles */
@@ -561,7 +544,8 @@ h2 {
 
 .styled-input:focus + .input-icon,
 .input-wrapper:focus-within .input-icon {
-  color: #FF6B6B;
+  color: var(--color-main);
+  opacity: 1;
 }
 
 /* Gender Radio Buttons */
@@ -579,16 +563,16 @@ h2 {
   justify-content: center;
   gap: 0.5rem;
   padding: 1rem 0.75rem;
-  background: #FFF5E6;
-  border: 1.5px solid #FFE4CC;
+  background: #FFFFFF;
+  border: 1.5px solid var(--color-sub-1);
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .radio-label:hover {
-  border-color: #FF6B6B;
-  background: rgba(255, 107, 107, 0.15);
+  border-color: var(--color-main);
+  background: var(--color-sub-1);
   transform: translateY(-2px);
 }
 
@@ -622,7 +606,7 @@ h2 {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #60a5fa;
+  background: var(--color-main);
   transition: transform 0.3s ease;
 }
 
@@ -630,7 +614,8 @@ h2 {
 .radio-icon {
   width: 28px;
   height: 28px;
-  stroke: rgba(255, 255, 255, 0.5);
+  stroke: var(--color-emphasis);
+  opacity: 0.6;
   transition: all 0.3s ease;
 }
 
@@ -643,14 +628,13 @@ h2 {
 
 /* Checked state */
 .radio-label:has(input[type="radio"]:checked) {
-  border-color: #FF6B6B;
-  background: rgba(255, 107, 107, 0.15);
-  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.15);
+  border-color: var(--color-main);
+  background: var(--color-sub-1);
+  box-shadow: 0 0 0 3px rgba(242, 159, 5, 0.15);
 }
 
 .radio-label:has(input[type="radio"]:checked) .radio-custom {
-  border-color: #FF6B6B;
-  background: rgba(255, 107, 107, 0.15);
+  border-color: var(--color-main);
 }
 
 .radio-label:has(input[type="radio"]:checked) .radio-custom::after {
@@ -658,13 +642,13 @@ h2 {
 }
 
 .radio-label:has(input[type="radio"]:checked) .radio-icon {
-  stroke: #60a5fa;
+  stroke: var(--color-sub-2);
   transform: scale(1.1);
 }
 
 .radio-label:has(input[type="radio"]:checked) .radio-text {
-  color: #FF6B6B;
-  font-weight: 600;
+  color: var(--color-emphasis);
+  font-weight: 700;
 }
 
 
@@ -680,16 +664,16 @@ h2 {
 .signup-button {
   width: 100%;
   padding: 1rem;
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFA94D 100%);
-  color: #2D3436;
+  background: var(--color-main);
+  color: #FFFFFF;
   border: none;
   border-radius: 12px;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   margin-top: 0.5rem;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+  box-shadow: 0 4px 15px rgba(242, 159, 5, 0.3);
   position: relative;
   overflow: hidden;
 }
@@ -707,7 +691,8 @@ h2 {
 
 .signup-button:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+  background: var(--color-sub-2);
+  box-shadow: 0 6px 20px rgba(217, 121, 4, 0.4);
 }
 
 .signup-button:hover:not(:disabled)::before {
@@ -769,12 +754,11 @@ h2 {
   gap: 0.5rem;
   padding: 0.875rem 1rem;
   margin-bottom: 1rem;
-  background: rgba(239, 68, 68, 0.15);
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  color: #fca5a5;
+  background: rgba(217, 121, 4, 0.1);
+  border: 1px solid var(--color-sub-2);
+  color: var(--color-sub-2);
   border-radius: 10px;
   font-size: 0.875rem;
-  backdrop-filter: blur(10px);
 }
 
 .error-icon {
@@ -801,22 +785,23 @@ h2 {
 /* Login Link */
 .login-link {
   text-align: center;
-  margin-top: 1.5rem;
-  font-size: 0.9rem;
-  color: #95A5A6;
+  margin-top: 1.75rem;
+  font-size: 0.95rem;
+  color: var(--color-emphasis);
+  opacity: 0.8;
 }
 
 .login-link a {
-  color: #FF6B6B;
+  color: var(--color-sub-2);
   text-decoration: none;
-  font-weight: 600;
-  margin-left: 0.375rem;
+  font-weight: 700;
+  margin-left: 0.5rem;
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .login-link a:hover {
-  color: #93c5fd;
+  color: var(--color-main);
   text-decoration: underline;
 }
 

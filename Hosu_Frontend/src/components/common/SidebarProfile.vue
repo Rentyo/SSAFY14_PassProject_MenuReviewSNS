@@ -139,22 +139,26 @@ onMounted(() => {
 
 <style scoped>
 .sidebar-profile {
-  --cannoli-cream: #F0EADC;
-  --cream-tan: #E4CFB6;
-  --safari: #BA9B7C;
-  --sirocco: #BF8D6F;
-  --chanterelle: #B28F73;
-  --mocha-mousse: #7A5C4F;
-  --baltic-amber: #D96A33;
-  --chocolate-martini: #3D2B1F;
+  /* Custom Requested Palette */
+  --color-bg: #F2F2F2;
+  --color-emphasis: #593527;
+  --color-main: #F29F05;
+  --color-sub-1: #F2DCB3;
+  --color-sub-2: #D97904;
+
+  --bg-base: var(--color-bg);
+  --bg-inactive: #FFFFFF;
+  --bg-active: #FFFFFF;
+  --sub-dark: var(--color-emphasis);
+  --sub-light: var(--color-sub-1);
+  --main-color: var(--color-sub-1);
+  --border-color: var(--color-sub-1);
 
   width: 280px;
-  background: var(--cannoli-cream);
+  background: var(--bg-active);
   border-radius: 24px;
-  border: 1px solid var(--safari);
-  box-shadow: 
-    0 10px 15px -3px rgba(61, 43, 31, 0.1),
-    0 20px 25px -5px rgba(61, 43, 31, 0.1);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   padding: 2rem 1.5rem;
   display: flex;
   flex-direction: column;
@@ -167,10 +171,9 @@ onMounted(() => {
   flex-direction: column;
   align-items: center;
   padding: 2.5rem 1.5rem;
-  background: var(--cannoli-cream);
+  background: var(--sub-light);
   border-radius: 16px;
-  border: 1.5px solid var(--cream-tan);
-  box-shadow: inset 0 2px 4px 0 rgba(61, 43, 31, 0.06);
+  border: 1px solid var(--border-color);
 }
 
 .profile-image-wrapper {
@@ -178,8 +181,8 @@ onMounted(() => {
   height: 80px;
   border-radius: 50%;
   overflow: hidden;
-  border: 3px solid var(--cream-tan);
-  box-shadow: 0 4px 12px rgba(91, 64, 49, 0.1);
+  border: 3px solid var(--bg-active);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   margin-bottom: 1rem;
 }
 
@@ -191,7 +194,7 @@ onMounted(() => {
 
 .user-name {
   font-size: 1.1rem;
-  color: var(--chocolate-martini);
+  color: var(--sub-dark);
   font-weight: 700;
   margin: 0 0 1rem 0;
   text-align: center;
@@ -215,26 +218,26 @@ onMounted(() => {
 
 .stat-value {
   font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--baltic-amber);
+  font-weight: 800;
+  color: var(--sub-dark);
 }
 
 .stat-label {
   font-size: 0.75rem;
-  color: var(--chanterelle);
+  color: #666;
   font-weight: 500;
 }
 
 .stat-divider {
   width: 1px;
   height: 30px;
-  background: var(--cream-tan);
+  background: var(--border-color);
 }
 
 .btn-admin-dashboard {
   margin-top: 1.5rem;
   padding: 0.75rem 1rem;
-  background: var(--baltic-amber);
+  background: var(--color-main);
   color: #FFFFFF;
   border: none;
   border-radius: 12px;
@@ -243,12 +246,12 @@ onMounted(() => {
   cursor: pointer;
   transition: all 0.3s ease;
   width: 100%;
-  box-shadow: 0 4px 12px rgba(217, 106, 51, 0.2);
 }
 
 .btn-admin-dashboard:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(217, 106, 51, 0.3);
+  background: var(--color-sub-2);
+  box-shadow: 0 6px 16px rgba(217, 121, 4, 0.3);
   filter: brightness(1.1);
 }
 
@@ -270,10 +273,10 @@ onMounted(() => {
   align-items: center;
   gap: 1rem;
   padding: 0.875rem 1rem;
-  background: var(--cannoli-cream);
-  border: 1.5px solid var(--cream-tan);
+  background: var(--bg-inactive);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
-  color: var(--mocha-mousse);
+  color: var(--sub-dark);
   text-decoration: none;
   font-weight: 600;
   font-size: 0.95rem;
@@ -282,17 +285,16 @@ onMounted(() => {
 }
 
 .nav-item:hover {
-  background: #FFFFFF;
-  border-color: var(--baltic-amber);
-  color: var(--chocolate-martini);
+  background: var(--bg-active);
+  border-color: var(--sub-dark);
   transform: translateX(4px);
 }
 
 .nav-item.active {
-  background: rgba(217, 106, 51, 0.1);
-  border-color: var(--baltic-amber);
-  color: var(--baltic-amber);
-  box-shadow: 0 0 0 3px rgba(217, 106, 51, 0.1);
+  background: var(--bg-active);
+  border-color: var(--sub-dark);
+  color: var(--sub-dark);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
 }
 
 .icon {
@@ -320,7 +322,7 @@ onMounted(() => {
 
 .notice-text {
   font-size: 0.85rem;
-  color: var(--mocha-mousse);
+  color: #666;
   text-align: center;
   margin-bottom: 1.5rem;
   line-height: 1.4;
@@ -329,13 +331,13 @@ onMounted(() => {
 .login-btn {
   width: 100%;
   justify-content: center;
-  background: var(--baltic-amber);
+  background: var(--color-main);
   color: white;
   border: none;
 }
 
 .login-btn:hover {
-  background: var(--chocolate-martini);
+  background: var(--color-sub-2);
   color: white;
 }
 

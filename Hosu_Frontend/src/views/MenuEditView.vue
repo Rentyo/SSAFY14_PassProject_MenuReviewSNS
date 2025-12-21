@@ -276,8 +276,15 @@ onMounted(() => {
 
 <style scoped>
 .menu-edit-container {
+  /* Custom Requested Palette */
+  --color-bg: #F2F2F2;
+  --color-emphasis: #593527;
+  --color-main: #F29F05;
+  --color-sub-1: #F2DCB3;
+  --color-sub-2: #D97904;
+
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--color-bg);
   padding: 40px 20px;
 }
 
@@ -292,30 +299,35 @@ onMounted(() => {
   align-items: center;
   margin-bottom: 30px;
   padding-bottom: 15px;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+  border-bottom: 2px solid var(--color-sub-1);
 }
 
 .menu-edit-header h2 {
   font-size: 28px;
-  color: #2D3436;
+  color: var(--color-emphasis);
+  font-weight: 800;
   margin: 0;
+  letter-spacing: -0.5px;
 }
 
 .btn-back {
   padding: 10px 20px;
-  background: rgba(255, 255, 255, 0.2);
-  color: #2D3436;
-  border: 2px solid white;
-  border-radius: 8px;
+  background: white;
+  color: var(--color-emphasis);
+  border: 1.5px solid var(--color-sub-1);
+  border-radius: 12px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 10px rgba(89, 53, 39, 0.05);
 }
 
 .btn-back:hover {
-  background: white;
-  color: #667eea;
+  background: var(--color-bg);
+  color: var(--color-main);
+  border-color: var(--color-main);
+  transform: translateX(-4px);
 }
 
 .loading {
@@ -333,9 +345,10 @@ onMounted(() => {
 
 .menu-edit-form {
   background: white;
-  border-radius: 12px;
+  border-radius: 24px;
   padding: 40px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 30px rgba(89, 53, 39, 0.08);
+  border: 1px solid var(--color-sub-1);
 }
 
 .form-group {
@@ -345,8 +358,8 @@ onMounted(() => {
 .form-group label {
   display: block;
   font-size: 16px;
-  font-weight: 600;
-  color: #333;
+  font-weight: 700;
+  color: var(--color-emphasis);
   margin-bottom: 10px;
 }
 
@@ -357,19 +370,22 @@ onMounted(() => {
 .form-input,
 .form-textarea {
   width: 100%;
-  padding: 12px 16px;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
+  padding: 14px 18px;
+  background: #F8F9FA;
+  border: 2px solid transparent;
+  border-radius: 12px;
   font-size: 15px;
-  transition: all 0.3s;
+  color: var(--color-emphasis);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-sizing: border-box;
 }
 
 .form-input:focus,
 .form-textarea:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  background: white;
+  border-color: var(--color-main);
+  box-shadow: 0 0 0 4px rgba(242, 159, 5, 0.1);
 }
 
 .form-textarea {
@@ -433,13 +449,13 @@ onMounted(() => {
 
 .tag-bubble {
   display: inline-block;
-  padding: 6px 14px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: #2D3436;
+  padding: 6px 16px;
+  background: var(--color-sub-1);
+  color: var(--color-emphasis);
   border-radius: 20px;
   font-size: 13px;
-  font-weight: 500;
-  box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
+  font-weight: 700;
+  box-shadow: 0 4px 10px rgba(89, 53, 39, 0.1);
 }
 
 .form-actions {
@@ -460,8 +476,9 @@ onMounted(() => {
 }
 
 .btn-cancel {
-  background: #f5f5f5;
-  color: #666;
+  background: var(--color-sub-1);
+  color: var(--color-emphasis);
+  font-weight: 700;
 }
 
 .btn-cancel:hover {
@@ -469,13 +486,16 @@ onMounted(() => {
 }
 
 .btn-submit {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: #2D3436;
+  background: var(--color-main);
+  color: #FFFFFF;
+  font-weight: 800;
+  box-shadow: 0 4px 15px rgba(242, 159, 5, 0.3);
 }
 
 .btn-submit:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  background: var(--color-sub-2);
+  box-shadow: 0 6px 20px rgba(217, 121, 4, 0.35);
 }
 
 /* 반응형 */

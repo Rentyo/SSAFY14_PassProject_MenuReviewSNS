@@ -93,41 +93,50 @@ const handleImageError = (event) => {
 }
 
 .reviews-container::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(89, 53, 39, 0.05);
   border-radius: 4px;
 }
 
 .reviews-container::-webkit-scrollbar-thumb {
-  background: rgba(96, 165, 250, 0.3);
+  background: #F2DCB3;
   border-radius: 4px;
   transition: background 0.3s ease;
 }
 
 .reviews-container::-webkit-scrollbar-thumb:hover {
-  background: rgba(96, 165, 250, 0.5);
+  background: #F29F05;
 }
 
 .loading, .no-reviews {
   text-align: center;
   padding: 60px 0;
-  color: #999;
+  color: #593527;
+  opacity: 0.5;
 }
 
 .reviews-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4열 그리드 */
-  gap: 16px; /* 간격 증가 */
-  max-width: 90%; /* 카드 크기 축소 */
-  margin: 0 auto; /* 중앙 정렬 */
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .review-card {
   cursor: pointer;
   position: relative;
-  padding-top: 100%; /* 1:1 비율 */
+  padding-top: 100%;
   overflow: hidden;
-  background: #f0f0f0;
-  border-radius: 12px;
+  background: #FFFFFF;
+  border-radius: 16px;
+  border: 1px solid #F2DCB3;
+  transition: all 0.3s ease;
+}
+
+.review-card:hover {
+  transform: translateY(-4px);
+  border-color: #F29F05;
+  box-shadow: 0 8px 20px rgba(89, 53, 39, 0.1);
 }
 
 .review-image {
@@ -142,16 +151,24 @@ const handleImageError = (event) => {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.2s;
+  transition: transform 0.3s ease;
 }
 
 .review-card:hover .review-image img {
-  transform: scale(1.02);
+  transform: scale(1.08);
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .reviews-grid {
-    gap: 2px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .reviews-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
   }
 }
 </style>

@@ -27,7 +27,7 @@
         @click="viewNotice(notice.restaurantNoticeId)"
       >
         <div class="notice-header">
-          <span class="notice-badge" :class="{ important: isImportant(notice.importance) }">
+          <span class="notice-badge" :class="getImportanceClass(notice.importance)">
             {{ getImportanceBadge(notice.importance) }}
           </span>
           <span class="notice-date">{{ formatDate(notice.createdAt) }}</span>
@@ -65,9 +65,14 @@ const getImportanceBadge = (importance) => {
   }
 }
 
-// 중요도 확인 (2 이상이면 중요)
-const isImportant = (importance) => {
-  return importance >= 2
+// 중요도 확인 및 클래스 반환
+const getImportanceClass = (importance) => {
+  switch(importance) {
+    case 3: return 'urgent'
+    case 2: return 'important'
+    case 1:
+    default: return 'normal'
+  }
 }
 
 // 식당 ID와 공지사항 데이터 가져오기
@@ -128,14 +133,15 @@ onMounted(() => {
 
 .notices-header h3 {
   font-size: 24px;
-  color: #2D3436;
+  color: var(--color-emphasis);
   margin: 0;
+  font-weight: 800;
 }
 
 .btn-add-notice {
   padding: 8px;
-  background: #FFF5E6;
-  border: 1px solid #FFE4CC;
+  background: var(--color-sub-1);
+  border: 1px solid var(--color-sub-1);
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s;
@@ -148,12 +154,13 @@ onMounted(() => {
   width: 24px;
   height: 24px;
   object-fit: contain;
-  filter: brightness(0.2);
+  filter: brightness(0.5);
 }
 
 .btn-add-notice:hover {
   background: #FFFFFF;
-  border-color: #FF6B6B;
+  border-color: var(--color-main);
+  transform: translateY(-2px);
 }
 
 .loading {
@@ -185,19 +192,20 @@ onMounted(() => {
 
 .btn-create-notice {
   padding: 12px 30px;
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFA94D 100%);
+  background: var(--color-main);
   color: white;
   border: none;
   border-radius: 6px;
   font-size: 16px;
   cursor: pointer;
   transition: all 0.3s;
-  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+  box-shadow: 0 4px 12px rgba(242, 159, 5, 0.2);
 }
 
 .btn-create-notice:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+  background: var(--color-sub-2);
+  box-shadow: 0 6px 16px rgba(217, 121, 4, 0.3);
 }
 
 .notices-list {
@@ -210,14 +218,16 @@ onMounted(() => {
   background: white;
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(89, 53, 39, 0.05);
+  border: 1px solid var(--color-sub-1);
   cursor: pointer;
   transition: all 0.3s;
 }
 
 .notice-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 20px rgba(89, 53, 39, 0.12);
+  border-color: var(--color-main);
 }
 
 .notice-header {
@@ -231,15 +241,26 @@ onMounted(() => {
   display: inline-block;
   padding: 4px 12px;
   border-radius: 12px;
-  font-size: 12px;
-  font-weight: bold;
-  background: #e0e0e0;
-  color: #666;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.notice-badge.normal {
+  background: #F1F3F5;
+  color: #495057;
+  border: 1px solid #DEE2E6;
 }
 
 .notice-badge.important {
-  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+  background: #E7F5FF;
+  color: #1C7ED6;
+  border: 1px solid #A5D8FF;
+}
+
+.notice-badge.urgent {
+  background: linear-gradient(135deg, #FF6B6B 0%, #EE5A6F 100%);
   color: white;
+  box-shadow: 0 2px 4px rgba(255, 107, 107, 0.2);
 }
 
 .notice-date {
@@ -249,8 +270,8 @@ onMounted(() => {
 
 .notice-title {
   font-size: 18px;
-  font-weight: 600;
-  color: #333;
+  font-weight: 700;
+  color: var(--color-emphasis);
   margin: 0 0 10px 0;
 }
 
@@ -263,6 +284,7 @@ onMounted(() => {
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
 }
 

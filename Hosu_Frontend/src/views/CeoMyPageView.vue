@@ -272,13 +272,20 @@ onMounted(() => {
 
 <style scoped>
 .ceo-mypage-container {
+  /* Custom Requested Palette */
+  --color-bg: #F2F2F2;
+  --color-emphasis: #593527;
+  --color-main: #F29F05;
+  --color-sub-1: #F2DCB3;
+  --color-sub-2: #D97904;
+
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   width: 100%;
-  background: #FFF8F0;
+  background: var(--color-bg);
   display: flex;
   flex-direction: column;
   overflow-y: auto;
@@ -290,11 +297,11 @@ onMounted(() => {
   flex-shrink: 0;
   padding: 0 2rem;
   background: #FFFFFF;
-  border-bottom: 1px solid #FFE4CC;
+  border-bottom: 2px solid var(--color-sub-1);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 12px rgba(255, 107, 107, 0.08);
+  box-shadow: 0 4px 15px rgba(89, 53, 39, 0.08);
 }
 
 .hosu-logo {
@@ -312,17 +319,14 @@ onMounted(() => {
 .logo-main {
   font-weight: 800;
   font-size: 1.75rem;
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFA94D 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--color-main);
   letter-spacing: -0.5px;
 }
 
 .logo-sub {
   font-size: 0.7rem;
-  color: #95A5A6;
-  font-weight: 500;
+  color: var(--color-emphasis);
+  font-weight: 600;
   letter-spacing: 2px;
   text-transform: uppercase;
 }
@@ -348,8 +352,8 @@ onMounted(() => {
   width: 100%;
   background: white;
   border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(255, 107, 107, 0.15);
-  border: 1px solid #FFE4CC;
+  box-shadow: 0 10px 30px rgba(89, 53, 39, 0.1);
+  border: 1px solid var(--color-sub-1);
   padding: 40px;
   margin-bottom: 2rem;
 }
@@ -379,8 +383,8 @@ onMounted(() => {
   height: 120px;
   border-radius: 50%;
   object-fit: cover;
-  border: 4px solid rgba(255, 107, 107, 0.3);
-  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.15);
+  border: 4px solid var(--color-sub-1);
+  box-shadow: 0 4px 12px rgba(89, 53, 39, 0.1);
 }
 
 .profile-info h2 {
@@ -404,9 +408,10 @@ onMounted(() => {
 }
 
 .role-badge.ceo {
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFA94D 100%);
-  color: #FFFFFF;
-  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+  background: var(--color-sub-1);
+  color: var(--color-emphasis);
+  border: 1px solid var(--color-emphasis);
+  box-shadow: 0 2px 8px rgba(89, 53, 39, 0.1);
 }
 
 .btn-register {
@@ -424,13 +429,15 @@ onMounted(() => {
 }
 
 .status-default {
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFA94D 100%);
-  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+  background: var(--color-main);
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(242, 159, 5, 0.2);
 }
 
 .status-default:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+  background: var(--color-sub-2);
+  box-shadow: 0 6px 16px rgba(217, 121, 4, 0.3);
 }
 
 .status-complete {
@@ -480,7 +487,7 @@ onMounted(() => {
 .stat-number {
   font-size: 28px;
   font-weight: bold;
-  color: #FF6B6B;
+  color: var(--color-main);
 }
 
 .stat-label {
@@ -542,7 +549,7 @@ onMounted(() => {
 }
 
 .btn-edit {
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFA94D 100%);
+  background: var(--color-main);
   color: #FFFFFF;
 }
 
@@ -622,8 +629,8 @@ onMounted(() => {
 
 .form-group input:focus {
   outline: none;
-  border-color: #FF6B6B;
-  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+  border-color: var(--color-main);
+  box-shadow: 0 0 0 3px rgba(242, 159, 5, 0.1);
 }
 
 .error-message {
@@ -651,13 +658,14 @@ onMounted(() => {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFA94D 100%);
+  background: var(--color-main);
   color: #FFFFFF;
 }
 
 .btn-primary:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+  background: var(--color-sub-2);
+  box-shadow: 0 4px 12px rgba(217, 121, 4, 0.3);
 }
 
 .btn-primary:disabled {
@@ -720,8 +728,8 @@ onMounted(() => {
 
 .tab-button.active {
   background: white;
-  color: #FF6B6B;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  color: var(--color-main);
+  box-shadow: 0 4px 12px rgba(89, 53, 39, 0.15);
 }
 
 /* 탭 컨텐츠 */

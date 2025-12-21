@@ -12,19 +12,28 @@
       <h2>공지사항 작성</h2>
       
       <form @submit.prevent="handleSubmit" class="notice-form">
-        <!-- 중요도 선택 -->
+        <!-- 중요도 선택 (카드 스타일) -->
         <div class="form-group">
           <label>중요도 <span class="required">*</span></label>
-          <select v-model="form.importance" class="form-select" required>
-            <option value="">중요도를 선택하세요</option>
-            <option :value="1">일반</option>
-            <option :value="2">중요</option>
-            <option :value="3">긴급</option>
-          </select>
-          <div class="importance-preview" v-if="form.importance">
-            <span class="notice-badge" :class="getImportanceClass(form.importance)">
-              {{ getImportanceBadge(form.importance) }}
-            </span>
+          <div class="importance-cards">
+            <label 
+              v-for="level in [
+                { val: 1, label: '일반', class: 'normal' },
+                { val: 2, label: '중요', class: 'important' },
+                { val: 3, label: '긴급', class: 'urgent' }
+              ]" 
+              :key="level.val"
+              :class="['importance-card', level.class, { active: form.importance === level.val }]"
+            >
+              <input 
+                type="radio" 
+                v-model="form.importance" 
+                :value="level.val" 
+                class="hidden-radio"
+              />
+              <span class="card-label">{{ level.label }}</span>
+              <div class="active-check" v-if="form.importance === level.val">✓</div>
+            </label>
           </div>
         </div>
 
@@ -182,13 +191,20 @@ onMounted(() => {
 
 <style scoped>
 .notice-create-container {
+  /* Custom Requested Palette */
+  --color-bg: #F2F2F2;
+  --color-emphasis: #593527;
+  --color-main: #F29F05;
+  --color-sub-1: #F2DCB3;
+  --color-sub-2: #D97904;
+
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   width: 100%;
-  background: #FFF8F0;
+  background: var(--color-bg);
   display: flex;
   flex-direction: column;
   overflow-y: auto;
@@ -200,11 +216,11 @@ onMounted(() => {
   flex-shrink: 0;
   padding: 0 2rem;
   background: #FFFFFF;
-  border-bottom: 1px solid #FFE4CC;
+  border-bottom: 2px solid var(--color-sub-1);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 12px rgba(255, 107, 107, 0.08);
+  box-shadow: 0 4px 15px rgba(89, 53, 39, 0.08);
 }
 
 .hosu-logo {
@@ -222,17 +238,14 @@ onMounted(() => {
 .logo-main {
   font-weight: 800;
   font-size: 1.75rem;
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFA94D 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--color-main);
   letter-spacing: -0.5px;
 }
 
 .logo-sub {
   font-size: 0.7rem;
-  color: #95A5A6;
-  font-weight: 500;
+  color: var(--color-emphasis);
+  font-weight: 600;
   letter-spacing: 2px;
   text-transform: uppercase;
 }
@@ -242,17 +255,19 @@ onMounted(() => {
   max-width: 800px;
   margin: 40px auto 80px;
   background: white;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(255, 107, 107, 0.15);
-  border: 1px solid #FFE4CC;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(89, 53, 39, 0.08);
+  border: 1px solid var(--color-sub-1);
   padding: 40px;
 }
 
 .notice-create-box h2 {
   margin: 0 0 30px 0;
-  font-size: 28px;
-  color: #2D3436;
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--color-emphasis);
   text-align: center;
+  letter-spacing: -1px;
 }
 
 .notice-form {
@@ -268,9 +283,9 @@ onMounted(() => {
 
 .form-group label {
   font-size: 14px;
-  font-weight: 600;
-  color: #555;
-  margin-bottom: 8px;
+  font-weight: 700;
+  color: var(--color-emphasis);
+  margin-bottom: 10px;
 }
 
 .required {
@@ -281,28 +296,112 @@ onMounted(() => {
 .form-input,
 .form-textarea {
   width: 100%;
-  padding: 12px;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
-  font-size: 14px;
+  padding: 14px 18px;
+  background: #F8F9FA;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  font-size: 15px;
   font-family: inherit;
   box-sizing: border-box;
-  transition: all 0.3s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--color-emphasis);
 }
 
 .form-select:focus,
 .form-input:focus,
 .form-textarea:focus {
   outline: none;
-  border-color: #FF6B6B;
-  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+  background: white;
+  border-color: var(--color-main);
+  box-shadow: 0 0 0 4px rgba(242, 159, 5, 0.1);
 }
 
 .form-textarea {
-  resize: vertical;
-  min-height: 200px;
+  resize: none;
+  min-height: 240px;
   line-height: 1.6;
 }
+
+/* 중요도 카드 스타일 */
+.importance-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.importance-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: #F8F9FA;
+  border: 2.5px solid transparent;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+}
+
+.importance-card:hover {
+  transform: translateY(-2px);
+  background: #FFFFFF;
+  border-color: var(--color-sub-1);
+}
+
+.card-label {
+  font-size: 15px;
+  font-weight: 700;
+  color: #666;
+}
+
+.active-check {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 24px;
+  height: 24px;
+  background: var(--color-main);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+  box-shadow: 0 4px 8px rgba(242, 159, 5, 0.3);
+  z-index: 2;
+}
+
+.hidden-radio {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* 각 등급별 활성화 스타일 */
+.importance-card.normal.active {
+  background: #F1F3F5;
+  border-color: #ADB5BD;
+}
+.importance-card.normal.active .card-label { color: #495057; }
+.importance-card.normal.active .active-check { background: #ADB5BD; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+
+.importance-card.important.active {
+  background: #E7F5FF;
+  border-color: #339AF0;
+}
+.importance-card.important.active .card-label { color: #1C7ED6; }
+.importance-card.important.active .active-check { background: #339AF0; }
+
+.importance-card.urgent.active {
+  background: #FFF5F5;
+  border-color: #FF6B6B;
+}
+.importance-card.urgent.active .card-label { color: #FF6B6B; }
+.importance-card.urgent.active .active-check { background: #FF6B6B; }
 
 .importance-preview {
   margin-top: 12px;
@@ -358,23 +457,26 @@ onMounted(() => {
 }
 
 .btn-cancel {
-  background: #f5f5f5;
-  color: #333;
+  background: var(--color-sub-1);
+  color: var(--color-emphasis);
+  font-weight: 700;
 }
 
 .btn-cancel:hover {
-  background: #e0e0e0;
+  background: #E8CC9F;
 }
 
 .btn-submit {
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFA94D 100%);
+  background: var(--color-main);
   color: #FFFFFF;
-  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+  font-weight: 800;
+  box-shadow: 0 4px 15px rgba(242, 159, 5, 0.3);
 }
 
 .btn-submit:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+  background: var(--color-sub-2);
+  box-shadow: 0 6px 20px rgba(217, 121, 4, 0.4);
 }
 
 .btn-submit:disabled {

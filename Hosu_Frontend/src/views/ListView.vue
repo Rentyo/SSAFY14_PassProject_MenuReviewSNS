@@ -145,28 +145,51 @@
             </div>
 
             <div class="info-section">
-              <div>
+              <div class="info-left">
                 <div class="header-area">
                   <h2 class="restaurant-name">{{ restaurant.name }}</h2>
                   <span class="category-badge">{{ restaurant.category }}</span>
                 </div>
 
-                <div class="rating-area">
-                  <span class="rating-score">⭐ {{ (restaurant.totalRating && restaurant.reviewCounts) ? (restaurant.totalRating / restaurant.reviewCounts).toFixed(1) : '0.0' }}</span>
-                  <span class="divider">|</span>
-                  <span class="info-text">리뷰 {{ restaurant.totalContents }}개</span>
-                  <span class="divider">|</span>
-                  <span class="info-text">조회 {{ restaurant.viewCount.toLocaleString() }}회</span>
-                </div>
-
                 <div class="address-area">
-                  <span class="icon">📍</span>
+                  <span class="icon"><img src="@/assets/location.png" alt="location" class="info-icon" /></span>
                   <span class="address-text">{{ restaurant.address }}</span>
                 </div>
 
                 <div class="phone-area" v-if="restaurant.phone">
-                  <span class="icon">📞</span>
+                  <span class="icon"><img src="@/assets/phone.png" alt="phone" class="info-icon" /></span>
                   <span class="phone-text">{{ restaurant.phone }}</span>
+                </div>
+              </div>
+
+              <div class="info-right">
+                <div class="metric-group rating-metric">
+                  <div class="stars-container">
+                    <div class="stars-bg">
+                      <span v-for="i in 5" :key="'bg-'+i">☆</span>
+                    </div>
+                    <div class="stars-fill" :style="{ width: (getRating(restaurant) / 5 * 100) + '%' }">
+                      <span v-for="i in 5" :key="'fill-'+i">★</span>
+                    </div>
+                  </div>
+                  <span class="rating-value">
+                    <template v-if="getRating(restaurant) > 0">
+                      {{ getRating(restaurant).toFixed(1) }}
+                    </template>
+                    <span v-else class="no-review-text">리뷰 없음</span>
+                  </span>
+                </div>
+
+                <div class="stats-group">
+                  <div class="stat-item">
+                    <span class="stat-label">리뷰</span>
+                    <span class="stat-value">{{ restaurant.totalContents.toLocaleString() }}</span>
+                  </div>
+                  <div class="stat-divider"></div>
+                  <div class="stat-item">
+                    <span class="stat-label">조회</span>
+                    <span class="stat-value">{{ restaurant.viewCount.toLocaleString() }}</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -598,6 +621,11 @@ export default {
       // 이미 같은 값이면 동작 안 함.
     });
 
+    const getRating = (restaurant) => {
+      if (!restaurant.totalRating || !restaurant.reviewCounts) return 0;
+      return restaurant.totalRating / restaurant.reviewCounts;
+    };
+
     onMounted(async () => {
       await initializeSearchInfo();
       await fetchRestaurants();
@@ -628,7 +656,8 @@ export default {
       totalCount,
       changePage,
       changeSize,
-      visiblePages
+      visiblePages,
+      getRating
     };
   },
 };
@@ -651,13 +680,12 @@ export default {
   min-height: 80px;
   flex-shrink: 0;
   padding: 0 2rem;
-  background: #FFF5E6;
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: #FFFFFF;
+  border-bottom: 2px solid var(--color-sub-1);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(89, 53, 39, 0.08);
 }
 
 .hosu-logo {
@@ -675,39 +703,34 @@ export default {
 .logo-main {
   font-weight: 800;
   font-size: 1.75rem;
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFA94D 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--color-main);
   letter-spacing: -0.5px;
 }
 
 .logo-sub {
   font-size: 0.7rem;
-  color: #95A5A6;
-  font-weight: 500;
+  color: var(--color-emphasis);
+  font-weight: 600;
   letter-spacing: 2px;
   text-transform: uppercase;
 }
 
 /* === CONTAINER === */
 .list-view-container {
+  /* Custom Requested Palette */
+  --color-bg: #F2F2F2;
+  --color-emphasis: #593527;
+  --color-main: #F29F05;
+  --color-sub-1: #F2DCB3;
+  --color-sub-2: #D97904;
+
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   width: 100%;
-  background: linear-gradient(
-    135deg,
-    #FFF8F0 0%,
-    #FFF8F0 25%,
-    #FFF8F0 50%,
-    #FFF8F0 75%,
-    #FFF8F0 100%
-  );
-  
-  
+  background: var(--color-bg);
   overflow-y: auto;
 }
 
@@ -717,11 +740,11 @@ export default {
 }
 
 .content-wrapper {
-  max-width: 1600px;
+  max-width: 1750px;
   margin: 0 auto;
   padding: 32px;
   display: grid;
-  grid-template-columns: 320px 1fr 280px;
+  grid-template-columns: 300px 1fr 280px;
   gap: 32px;
 }
 
@@ -734,12 +757,12 @@ export default {
 
 .sidebar-header {
   background: #FFFFFF;
-  color: #2D3436;
+  color: var(--color-emphasis);
   padding: 20px;
   border-radius: 12px;
   margin-bottom: 20px;
-  box-shadow: 0 4px 20px rgba(255, 107, 107, 0.15);
-  border: 1px solid #FFE4CC;
+  box-shadow: 0 4px 20px rgba(89, 53, 39, 0.1);
+  border: 1px solid var(--color-sub-1);
 }
 
 .sidebar-title {
@@ -749,17 +772,18 @@ export default {
 }
 
 .filter-box {
-  background: #FFFFFF;  border-radius: 12px;
+  background: #FFFFFF;
+  border-radius: 12px;
   padding: 24px 22px;
   margin-bottom: 24px;
-  box-shadow: 0 4px 20px rgba(255, 107, 107, 0.15);
-  border: 1px solid #FFE4CC;
+  box-shadow: 0 10px 30px rgba(89, 53, 39, 0.08);
+  border: 1px solid var(--color-sub-1);
 }
 
 .filter-title {
   font-size: 18px;
-  font-weight: 700;
-  color: #2D3436;
+  font-weight: 800;
+  color: var(--color-emphasis);
   margin-top: 0;
   margin-bottom: 18px;
   display: flex;
@@ -774,8 +798,8 @@ export default {
 .filter-label {
   display: block;
   font-size: 13px;
-  font-weight: 700;
-  color: #2D3436;
+  font-weight: 800;
+  color: var(--color-emphasis);
   margin-bottom: 6px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -784,14 +808,14 @@ export default {
 .filter-select {
   width: 100%;
   padding: 10px 12px;
-  border: 1.5px solid #FFE4CC;
+  border: 1.5px solid var(--color-sub-1);
   border-radius: 8px;
   font-size: 14px;
-  color: #2D3436;
+  color: var(--color-emphasis);
   transition: all 0.3s ease;
-  background: #FFF5E6;
+  background: #FFFFFF;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23593527'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 12px center;
   background-size: 16px;
@@ -799,18 +823,18 @@ export default {
 }
 
 .filter-select:focus {
-  background-color: rgba(255, 255, 255, 0.08);
-  border-color: #FF6B6B;
+  background-color: #FFFFFF;
+  border-color: var(--color-main);
   outline: none;
-  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.15);
+  box-shadow: 0 0 0 3px rgba(242, 159, 5, 0.15);
 }
 
 .filter-select:disabled {
-  background-color: #FFF5E6;
-  color: #95A5A6;
+  background-color: var(--color-bg);
+  color: var(--color-emphasis);
   cursor: not-allowed;
-  border-color: #FFE4CC;
-  opacity: 0.7;
+  border-color: var(--color-sub-1);
+  opacity: 0.6;
 }
 
 .filter-select option {
@@ -821,14 +845,14 @@ export default {
 .search-btn {
   width: 100%;
   padding: 14px;
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFA94D 100%);
+  background: var(--color-main);
   border: none;
   border-radius: 10px;
-  color: #2D3436;
-  font-weight: 700;
+  color: #FFFFFF;
+  font-weight: 800;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+  box-shadow: 0 4px 15px rgba(242, 159, 5, 0.3);
   margin-top: 8px;
   font-size: 15px;
   position: relative;
@@ -848,7 +872,8 @@ export default {
 
 .search-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+  background: var(--color-sub-2);
+  box-shadow: 0 6px 20px rgba(217, 121, 4, 0.4);
 }
 
 .search-btn:hover::before {
@@ -864,15 +889,15 @@ export default {
   width: 100%;
   padding: 12px;
   border-radius: 8px;
-  border: 1.5px solid #FFE4CC;
+  border: 1.5px solid var(--color-sub-1);
   font-size: 15px;
-  color: #2D3436;
+  color: var(--color-emphasis);
   cursor: pointer;
-  background: #FFF5E6;
+  background: #FFFFFF;
   transition: all 0.3s ease;
-  font-weight: 600;
+  font-weight: 700;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23593527'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 12px center;
   background-size: 16px;
@@ -885,9 +910,9 @@ export default {
 }
 
 .sort-select:focus {
-  border-color: #FF6B6B;
-  background-color: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.15);
+  border-color: var(--color-main);
+  background-color: #FFFFFF;
+  box-shadow: 0 0 0 3px rgba(242, 159, 5, 0.15);
   outline: none;
 }
 
@@ -910,11 +935,12 @@ export default {
 .size-select {
   padding: 8px 12px;
   border-radius: 8px;
-  background: #FFF5E6;
-  border: 1px solid #FFE4CC;
-  color: #fff;
+  background: #FFFFFF;
+  border: 1px solid var(--color-sub-1);
+  color: var(--color-emphasis);
   font-size: 14px;
   cursor: pointer;
+  font-weight: 600;
 }
 
 .size-select option {
@@ -932,28 +958,28 @@ export default {
   height: 36px;
   padding: 0 6px;
   border-radius: 8px;
-  border: 1px solid #FFE4CC;
-  background: #FFF5E6;
-  color: #636E72;
+  border: 1px solid var(--color-sub-1);
+  background: #FFFFFF;
+  color: var(--color-emphasis);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 14px;
 }
 
 .page-btn:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.15);
-  color: #fff;
+  background: var(--color-sub-1);
+  color: var(--color-emphasis);
 }
 
 .page-btn.active {
-  background: #60a5fa;
-  border-color: #FF6B6B;
-  color: #fff;
-  font-weight: 700;
+  background: var(--color-main);
+  border-color: var(--color-main);
+  color: white;
+  font-weight: 800;
 }
 
 .page-btn:disabled {
@@ -972,10 +998,10 @@ export default {
 
 .sort-btn {
   padding: 12px;
-  border: 1.5px solid #FFE4CC;
+  border: 1.5px solid var(--color-sub-1);
   border-radius: 8px;
-  background: #FFF5E6;
-  color: #636E72;
+  background: #FFFFFF;
+  color: var(--color-emphasis);
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -984,17 +1010,15 @@ export default {
 }
 
 .sort-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #2D3436;
-  border-color: rgba(255, 255, 255, 0.2);
+  background: var(--color-sub-1);
 }
 
 .sort-btn.active {
-  background: rgba(255, 107, 107, 0.15);
-  color: #FF6B6B;
-  border-color: #FF6B6B;
-  font-weight: 700;
-  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.15);
+  background: var(--color-main);
+  color: #FFFFFF;
+  border-color: var(--color-main);
+  font-weight: 800;
+  box-shadow: 0 4px 12px rgba(242, 159, 5, 0.2);
 }
 
 /* === RESPONSIVE LOGIC for Sort UI === */
@@ -1013,16 +1037,17 @@ export default {
 
 .result-header {
   margin-bottom: 24px;
-  background: #FFFFFF;  padding: 24px;
+  background: #FFFFFF;
+  padding: 24px;
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(255, 107, 107, 0.15);
-  border: 1px solid #FFE4CC;
+  box-shadow: 0 10px 30px rgba(89, 53, 39, 0.08);
+  border: 1px solid var(--color-sub-1);
 }
 
 .result-title {
   font-size: 28px;
   font-weight: 800;
-  color: #2D3436;
+  color: var(--color-emphasis);
   margin: 0 0 8px 0;
 }
 
@@ -1033,25 +1058,26 @@ export default {
 }
 
 .result-count strong {
-  color: #2D3436;
-  font-weight: 700;
+  color: var(--color-main);
+  font-weight: 800;
 }
 
 /* === STATE BOX === */
 .state-box {
-  background: #FFFFFF;  padding: 60px 20px;
+  background: #FFFFFF;
+  padding: 60px 20px;
   border-radius: 12px;
   text-align: center;
-  box-shadow: 0 4px 20px rgba(255, 107, 107, 0.15);
-  border: 1px solid #FFE4CC;
-  color: #2D3436;
+  box-shadow: 0 10px 30px rgba(89, 53, 39, 0.08);
+  border: 1px solid var(--color-sub-1);
+  color: var(--color-emphasis);
 }
 
 .spinner {
   width: 50px;
   height: 50px;
-  border: 4px solid rgba(255, 107, 107, 0.15);
-  border-top: 4px solid #60a5fa;
+  border: 4px solid var(--color-sub-1);
+  border-top: 4px solid var(--color-main);
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin: 0 auto 16px;
@@ -1071,24 +1097,24 @@ export default {
 
 .restaurant-card {
   display: flex;
-  background: #FFFFFF;  border-radius: 12px;
+  background: #FFFFFF;
+  border-radius: 12px;
   overflow: hidden;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 20px rgba(255, 107, 107, 0.15);
-  border: 1px solid #FFE4CC;
+  box-shadow: 0 10px 30px rgba(89, 53, 39, 0.08);
+  border: 1px solid var(--color-sub-1);
 }
 
 .restaurant-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 48px rgba(0,0,0,0.4);
-  border-color: #FF6B6B;
-  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 12px 48px rgba(89, 53, 39, 0.15);
+  border-color: var(--color-main);
 }
 
 /* === IMAGE SECTION === */
 .image-section {
-  width: 300px;
+  width: 240px;
   height: 200px;
   position: relative;
   overflow: hidden;
@@ -1117,11 +1143,113 @@ export default {
 
 /* === INFO SECTION === */
 .info-section {
-  padding: 24px 28px;
+  padding: 24px 32px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.info-left {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 12px;
+}
+
+.info-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 20px;
+  padding-left: 32px;
+  border-left: 1px solid var(--color-sub-1);
+  min-width: 180px;
+}
+
+.metric-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.stars-container {
+  position: relative;
+  display: inline-block;
+  font-size: 20px;
+  line-height: 1;
+  font-style: normal;
+}
+
+.stars-bg {
+  display: flex;
+  gap: 0;
+  color: #FFFFFF;
+  letter-spacing: -2px;
+  -webkit-text-stroke: 0.5px #95A5A6;
+  font-weight: 400;
+}
+
+.stars-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  gap: 0;
+  color: var(--color-main);
+  overflow: hidden;
+  white-space: nowrap;
+  letter-spacing: -2px;
+}
+
+.rating-value {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--color-emphasis);
+  line-height: 1;
+}
+
+.no-review-text {
+  font-weight: 500;
+  font-size: 16px;
+  color: #95A5A6;
+}
+
+.stats-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--color-bg);
+  padding: 10px 16px;
+  border-radius: 12px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.stat-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #95A5A6;
+  text-transform: uppercase;
+}
+
+.stat-value {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--color-emphasis);
+}
+
+.stat-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--color-sub-1);
 }
 
 .header-area {
@@ -1134,19 +1262,19 @@ export default {
 .restaurant-name {
   font-size: 22px;
   line-height: 1.3;
-  font-weight: 700;
-  color: #2D3436;
+  font-weight: 800;
+  color: var(--color-emphasis);
   margin: 0;
 }
 
 .category-badge {
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFA94D 100%);
-  color: #2D3436;
+  background: var(--color-sub-1);
+  color: var(--color-emphasis);
   padding: 6px 14px;
   border-radius: 6px;
   font-size: 13px;
-  font-weight: 600;
-  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+  font-weight: 700;
+  border: 1px solid var(--color-sub-1);
 }
 
 .rating-area {
@@ -1181,7 +1309,18 @@ export default {
 }
 
 .icon {
-  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+}
+
+.info-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0.7;
 }
 
 /* === RESPONSIVE === */

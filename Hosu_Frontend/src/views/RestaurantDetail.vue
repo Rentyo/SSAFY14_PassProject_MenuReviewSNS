@@ -271,22 +271,20 @@ onMounted(() => {
 }
 
 .restaurant-detail-container {
+  /* Custom Requested Palette */
+  --color-bg: #F2F2F2;
+  --color-emphasis: #593527;
+  --color-main: #F29F05;
+  --color-sub-1: #F2DCB3;
+  --color-sub-2: #D97904;
+
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   width: 100%;
-  background: linear-gradient(
-    135deg,
-    #FFF8F0 0%,
-    #FFF8F0 25%,
-    #FFF8F0 50%,
-    #FFF8F0 75%,
-    #FFF8F0 100%
-  );
-  
-  
+  background: var(--color-bg);
   display: flex;
   flex-direction: column;
   overflow-y: auto;
@@ -305,13 +303,12 @@ onMounted(() => {
   min-height: 80px;
   flex-shrink: 0;
   padding: 0 2rem;
-  background: #FFF5E6;
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: #FFFFFF;
+  border-bottom: 2px solid var(--color-sub-1);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(89, 53, 39, 0.08);
 }
 
 .hosu-logo {
@@ -329,29 +326,27 @@ onMounted(() => {
 .logo-main {
   font-weight: 800;
   font-size: 1.75rem;
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFA94D 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--color-main);
   letter-spacing: -0.5px;
 }
 
 .logo-sub {
   font-size: 0.7rem;
-  color: #95A5A6;
-  font-weight: 500;
+  color: var(--color-emphasis);
+  font-weight: 600;
   letter-spacing: 2px;
   text-transform: uppercase;
 }
 
 .content-box {
-  width: 90%;
+  flex: 1 1 auto;
+  width: 100%;
   max-width: 1200px;
   background: #FFFFFF;
   border-radius: 24px;
-  border: 1px solid #FFE4CC;
-  box-shadow: 0 4px 20px rgba(255, 107, 107, 0.15);
-  min-height: 600px;
+  border: 1px solid var(--color-sub-1);
+  box-shadow: 0 10px 30px rgba(89, 53, 39, 0.08);
+  min-height: 700px;
   overflow: hidden;
 }
 
@@ -364,7 +359,7 @@ onMounted(() => {
 
 .profile-header {
   display: flex;
-  padding: 40px 60px;
+  padding: 40px 80px;
   gap: 60px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -380,8 +375,8 @@ onMounted(() => {
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid rgba(255, 107, 107, 0.15);
-  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.15);
+  border: 4px solid var(--color-sub-1);
+  box-shadow: 0 4px 12px rgba(89, 53, 39, 0.1);
 }
 
 .profile-info {
@@ -399,15 +394,15 @@ onMounted(() => {
 
 .name-row h2 {
   font-size: 28px;
-  font-weight: 700;
+  font-weight: 800;
   margin: 0;
-  color: #2D3436;
+  color: var(--color-emphasis);
 }
 
 .follow-btn {
   padding: 8px 12px;
-  border: 1.5px solid #FFE4CC;
-  background: #FFF5E6;
+  border: 1.5px solid var(--color-sub-1);
+  background: #FFFFFF;
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -421,10 +416,10 @@ onMounted(() => {
 }
 
 .follow-btn:hover {
-  background: #FFFFFF;
-  border-color: #FF6B6B;
+  background: var(--color-bg);
+  border-color: var(--color-main);
   transform: translateY(-2px);
-  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.15);
+  box-shadow: 0 4px 12px rgba(242, 159, 5, 0.15);
 }
 
 .follow-icon {
@@ -448,8 +443,8 @@ onMounted(() => {
 
 .btn-write-review {
   padding: 8px 12px;
-  border: 1.5px solid #FFE4CC;
-  background: #FFF5E6;
+  border: 1.5px solid var(--color-sub-1);
+  background: #FFFFFF;
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -463,10 +458,10 @@ onMounted(() => {
 }
 
 .btn-write-review:hover {
-  background: #FFFFFF;
-  border-color: #FF6B6B;
+  background: var(--color-bg);
+  border-color: var(--color-main);
   transform: translateY(-2px);
-  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.15);
+  box-shadow: 0 4px 12px rgba(242, 159, 5, 0.15);
 }
 
 .edit-icon {
@@ -502,9 +497,9 @@ onMounted(() => {
 }
 
 .stat-value {
-  font-weight: 700;
+  font-weight: 800;
   font-size: 18px;
-  color: #FF6B6B;
+  color: var(--color-main);
 }
 
 .stat-label {
@@ -547,14 +542,12 @@ onMounted(() => {
 }
 
 .tab-btn:hover {
-  color: #636E72;
-  background: #FFF5E6;
+  color: var(--color-main);
 }
 
 .tab-btn.active {
-  border-bottom-color: #60a5fa;
-  color: #FF6B6B;
-  background: rgba(255, 107, 107, 0.15);
+  border-bottom-color: var(--color-main);
+  color: var(--color-main);
 }
 
 .tab-icon {
@@ -568,7 +561,7 @@ onMounted(() => {
 }
 
 .tab-content {
-  padding: 30px;
+  padding: 40px 80px;
   min-height: 400px;
 }
 
@@ -588,20 +581,21 @@ onMounted(() => {
 
 .btn-primary {
   padding: 12px 24px;
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFA94D 100%);
-  color: #2D3436;
+  background: var(--color-main);
+  color: #FFFFFF;
   border: none;
   border-radius: 12px;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 800;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+  box-shadow: 0 4px 15px rgba(242, 159, 5, 0.3);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+  background: var(--color-sub-2);
+  box-shadow: 0 6px 20px rgba(217, 121, 4, 0.4);
 }
 
 /* 반응형 */
@@ -668,16 +662,14 @@ onMounted(() => {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  gap: 2rem;
+  gap: 3rem;
   padding: 2rem;
-  max-width: 1400px;
+  width: 100%;
+  max-width: 1600px;
   margin: 0 auto;
 }
 
-.content-box {
-  flex: 1;
-  max-width: 800px;
-}
+/* content-box styles consolidated above */
 
 /* Right Navigation */
 .left-navigation {

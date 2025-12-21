@@ -17,19 +17,28 @@
       </div>
 
       <form v-else @submit.prevent="handleSubmit" class="notice-form">
-        <!-- 중요도 선택 -->
+        <!-- 중요도 선택 (카드 스타일) -->
         <div class="form-group">
           <label>중요도 <span class="required">*</span></label>
-          <select v-model="form.importance" class="form-select" required>
-            <option value="">중요도를 선택하세요</option>
-            <option :value="1">일반</option>
-            <option :value="2">중요</option>
-            <option :value="3">긴급</option>
-          </select>
-          <div class="importance-preview" v-if="form.importance">
-            <span class="notice-badge" :class="getImportanceClass(form.importance)">
-              {{ getImportanceBadge(form.importance) }}
-            </span>
+          <div class="importance-cards">
+            <label 
+              v-for="level in [
+                { val: 1, label: '일반', class: 'normal' },
+                { val: 2, label: '중요', class: 'important' },
+                { val: 3, label: '긴급', class: 'urgent' }
+              ]" 
+              :key="level.val"
+              :class="['importance-card', level.class, { active: form.importance === level.val }]"
+            >
+              <input 
+                type="radio" 
+                v-model="form.importance" 
+                :value="level.val" 
+                class="hidden-radio"
+              />
+              <span class="card-label">{{ level.label }}</span>
+              <div class="active-check" v-if="form.importance === level.val">✓</div>
+            </label>
           </div>
         </div>
 
@@ -236,32 +245,36 @@ onMounted(() => {
 
 <style scoped>
 .notice-edit-container {
+  /* Custom Requested Palette */
+  --color-bg: #F2F2F2;
+  --color-emphasis: #593527;
+  --color-main: #F29F05;
+  --color-sub-1: #F2DCB3;
+  --color-sub-2: #D97904;
+
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   width: 100%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--color-bg);
   display: flex;
   flex-direction: column;
   overflow-y: auto;
 }
 
-/* Header */
 .hosu-header {
-  height: 120px;
-  min-height: 120px;
+  height: 80px;
+  min-height: 80px;
   flex-shrink: 0;
-  padding-left: calc(80px + 1.5rem);
-  padding-right: 1.5rem;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  color: #1f2937;
+  padding: 0 2rem;
+  background: #FFFFFF;
+  border-bottom: 2px solid var(--color-sub-1);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(89, 53, 39, 0.08);
 }
 
 .hosu-logo {
@@ -269,17 +282,26 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   line-height: 1.2;
+  transition: transform 0.3s ease;
+}
+
+.hosu-logo:hover {
+  transform: translateY(-2px);
 }
 
 .logo-main {
   font-weight: 800;
-  font-size: 1.5rem;
-  color: #667eea;
+  font-size: 1.75rem;
+  color: var(--color-main);
+  letter-spacing: -0.5px;
 }
 
 .logo-sub {
-  font-size: 0.75rem;
-  color: #6b7280;
+  font-size: 0.7rem;
+  color: var(--color-emphasis);
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
 }
 
 .notice-edit-box {
@@ -287,30 +309,24 @@ onMounted(() => {
   max-width: 800px;
   margin: 40px auto 80px;
   background: white;
-  border-radius: 16px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(89, 53, 39, 0.08);
+  border: 1px solid var(--color-sub-1);
   padding: 40px;
 }
 
 .notice-edit-box h2 {
   margin: 0 0 30px 0;
-  font-size: 28px;
-  color: #333;
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--color-emphasis);
   text-align: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  letter-spacing: -1px;
 }
 
 .loading {
   text-align: center;
   padding: 60px 20px;
-}
-
-.loading p {
-  font-size: 16px;
-  color: #666;
 }
 
 .notice-form {
@@ -326,9 +342,9 @@ onMounted(() => {
 
 .form-group label {
   font-size: 14px;
-  font-weight: 600;
-  color: #555;
-  margin-bottom: 8px;
+  font-weight: 700;
+  color: var(--color-emphasis);
+  margin-bottom: 10px;
 }
 
 .required {
@@ -339,55 +355,112 @@ onMounted(() => {
 .form-input,
 .form-textarea {
   width: 100%;
-  padding: 12px;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
-  font-size: 14px;
+  padding: 14px 18px;
+  background: #F8F9FA;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  font-size: 15px;
   font-family: inherit;
   box-sizing: border-box;
-  transition: all 0.3s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--color-emphasis);
 }
 
 .form-select:focus,
 .form-input:focus,
 .form-textarea:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  background: white;
+  border-color: var(--color-main);
+  box-shadow: 0 0 0 4px rgba(242, 159, 5, 0.1);
 }
 
 .form-textarea {
-  resize: vertical;
-  min-height: 200px;
+  resize: none;
+  min-height: 240px;
   line-height: 1.6;
 }
 
-.importance-preview {
-  margin-top: 12px;
+/* 중요도 카드 스타일 */
+.importance-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 4px;
 }
 
-.notice-badge {
-  display: inline-block;
-  padding: 6px 16px;
-  border-radius: 12px;
-  font-size: 13px;
-  font-weight: bold;
+.importance-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: #F8F9FA;
+  border: 2.5px solid transparent;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
 }
 
-.notice-badge.normal {
-  background: #e0e0e0;
+.importance-card:hover {
+  transform: translateY(-2px);
+  background: #FFFFFF;
+  border-color: var(--color-sub-1);
+}
+
+.card-label {
+  font-size: 15px;
+  font-weight: 700;
   color: #666;
 }
 
-.notice-badge.important {
-  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
-  color: #2D3436;
+.active-check {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 24px;
+  height: 24px;
+  background: var(--color-main);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+  box-shadow: 0 4px 8px rgba(242, 159, 5, 0.3);
+  z-index: 2;
 }
 
-.notice-badge.urgent {
-  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
-  color: #2D3436;
+.hidden-radio {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
 }
+
+/* 각 등급별 활성화 스타일 */
+.importance-card.normal.active {
+  background: #F1F3F5;
+  border-color: #ADB5BD;
+}
+.importance-card.normal.active .card-label { color: #495057; }
+.importance-card.normal.active .active-check { background: #ADB5BD; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+
+.importance-card.important.active {
+  background: #E7F5FF;
+  border-color: #339AF0;
+}
+.importance-card.important.active .card-label { color: #1C7ED6; }
+.importance-card.important.active .active-check { background: #339AF0; }
+
+.importance-card.urgent.active {
+  background: #FFF5F5;
+  border-color: #FF6B6B;
+}
+.importance-card.urgent.active .card-label { color: #FF6B6B; }
+.importance-card.urgent.active .active-check { background: #FF6B6B; }
 
 .error-message {
   padding: 12px;
@@ -416,23 +489,26 @@ onMounted(() => {
 }
 
 .btn-cancel {
-  background: #f5f5f5;
-  color: #333;
+  background: var(--color-sub-1);
+  color: var(--color-emphasis);
+  font-weight: 700;
 }
 
 .btn-cancel:hover {
-  background: #e0e0e0;
+  background: #E8CC9F;
 }
 
 .btn-submit {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: #2D3436;
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+  background: var(--color-main);
+  color: #FFFFFF;
+  font-weight: 800;
+  box-shadow: 0 4px 15px rgba(242, 159, 5, 0.3);
 }
 
 .btn-submit:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  background: var(--color-sub-2);
+  box-shadow: 0 6px 20px rgba(217, 121, 4, 0.4);
 }
 
 .btn-submit:disabled {
@@ -442,15 +518,18 @@ onMounted(() => {
 }
 
 .btn-delete {
-  background: #f44336;
-  color: #2D3436;
-  box-shadow: 0 2px 8px rgba(244, 67, 54, 0.3);
+  background: #F1F3F5;
+  color: #95A5A6;
+  font-weight: 700;
+  border: 1.5px solid #E0E0E0;
 }
 
 .btn-delete:hover:not(:disabled) {
-  background: #da190b;
+  background: #FFF5F5;
+  color: #f44336;
+  border-color: #f44336;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(244, 67, 54, 0.4);
+  box-shadow: 0 4px 12px rgba(244, 67, 54, 0.15);
 }
 
 .btn-delete:disabled {

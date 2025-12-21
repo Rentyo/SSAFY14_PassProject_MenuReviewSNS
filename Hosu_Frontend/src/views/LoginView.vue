@@ -112,14 +112,12 @@ const { email, password, loading, errorMessage, handleLogin } = useLogin()
 }
 
 .login-page {
-  --cannoli-cream: #F0EADC;
-  --cream-tan: #E4CFB6;
-  --safari: #BA9B7C;
-  --sirocco: #BF8D6F;
-  --chanterelle: #B28F73;
-  --mocha-mousse: #7A5C4F;
-  --baltic-amber: #D96A33;
-  --chocolate-martini: #3D2B1F;
+  /* Custom Requested Palette */
+  --color-bg: #F2F2F2;
+  --color-emphasis: #593527;
+  --color-main: #F29F05;
+  --color-sub-1: #F2DCB3;
+  --color-sub-2: #D97904;
 
   position: fixed;
   top: 0;
@@ -130,7 +128,7 @@ const { email, password, loading, errorMessage, handleLogin } = useLogin()
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  background: var(--cream-tan);
+  background: var(--color-bg);
 }
 
 /* Removed animated gradient background */
@@ -143,11 +141,11 @@ const { email, password, loading, errorMessage, handleLogin } = useLogin()
   flex-shrink: 0;
   padding: 0 2rem;
   background: #FFFFFF;
-  border-bottom: 2px solid var(--cream-tan);
+  border-bottom: 2px solid var(--color-sub-1);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 15px rgba(61, 43, 31, 0.08);
+  box-shadow: 0 4px 15px rgba(89, 53, 39, 0.08);
 }
 
 .hosu-logo {
@@ -165,17 +163,14 @@ const { email, password, loading, errorMessage, handleLogin } = useLogin()
 .logo-main {
   font-weight: 800;
   font-size: 1.75rem;
-  background: linear-gradient(135deg, var(--baltic-amber) 0%, var(--chocolate-martini) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--color-main);
   letter-spacing: -0.5px;
 }
 
 .logo-sub {
   font-size: 0.7rem;
-  color: var(--chanterelle);
-  font-weight: 500;
+  color: var(--color-emphasis);
+  font-weight: 600;
   letter-spacing: 2px;
   text-transform: uppercase;
 }
@@ -191,13 +186,13 @@ const { email, password, loading, errorMessage, handleLogin } = useLogin()
 }
 
 .login-box {
-  background: var(--cannoli-cream);
+  background: #FFFFFF;
   padding: 3.5rem 2.5rem;
   border-radius: 24px;
-  border: 1px solid var(--safari);
+  border: 1px solid var(--color-sub-1);
   box-shadow: 
-    0 20px 25px -5px rgba(61, 43, 31, 0.1),
-    0 10px 10px -5px rgba(61, 43, 31, 0.04);
+    0 20px 25px -5px rgba(89, 53, 39, 0.1),
+    0 10px 10px -5px rgba(89, 53, 39, 0.04);
   width: 100%;
   max-width: 440px;
   animation: fadeInUp 0.6s ease-out;
@@ -222,14 +217,15 @@ const { email, password, loading, errorMessage, handleLogin } = useLogin()
 h2 {
   font-size: 2rem;
   font-weight: 800;
-  color: var(--chocolate-martini);
+  color: var(--color-emphasis);
   margin: 0 0 0.5rem 0;
   letter-spacing: -1px;
 }
 
 .subtitle {
   font-size: 1rem;
-  color: var(--mocha-mousse);
+  color: var(--color-emphasis);
+  opacity: 0.8;
   margin: 0;
   font-weight: 500;
 }
@@ -249,9 +245,10 @@ h2 {
   left: 1.25rem;
   width: 20px;
   height: 20px;
-  color: var(--safari);
+  color: var(--color-emphasis);
+  opacity: 0.5;
   pointer-events: none;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
   z-index: 1;
 }
 
@@ -259,25 +256,25 @@ h2 {
   width: 100%;
   padding: 1.125rem 1.125rem 1.125rem 3.5rem;
   background: #FFFFFF;
-  border: 1.5px solid var(--cream-tan);
+  border: 1.5px solid var(--color-sub-1);
   border-radius: 12px;
   font-size: 0.95rem;
-  color: var(--chocolate-martini);
+  color: var(--color-emphasis);
   box-sizing: border-box;
   transition: all 0.3s ease;
   font-weight: 400;
 }
 
 .styled-input::placeholder {
-  color: var(--chanterelle);
-  opacity: 0.7;
+  color: var(--color-emphasis);
+  opacity: 0.4;
 }
 
 .styled-input:focus {
   outline: none;
   background: #FFFFFF;
-  border-color: var(--baltic-amber);
-  box-shadow: 0 0 0 4px rgba(217, 106, 51, 0.1);
+  border-color: var(--color-main);
+  box-shadow: 0 0 0 4px rgba(242, 159, 5, 0.1);
 }
 
 /* Override browser autofill styles */
@@ -301,7 +298,7 @@ h2 {
 .login-button {
   width: 100%;
   padding: 1.125rem;
-  background: #A47864; /* 동일한 버튼 컬러 */
+  background: var(--color-main);
   color: #FFFFFF;
   border: none;
   border-radius: 12px;
@@ -310,7 +307,7 @@ h2 {
   cursor: pointer;
   margin-top: 1rem;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 12px rgba(91, 64, 49, 0.2);
+  box-shadow: 0 4px 12px rgba(242, 159, 5, 0.2);
   position: relative;
   overflow: hidden;
 }
@@ -328,7 +325,8 @@ h2 {
 
 .login-button:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(91, 64, 49, 0.3);
+  background: var(--color-sub-2);
+  box-shadow: 0 8px 20px rgba(217, 121, 4, 0.3);
 }
 
 .login-button:hover:not(:disabled)::before {
@@ -390,9 +388,9 @@ h2 {
   gap: 0.5rem;
   padding: 0.875rem 1rem;
   margin-bottom: 1rem;
-  background: rgba(186, 110, 75, 0.1);
-  border: 1px solid var(--baltic-amber);
-  color: var(--baltic-amber);
+  background: rgba(217, 121, 4, 0.1);
+  border: 1px solid var(--color-sub-2);
+  color: var(--color-sub-2);
   border-radius: 10px;
   font-size: 0.875rem;
 }
@@ -423,11 +421,12 @@ h2 {
   text-align: center;
   margin-top: 1.75rem;
   font-size: 0.95rem;
-  color: var(--mocha-mousse);
+  color: var(--color-emphasis);
+  opacity: 0.8;
 }
 
 .signup-link a {
-  color: var(--baltic-amber);
+  color: var(--color-sub-2);
   text-decoration: none;
   font-weight: 700;
   margin-left: 0.5rem;
@@ -436,7 +435,7 @@ h2 {
 }
 
 .signup-link a:hover {
-  color: var(--chocolate-martini);
+  color: var(--color-main);
   text-decoration: underline;
 }
 

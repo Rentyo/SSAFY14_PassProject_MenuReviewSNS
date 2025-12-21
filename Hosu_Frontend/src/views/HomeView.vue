@@ -511,14 +511,31 @@ const encodeURIComponent = window.encodeURIComponent
 
 <style scoped>
 .hosu-main-page {
-  --cannoli-cream: #F0EADC;
-  --cream-tan: #E4CFB6;
-  --safari: #BA9B7C;
-  --sirocco: #BF8D6F;
-  --chanterelle: #B28F73;
-  --mocha-mousse: #7A5C4F; /* 더 진한 보조 텍스트 색상 */
-  --baltic-amber: #D96A33; /* 포화도 높은 버튼 색상 */
-  --chocolate-martini: #3D2B1F; /* 더 진한 메인 텍스트 색상 */
+  /* Custom Requested Palette */
+  --color-bg: #F2F2F2;
+  --color-emphasis: #593527;
+  --color-main: #F29F05;
+  --color-sub-1: #F2DCB3;
+  --color-sub-2: #D97904;
+
+  --bg-base: var(--color-bg);
+  --bg-inactive: var(--color-bg);
+  --bg-active: #FFFFFF;
+  --sub-dark: var(--color-emphasis);
+  --sub-light: var(--color-sub-1);
+  --main-color: var(--color-sub-1);
+  --text-primary: var(--color-emphasis);
+  --border-color: var(--color-sub-1);
+
+  /* Mapping for decorative naming consistency */
+  --baltic-amber: var(--color-main);
+  --chocolate-martini: var(--color-emphasis);
+  --chanterelle: var(--color-sub-2);
+  --mocha-mousse: var(--color-emphasis);
+  --cream-tan: var(--color-sub-1);
+  --sirocco: var(--color-sub-1);
+  --safari: var(--color-sub-2);
+  --cannoli-cream: var(--color-bg);
 
   position: fixed;
   top: 0;
@@ -526,10 +543,11 @@ const encodeURIComponent = window.encodeURIComponent
   right: 0;
   bottom: 0;
   width: 100%;
-  background: var(--cream-tan); /* 메인 배경을 더 짙게 */
+  background: var(--bg-base);
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  color: var(--text-primary);
 }
 
 
@@ -541,12 +559,12 @@ const encodeURIComponent = window.encodeURIComponent
   min-height: 80px;
   flex-shrink: 0;
   padding: 0 2rem;
-  background: #FFFFFF;
-  border-bottom: 2px solid var(--cream-tan);
+  background: var(--bg-active);
+  border-bottom: 2px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 15px rgba(61, 43, 31, 0.08); /* 더 선명한 그림자 */
+  box-shadow: 0 2px 8px rgba(31, 18, 7, 0.05);
 }
 
 .hosu-logo {
@@ -564,17 +582,14 @@ const encodeURIComponent = window.encodeURIComponent
 .logo-main {
   font-weight: 800;
   font-size: 1.75rem;
-  background: linear-gradient(135deg, var(--baltic-amber) 0%, var(--chocolate-martini) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--color-main);
   letter-spacing: -0.5px;
 }
 
 .logo-sub {
   font-size: 0.7rem;
-  color: var(--chanterelle);
-  font-weight: 500;
+  color: var(--color-emphasis);
+  font-weight: 600;
   letter-spacing: 2px;
   text-transform: uppercase;
 }
@@ -710,15 +725,11 @@ const encodeURIComponent = window.encodeURIComponent
   max-width: 1050px;
   margin-left: auto;
   margin-right: auto;
-  background: var(--cannoli-cream);
-  border: 1px solid var(--safari);
+  background: var(--main-color);
+  border: 1px solid var(--border-color);
   border-radius: 16px;
   padding: 1.8rem 1.5rem;
-  /* 다층 그림자로 깊이감 강화 */
-  box-shadow: 
-    0 10px 15px -3px rgba(61, 43, 31, 0.1),
-    0 4px 6px -2px rgba(61, 43, 31, 0.05),
-    0 20px 25px -5px rgba(61, 43, 31, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   margin-bottom: 1.5rem;
   z-index: 10;
 }
@@ -735,10 +746,16 @@ const encodeURIComponent = window.encodeURIComponent
   height: 48px;
   padding: 0 0.75rem;
   border-radius: 0.5rem;
-  border: 1px solid var(--cream-tan);
-  background: var(--cannoli-cream);
-  color: var(--chocolate-martini);
-  font-size: 0.9rem;
+  border: 1px solid var(--border-color);
+  background: var(--bg-active);
+  color: var(--sub-dark);
+  font-size: 0.96rem;
+}
+
+.search-row select:focus,
+.search-row input:focus {
+  outline: none;
+  border-color: var(--sub-dark);
 }
 
 .search-row select option {
@@ -748,20 +765,22 @@ const encodeURIComponent = window.encodeURIComponent
 
 .primary-btn {
   height: 48px;
-  padding: 0 1.3rem;
+  padding: 0 1.5rem;
   border-radius: 0.5rem;
   border: none;
-  background: #A47864; /* 요청하신 전용 브라운 컬러 */
+  background: var(--color-main);
   color: #FFFFFF;
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(242, 159, 5, 0.2);
 }
 
 .primary-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(91, 64, 49, 0.3);
+  background: var(--color-sub-2);
+  box-shadow: 0 6px 16px rgba(217, 121, 4, 0.3);
 }
 
 /* AI 자연어 검색 섹션 */
@@ -770,13 +789,11 @@ const encodeURIComponent = window.encodeURIComponent
 }
 
 .ai-search-card {
-  background: var(--cannoli-cream);
-  border: 1px solid var(--safari);
+  background: var(--main-color);
+  border: 1px solid var(--border-color);
   border-radius: 16px;
   padding: 1.8rem;
-  box-shadow: 
-    0 10px 15px -3px rgba(61, 43, 31, 0.1),
-    0 20px 25px -5px rgba(61, 43, 31, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
 .ai-header {
@@ -827,10 +844,10 @@ const encodeURIComponent = window.encodeURIComponent
   height: 52px;
   padding: 0 1.25rem;
   border-radius: 26px;
-  border: 2px solid var(--cream-tan);
-  background: var(--cannoli-cream);
-  color: var(--chocolate-martini);
-  font-size: 0.95rem;
+  border: 1px solid var(--border-color);
+  background: var(--bg-active);
+  color: var(--sub-dark);
+  font-size: 1rem;
   transition: all 0.3s ease;
 }
 
@@ -850,18 +867,19 @@ const encodeURIComponent = window.encodeURIComponent
   height: 52px;
   border-radius: 50%;
   border: none;
-  background: #A47864; /* 돋보기 버튼 컬러 통일 */
+  background: var(--color-main);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(61, 43, 31, 0.2);
+  box-shadow: 0 4px 12px rgba(242, 159, 5, 0.3);
 }
 
 .ai-search-btn:hover {
   transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 6px 20px rgba(91, 64, 49, 0.4);
+  background: var(--color-sub-2);
+  box-shadow: 0 6px 20px rgba(217, 121, 4, 0.4);
 }
 
 .search-icon {
@@ -886,18 +904,17 @@ const encodeURIComponent = window.encodeURIComponent
 .example-chip {
   padding: 0.5rem 1rem;
   border-radius: 20px;
-  border: 1px solid var(--cream-tan);
-  background: var(--cannoli-cream);
-  color: var(--mocha-mousse);
+  border: 1px solid var(--border-color);
+  background: var(--bg-inactive);
+  color: var(--sub-dark);
   font-size: 0.85rem;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .example-chip:hover {
-  background: var(--cream-tan);
-  border-color: var(--baltic-amber);
-  color: var(--chocolate-martini);
+  background: var(--bg-active);
+  border-color: var(--sub-dark);
   transform: translateY(-2px);
 }
 
@@ -910,13 +927,11 @@ const encodeURIComponent = window.encodeURIComponent
 }
 
 .search-section-card {
-  background: var(--cannoli-cream);
-  border: 1px solid var(--safari);
+  background: var(--main-color);
+  border: 1px solid var(--border-color);
   border-radius: 16px;
   padding: 1.8rem;
-  box-shadow: 
-    0 10px 15px -3px rgba(61, 43, 31, 0.1),
-    0 20px 25px -5px rgba(61, 43, 31, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
 .search-section-card h2 {
@@ -929,7 +944,7 @@ const encodeURIComponent = window.encodeURIComponent
 
 .section-desc {
   font-size: 0.85rem;
-  color: var(--mocha-mousse);
+  color: #666;
   margin-bottom: 1rem;
   text-align: center;
 }
@@ -944,22 +959,21 @@ const encodeURIComponent = window.encodeURIComponent
 .chip {
   border-radius: 12px;
   padding: 0.75rem 1.25rem;
-  border: 2px solid var(--cream-tan);
-  background: var(--cannoli-cream);
+  border: 1px solid var(--border-color);
+  background: var(--bg-active);
   font-size: 0.95rem;
   cursor: pointer;
-  color: var(--chocolate-martini);
+  color: var(--sub-dark);
   font-weight: 500;
   text-align: center;
   transition: all 0.2s ease;
 }
 
 .chip:hover {
-  background: var(--safari);
+  background: var(--sub-dark);
   color: #FFFFFF;
   border-color: transparent;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(91, 64, 49, 0.2);
 }
 
 /* 카테고리 버튼 */
@@ -973,23 +987,24 @@ const encodeURIComponent = window.encodeURIComponent
 .category-btn {
   padding: 0.6rem 1.2rem;
   border-radius: 20px;
-  border: 2px solid var(--cream-tan);
-  background: var(--cannoli-cream);
+  border: 1px solid var(--border-color);
+  background: var(--bg-active);
   font-size: 0.9rem;
   font-weight: 500;
-  color: var(--chocolate-martini);
+  color: var(--sub-dark);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .category-btn:hover:not(:disabled) {
-  border-color: var(--baltic-amber);
-  color: var(--baltic-amber);
-  background: #FFFFFF;
+  background: var(--sub-dark);
+  color: #FFFFFF;
+  border-color: transparent;
+  transform: translateY(-2px);
 }
 
 .category-btn.active {
-  background: var(--baltic-amber);
+  background: var(--sub-dark);
   color: #FFFFFF;
   border-color: transparent;
 }
@@ -1105,25 +1120,33 @@ const encodeURIComponent = window.encodeURIComponent
 }
 
 .category-card {
-  background: #FFFFFF; /* 카드 내부의 선택 요소는 화이트로 처리하여 대비감 확보 */
-  border: 1px solid var(--cream-tan);
+  background: var(--bg-active);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
   padding: 1.5rem 1rem;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
   text-align: center;
-  box-shadow: 0 2px 8px rgba(91, 64, 49, 0.05);
 }
 
 .category-card:hover {
-  border-color: var(--baltic-amber);
-  background: #FFFFFF;
-  box-shadow: 0 4px 12px rgba(91, 64, 49, 0.2);
-  transform: translateY(-2px);
+  background: var(--sub-dark);
+  border-color: var(--sub-dark);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.category-card:hover .category-title,
+.category-card:hover .category-desc {
+  color: #FFFFFF;
+}
+
+.category-card:hover .category-icon img {
+  filter: brightness(0) invert(1);
 }
 
 .category-icon {

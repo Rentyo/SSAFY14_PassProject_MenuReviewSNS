@@ -94,16 +94,17 @@ onMounted(() => {
 
 .reviews-header h3 {
   font-size: 24px;
-  color: #2D3436;
+  color: var(--color-emphasis);
   margin: 0;
+  font-weight: 800;
 }
 
 .review-count {
   font-size: 16px;
-  color: #2D3436;
+  color: var(--color-emphasis);
   font-weight: bold;
-  background: #FFF5E6;
-  border: 1px solid #FFE4CC;
+  background: var(--color-sub-1);
+  border: 1px solid var(--color-sub-1);
   padding: 6px 16px;
   border-radius: 20px;
 }
@@ -143,15 +144,17 @@ onMounted(() => {
 
 .review-card {
   background: white;
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
+  border: 1px solid var(--color-sub-1);
   cursor: pointer;
   transition: all 0.3s;
 }
 
 .review-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 20px rgba(89, 53, 39, 0.15);
+  border-color: var(--color-main);
 }
 
 .review-image {

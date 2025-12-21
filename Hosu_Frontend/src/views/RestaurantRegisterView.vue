@@ -178,16 +178,29 @@ const submitRestaurant = async () => {
 
 <style scoped>
 .restaurant-register-container {
+  /* Custom Requested Palette (Same as HomeView) */
+  --color-bg: #F2F2F2;
+  --color-emphasis: #593527;
+  --color-main: #F29F05;
+  --color-sub-1: #F2DCB3;
+  --color-sub-2: #D97904;
+
+  --bg-base: var(--color-bg);
+  --bg-active: #FFFFFF;
+  --text-primary: var(--color-emphasis);
+  --border-color: var(--color-sub-1);
+
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   width: 100%;
-  background: #FFF8F0;
+  background: var(--bg-base);
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  color: var(--text-primary);
 }
 
 /* Header */
@@ -196,12 +209,12 @@ const submitRestaurant = async () => {
   min-height: 80px;
   flex-shrink: 0;
   padding: 0 2rem;
-  background: #FFFFFF;
-  border-bottom: 1px solid #FFE4CC;
+  background: var(--bg-active);
+  border-bottom: 2px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 12px rgba(255, 107, 107, 0.08);
+  box-shadow: 0 2px 8px rgba(31, 18, 7, 0.05);
 }
 
 .hosu-logo {
@@ -219,17 +232,16 @@ const submitRestaurant = async () => {
 .logo-main {
   font-weight: 800;
   font-size: 1.75rem;
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFA94D 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--color-main);
+  background: none;
+  -webkit-text-fill-color: initial;
   letter-spacing: -0.5px;
 }
 
 .logo-sub {
   font-size: 0.7rem;
-  color: #95A5A6;
-  font-weight: 500;
+  color: var(--color-emphasis);
+  font-weight: 600;
   letter-spacing: 2px;
   text-transform: uppercase;
 }
@@ -244,11 +256,11 @@ const submitRestaurant = async () => {
 }
 
 .register-card {
-  background: white;
+  background: var(--bg-active);
   padding: 40px;
   border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(255, 107, 107, 0.15);
-  border: 1px solid #FFE4CC;
+  box-shadow: 0 4px 20px rgba(91, 64, 49, 0.15);
+  border: 1px solid var(--border-color);
   width: 100%;
   max-width: 600px;
 }
@@ -264,20 +276,20 @@ const submitRestaurant = async () => {
   border-radius: 20px;
   font-size: 12px;
   font-weight: bold;
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFA94D 100%);
+  background: var(--color-main);
   color: #FFFFFF;
   margin-bottom: 10px;
 }
 
 h2 {
   margin: 10px 0 5px 0;
-  color: #1f2937;
+  color: var(--color-emphasis);
   font-size: 1.75rem;
   font-weight: 700;
 }
 
 .subtitle {
-  color: #9ca3af;
+  color: #8D6E63; /* Slightly lighter brown for subtitle */
   font-size: 14px;
 }
 
@@ -294,7 +306,7 @@ h2 {
 .form-group label {
   display: block;
   margin-bottom: 8px;
-  color: #374151;
+  color: var(--color-emphasis);
   font-weight: 600;
   font-size: 14px;
 }
@@ -302,19 +314,20 @@ h2 {
 .form-input, .form-select, .form-textarea {
   width: 100%;
   padding: 12px 14px;
-  border: 1.5px solid #e5e7eb;
+  border: 1.5px solid #e5e7eb; /* Keep light gray for neutral input border, or use var(--border-color) */
   border-radius: 8px;
   font-size: 14px;
   box-sizing: border-box;
   transition: all 0.2s ease;
   background: #fff;
   font-family: inherit;
+  color: var(--color-emphasis);
 }
 
 .form-input:focus, .form-select:focus, .form-textarea:focus {
   outline: none;
-  border-color: #FF6B6B;
-  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+  border-color: var(--color-main);
+  box-shadow: 0 0 0 3px rgba(242, 159, 5, 0.1);
 }
 
 .form-input:disabled {
@@ -336,11 +349,11 @@ h2 {
 
 .btn-search {
   padding: 0 20px;
-  background-color: #FFF5E6;
-  color: #2D3436;
-  border: 1px solid #FFE4CC;
+  background-color: #FFFFFF;
+  color: var(--color-emphasis);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 14px;
   cursor: pointer;
   white-space: nowrap;
@@ -348,8 +361,9 @@ h2 {
 }
 
 .btn-search:hover {
-  border-color: #FF6B6B;
-  background-color: #FFFFFF;
+  border-color: var(--color-main);
+  background-color: var(--color-bg);
+  color: var(--color-sub-2);
 }
 
 .form-textarea {
@@ -360,7 +374,7 @@ h2 {
 .error {
   padding: 12px 16px;
   margin-bottom: 15px;
-  background-color: #fef2f2;
+  background-color: #fef2f2; /* Light red background for error can stay, or adapt */
   color: #dc2626;
   border-radius: 8px;
   border-left: 4px solid #dc2626;
@@ -381,35 +395,39 @@ h2 {
   border: none;
   border-radius: 8px;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.3s;
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFA94D 100%);
+  background: var(--color-main);
   color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(242, 159, 5, 0.2);
 }
 
 .btn-primary:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+  transform: translateY(-2px);
+  background: var(--color-sub-2);
+  box-shadow: 0 6px 16px rgba(217, 121, 4, 0.3);
 }
 
 .btn-primary:disabled {
   background: #d1d5db;
   cursor: not-allowed;
   transform: none;
+  box-shadow: none;
 }
 
 .btn-secondary {
-  background-color: #FFF5E6;
-  color: #2D3436;
-  border: 1px solid #FFE4CC;
+  background-color: #FFFFFF;
+  color: var(--color-emphasis);
+  border: 1px solid var(--border-color);
 }
 
 .btn-secondary:hover {
-  background-color: #FFFFFF;
-  border-color: #FF6B6B;
+  background-color: var(--color-bg);
+  border-color: var(--color-main);
+  color: var(--color-sub-2);
 }
 </style>

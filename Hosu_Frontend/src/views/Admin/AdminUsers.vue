@@ -313,6 +313,7 @@ export default {
           this.targetUser.role = this.selectedRole;
           this.closeRoleModal();
           alert('권한이 변경되었습니다.');
+          this.fetchUsers();
         } else {
           alert('변경 실패');
         }

@@ -158,6 +158,47 @@
 
       <SidebarProfile class="right-navigation" />
     </div>
+
+    <!-- AI Search Result Modal -->
+    <div v-if="showSearchDialog" class="modal-overlay" @click.self="showSearchDialog = false">
+      <div class="modal-content">
+        <button class="modal-close" @click="showSearchDialog = false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+
+        <div v-if="isAiSearching" class="loading-state">
+          <div class="spinner"></div>
+          <p>데이터를 불러오는 중입니다</p>
+        </div>
+
+        <div v-else class="result-container">
+           <h3 class="result-title">AI 검색 결과</h3>
+           <div v-if="aiSearchResults.length === 0" class="no-result">
+              검색 결과가 없습니다.
+           </div>
+           <div v-else class="result-grid">
+             <div 
+               v-for="item in aiSearchResults" 
+               :key="item.boardId" 
+               class="grid-item" 
+               @click="goToReview(item.boardId)"
+             >
+               <div class="image-wrapper">
+                 <img :src="item.boardImg" :alt="item.title" />
+                 <div class="grid-item-overlay">
+                   <span class="view-text">리뷰 보기</span>
+                 </div>
+               </div>
+               <div class="item-description">
+                 {{ item.oneLineReview || '이 메뉴를 강력 추천합니다! ✨' }}
+               </div>
+             </div>
+           </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -177,6 +218,11 @@ const loading = ref(true)
 const isRandomFeed = ref(false)
 const recommendedUsers = ref([])
 
+// AI Dialog State
+const showSearchDialog = ref(false)
+const isAiSearching = ref(false)
+const aiSearchResults = ref([])
+
 
 
 // AI 검색 관련
@@ -193,8 +239,20 @@ const handleSearch = async () => {
     console.log("빈값");
     return;
   } 
-  const result = await getFeedUsingAI(searchQuery.value)
-  feedItems.value = result.data;
+  
+  showSearchDialog.value = true
+  isAiSearching.value = true
+  aiSearchResults.value = []
+
+  try {
+    const result = await getFeedUsingAI(searchQuery.value)
+    // Take top 5 items for 1x5 grid
+    aiSearchResults.value = result.data.slice(0, 5)
+  } catch (error) {
+    console.error("AI Search Error:", error)
+  } finally {
+    isAiSearching.value = false
+  }
 }
 
 // Logout handler
@@ -797,6 +855,218 @@ onMounted(() => {
   color: var(--color-emphasis);
   margin: 0 0 12px 0;
   letter-spacing: -0.5px;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+  background: #FFFFFF;
+  border-radius: 24px;
+  padding: 40px;
+  width: 90%;
+  max-width: 1000px; /* Wide enough for 5 items */
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-emphasis);
+  padding: 8px;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.modal-close:hover {
+  background: #F8F9FA;
+}
+
+/* Loading State */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 0;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid var(--color-sub-1);
+  border-top-color: var(--color-main);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 24px;
+}
+
+.loading-state p {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-emphasis);
+  margin: 0;
+}
+
+/* Result Grid */
+.result-container {
+  text-align: center;
+}
+
+.result-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--color-emphasis);
+  margin: 0 0 30px 0;
+}
+
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+  width: 100%;
+}
+
+.grid-item {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.grid-item:hover {
+  transform: translateY(-5px);
+}
+
+.image-wrapper {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.grid-item:hover .image-wrapper {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.grid-item:hover .image-wrapper img {
+  transform: scale(1.1);
+}
+
+.grid-item-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.grid-item:hover .grid-item-overlay {
+  opacity: 1;
+}
+
+.view-text {
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 8px 16px;
+  background: var(--color-main);
+  border-radius: 20px;
+  transform: translateY(10px);
+  transition: transform 0.3s ease;
+}
+
+.grid-item:hover .view-text {
+  transform: translateY(0);
+}
+
+.item-description {
+  font-size: 13px;
+  color: var(--color-emphasis);
+  line-height: 1.4;
+  font-weight: 600;
+  background: #FFF5E6;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid var(--color-sub-1);
+}
+
+.no-result {
+  padding: 40px;
+  color: #636E72;
+  font-size: 16px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .result-grid {
+    grid-template-columns: repeat(2, 1fr); /* Fallback for mobile if needed, though user asked for 1x5 specifically, likely assuming desktop. I will keep it 1x5 but maybe scrollable on small screens if strict 1x5 is required, OR just allow wrap. But specific request '1 x 5' usually implies desktop layout. I'll make it scrollable on mobile if it squishes too much. */
+    /* Actually for strict 1x5 on mobile it would be tiny. I'll stick to 1x5 but handle min-width? */
+  }
+  .result-grid {
+      /* Override for mobile to be usable */
+      overflow-x: auto;
+      display: flex; /* Horizontal scroll */
+      padding-bottom: 10px;
+  }
+  .grid-item {
+      min-width: 120px;
+      width: 120px;
+  }
 }
 
 .feed-content-text {

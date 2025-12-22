@@ -73,4 +73,6 @@ public class SnsBoardResp {
 
     @Schema(description = "댓글 목록 (대댓글 포함)")
     private List<SnsComment> comments;
+    @Schema(description = "One-line AI review based on search query", example = "This place feels just like the query described!")
+    private String oneLineReview;
 }

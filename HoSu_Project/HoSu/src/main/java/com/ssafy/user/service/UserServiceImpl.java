@@ -133,7 +133,6 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new UserNotFoundException("존재하지 않는 사용자입니다.");
         }
-
         // 2. 닉네임 변경 시 중복 체크 (본인 제외)
         if (update.getNickname() != null && !update.getNickname().equals(user.getNickname())) {
             if (userMapper.existsByNicknameExcludingUser(update.getNickname(), userNo) > 0) {

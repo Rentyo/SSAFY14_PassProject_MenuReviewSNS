@@ -75,8 +75,14 @@
                 <span class="value">{{ userProfile.nickname }}</span>
               </div>
               <div class="info-item">
-                <span class="label">성별:</span>
-                <span class="value">{{ userProfile.gender || '미설정' }}</span>
+                <template v-if="registrationStatus === 1 && restaurantCategory">
+                  <span class="label">카테고리:</span>
+                  <span class="value">{{ restaurantCategory }}</span>
+                </template>
+                <template v-else>
+                  <span class="label">성별:</span>
+                  <span class="value">{{ userProfile.gender || '미설정' }}</span>
+                </template>
               </div>
               <div class="info-item">
                 <span class="label">가입일:</span>
@@ -186,7 +192,7 @@ import { useMyPage } from '@/composables/useMyPage'
 import CeoRestaurantReviews from '@/components/CeoRestaurantReviews.vue'
 import CeoNotices from '@/components/CeoNotices.vue'
 import CeoMenu from '@/components/CeoMenu.vue'
-import { getCeoLevel } from '@/api/restaurants'
+import { getCeoLevel, getRestaurantId, getRestaurantDetail } from '@/api/restaurants'
 import defaultUserImg from '@/assets/user.png'
 
 const defaultProfileImage = defaultUserImg;
@@ -213,6 +219,7 @@ const activeTab = ref('reviews')
 
 // 식당 등록 상태: 1 = 완료, 0 = 신청, -1 = 등록 중
 const registrationStatus = ref(null)
+const restaurantCategory = ref('')
 
 // 본인 페이지인지 확인
 const isOwnProfile = computed(() => {
@@ -221,17 +228,24 @@ const isOwnProfile = computed(() => {
 })
 
 // 식당 등록 상태 확인
-const checkRegistrationStatus = () => {
-  getCeoLevel(localStorage.getItem('userNo')).then(response => {
-    console.log(response.data);
-    /**
-     * response 값에 따라 상태 설정
-     * 1  → 등록 완료
-     * 0  → 아무것도 아닌상태
-     * -1 → 등록 중
-     */
-    registrationStatus.value = response.data
-  })
+const checkRegistrationStatus = async () => {
+  const userNo = localStorage.getItem('userNo')
+  try {
+    const levelResponse = await getCeoLevel(userNo)
+    registrationStatus.value = levelResponse.data
+
+    if (registrationStatus.value === 1) {
+      // 등록 완료된 경우 식당 상세 정보에서 카테고리 가져오기
+      const idResponse = await getRestaurantId(userNo)
+      const restaurantId = idResponse.data
+      if (restaurantId) {
+        const detailResponse = await getRestaurantDetail(restaurantId)
+        restaurantCategory.value = detailResponse.data.category
+      }
+    }
+  } catch (error) {
+    console.error('등록 상태 확인 실패:', error)
+  }
 }
 
 // 버튼 텍스트 바꾸기

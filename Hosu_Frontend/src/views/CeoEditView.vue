@@ -258,6 +258,10 @@ const loadUserInfo = async () => {
     loading.value = true
     const response = await getUserInfo(userNo)
     userInfo.value = response.data
+    // 초기값 설정
+    formData.value.nickname = response.data.nickname || ''
+    formData.value.phoneNumber = response.data.phoneNumber || ''
+    formData.value.userImg = response.data.userImg || ''
   } catch (error) {
     console.error('정보 로딩 실패:', error)
     errorMessage.value = '사용자 정보를 불러올 수 없습니다.'
@@ -295,19 +299,16 @@ const handleUpdate = async () => {
   updating.value = true
 
   try {
-    // null이나 빈 값 제거
-    const updateData = {}
-    if (formData.value.nickname && formData.value.nickname.trim()) {
-      updateData.nickname = formData.value.nickname
+    // 모든 필드 포함 (비어있더라도 이전 값 유지)
+    const updateData = {
+      nickname: formData.value.nickname,
+      phoneNumber: formData.value.phoneNumber,
+      userImg: formData.value.userImg
     }
-    if (formData.value.phoneNumber && formData.value.phoneNumber.trim()) {
-      updateData.phoneNumber = formData.value.phoneNumber
-    }
+    
+    // 비밀번호는 입력이 있을 때만 포함
     if (formData.value.userPw && formData.value.userPw.trim()) {
       updateData.userPw = formData.value.userPw
-    }
-    if (formData.value.userImg && formData.value.userImg.trim()) {
-      updateData.userImg = formData.value.userImg
     }
 
     await updateUser(userNo, updateData)

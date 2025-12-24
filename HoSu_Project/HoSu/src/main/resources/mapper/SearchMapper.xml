@@ -112,6 +112,10 @@
 	        <if test="(keywords.tagId == null or keywords.tagId == 0) and keywords.tagName != null and keywords.tagName != ''">
 	            AND m.menu_name LIKE CONCAT('%', #{keywords.tagName}, '%')
 	        </if>
+	        
+	        <if test="keywords.keyword != null and keywords.keyword != ''">
+	            AND REPLACE(r.restaurant_name, ' ', '') LIKE CONCAT('%', REPLACE(#{keywords.keyword}, ' ', ''), '%')
+	        </if>
 	    </where>
 		ORDER BY
 	    <choose>
@@ -167,6 +171,10 @@
 	        <!-- tagId가 없고 tagName이 있으면 메뉴 이름으로 검색 -->
 	        <if test="(tagId == null or tagId == 0) and tagName != null and tagName != ''">
 	            AND m.menu_name LIKE CONCAT('%', #{tagName}, '%')
+	        </if>
+
+	        <if test="keyword != null and keyword != ''">
+	            AND REPLACE(r.restaurant_name, ' ', '') LIKE CONCAT('%', REPLACE(#{keyword}, ' ', ''), '%')
 	        </if>
 	    </where>
 	</select>

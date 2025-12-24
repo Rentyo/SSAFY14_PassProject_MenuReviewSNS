@@ -54,7 +54,25 @@
             </select>
           </div>
 
-          <button class="search-btn" @click="executeSearch">검색하기</button>
+          <button class="search-btn" @click="executeSearch">
+            <img src="@/assets/search.png" alt="검색" class="search-btn-icon" />
+          </button>
+        </div>
+
+        <div class="filter-box">
+          <h3 class="filter-title">🔍 식당 이름 검색</h3>
+          <div class="filter-group">
+             <input 
+              type="text" 
+              v-model="searchInfo.keyword" 
+              class="search-input" 
+              placeholder="식당 이름을 입력하세요"
+              @keyup.enter="executeSearch"
+             />
+          </div>
+          <button class="search-btn" @click="executeSearch">
+            <img src="@/assets/search.png" alt="검색" class="search-btn-icon" />
+          </button>
         </div>
 
         <div class="filter-box">
@@ -285,7 +303,8 @@ export default {
       sido: '',
       gungu: '',
       category: '',
-      tagId: ''
+      tagId: '',
+      keyword: ''
     });
 
 
@@ -349,6 +368,11 @@ export default {
         }
       }
 
+      // 키워드
+      if (q.keyword) {
+        parts.push(`"${q.keyword}"`);
+      }
+
       return parts.length > 0 ? parts.join(' ') : '전체 맛집';
     });
 
@@ -356,6 +380,7 @@ export default {
       // 1. URL 파라미터로 searchInfo 초기화
       searchInfo.value.sido = (route.query.sidoNo && route.query.sidoNo !== 'not') ? route.query.sidoNo : '';
       searchInfo.value.category = (route.query.category && route.query.category !== 'not') ? route.query.category : '';
+      searchInfo.value.keyword = route.query.keyword || '';
 
       // sortBy 파라미터 처리
       if (route.query.sortBy) {
@@ -459,6 +484,7 @@ export default {
         const gunguName = route.query.gunguName || null;
         const tagName = route.query.tagName || null;
         const sortBy = route.query.sortBy || null;
+        const keyword = route.query.keyword || null;
 
         // Update state
         currentPage.value = page;
@@ -466,7 +492,7 @@ export default {
         sortOption.value = sort;
 
 
-        const response = await getRestaurant(sidoNo, gunguCode, category, tagId, page, size, sort, gunguName, tagName, sortBy);
+        const response = await getRestaurant(sidoNo, gunguCode, category, tagId, page, size, sort, gunguName, tagName, sortBy, keyword);
         // Handle response
         restaurants.value = response.data.content || [];
         totalPages.value = response.data.totalPages || 0;
@@ -519,6 +545,8 @@ export default {
       if (searchInfo.value.gungu) query.gunguCode = searchInfo.value.gungu;
       if (searchInfo.value.category) query.category = searchInfo.value.category;
       if (searchInfo.value.tagId) query.tagId = searchInfo.value.tagId;
+      if (searchInfo.value.tagId) query.tagId = searchInfo.value.tagId;
+      if (searchInfo.value.keyword) query.keyword = searchInfo.value.keyword.replace(/\s+/g, '');
 
       if (searchInfo.value.tagId) query.tagId = searchInfo.value.tagId;
 
@@ -842,6 +870,24 @@ export default {
   color: #2D3436;
 }
 
+.search-input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1.5px solid var(--color-sub-1);
+  background-color: #f9f9f9;
+  font-size: 14px;
+  color: var(--color-emphasis);
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  background-color: #FFFFFF;
+  border-color: var(--color-main);
+  box-shadow: 0 0 0 3px rgba(242, 159, 5, 0.15);
+}
+
 .search-btn {
   width: 100%;
   padding: 14px;
@@ -849,14 +895,22 @@ export default {
   border: none;
   border-radius: 10px;
   color: #FFFFFF;
-  font-weight: 800;
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(242, 159, 5, 0.3);
   margin-top: 8px;
-  font-size: 15px;
   position: relative;
   overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-btn-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  filter: brightness(0) invert(1); /* 흰색으로 변경 */
 }
 
 .search-btn::before {

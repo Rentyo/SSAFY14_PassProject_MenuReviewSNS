@@ -21,7 +21,7 @@ export const getMenuTagAll = () => {
 }
 
 // 식당 검색 결과 가져오기
-export const getRestaurant = (sidoNo, gunguCode, category, tagId, page, size, sort, gunguName, tagName, sortBy) => {
+export const getRestaurant = (sidoNo, gunguCode, category, tagId, page, size, sort, gunguName, tagName, sortBy, keyword) => {
   const encodedCategory = encodeURIComponent(category);
   const params = {
     page,
@@ -33,6 +33,7 @@ export const getRestaurant = (sidoNo, gunguCode, category, tagId, page, size, so
   if (gunguName) params.gunguName = gunguName;
   if (tagName) params.tagName = tagName;
   if (sortBy) params.sortBy = sortBy;
+  if (keyword) params.keyword = keyword;
 
   return api.get(`/search/restaurant/${sidoNo}/${gunguCode}/${encodedCategory}/${tagId}`, { params });
 }

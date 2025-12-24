@@ -6,6 +6,18 @@
         <span class="logo-main">HOSU</span>
         <span class="logo-sub">taste log</span>
       </div>
+
+      <div class="header-search">
+        <input 
+          type="text" 
+          v-model="headerSearchKeyword" 
+          placeholder="식당명 검색..." 
+          @keyup.enter="handleHeaderSearch"
+        />
+        <button @click="handleHeaderSearch" class="search-icon-btn">
+          <img src="@/assets/search.png" alt="검색" />
+        </button>
+      </div>
     </header>
 
     <!-- Hero Banner / Image Section -->
@@ -506,10 +518,68 @@ const getTagsByCategory = (categoryValue) => {
   return menuList.value.filter(tag => tag.category === categoryValue)
 }
 
+const headerSearchKeyword = ref('')
+const handleHeaderSearch = () => {
+  if (headerSearchKeyword.value.trim()) {
+    router.push({
+      path: '/list',
+      query: { keyword: headerSearchKeyword.value.replace(/\s+/g, '') }
+    })
+  }
+}
+
 const encodeURIComponent = window.encodeURIComponent
 </script>
 
 <style scoped>
+.header-search {
+  position: absolute;
+  right: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-search input {
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 20px;
+  border: 1px solid var(--color-sub-1);
+  background: #f9f9f9;
+  font-size: 0.9rem;
+  width: 200px;
+  transition: all 0.3s;
+}
+
+.header-search input:focus {
+  width: 250px;
+  outline: none;
+  border-color: var(--color-main);
+  background: #ffffff;
+  box-shadow: 0 0 0 2px rgba(242, 159, 5, 0.1);
+}
+
+.header-search button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-search button img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.header-search button:hover img {
+  opacity: 1;
+}
 .hosu-main-page {
   /* Custom Requested Palette */
   --color-bg: #F2F2F2;

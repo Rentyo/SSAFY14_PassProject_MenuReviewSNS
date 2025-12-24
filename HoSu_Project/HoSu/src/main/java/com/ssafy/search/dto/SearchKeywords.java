@@ -13,4 +13,5 @@ public class SearchKeywords {
 	private String category;
 	private long tagId;
 	private String tagName; // 메뉴 이름으로 검색
+	private String keyword; // 식당 이름으로 검색
 }

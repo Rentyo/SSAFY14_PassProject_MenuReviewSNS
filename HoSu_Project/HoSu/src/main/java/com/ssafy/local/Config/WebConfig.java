@@ -38,6 +38,7 @@ public class WebConfig implements WebMvcConfigurer {
                                 .addPathPatterns("/**") // 모든 경로에 대해 적용
                                 .excludePathPatterns(
                                                 "/api/users/**",
+                                                "/api/sns/**",
                                                 "/api/menus/**", // 메뉴 조회 API는 인증 불필요
                                                 "/swagger-ui/**",
                                                 "/v3/api-docs/**",

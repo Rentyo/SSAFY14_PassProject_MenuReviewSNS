@@ -160,6 +160,10 @@ onMounted(() => {
   border: 1px solid var(--border-color);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem; /* Increased gap for better separation */
+  
   /* Scroll handling */
   max-height: calc(100vh - 40px);
   overflow-y: auto;

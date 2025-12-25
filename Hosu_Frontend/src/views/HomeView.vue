@@ -1304,9 +1304,9 @@ const encodeURIComponent = window.encodeURIComponent
 /* Main Content Area */
 .hosu-content {
   order: 1; /* 왼쪽에 배치 */
-  flex-shrink: 0;
-  width: 960px;
-  min-width: 0;
+  flex: 1; /* Fluid width */
+  max-width: 960px; /* Maximum limit */
+  min-width: 0; /* Allow shrinking below content size */
 }
 
 /* Update search bar section positioning */

@@ -1295,7 +1295,7 @@ const encodeURIComponent = window.encodeURIComponent
 }
 
 /* 화면 높이가 낮을 때 Sticky 풀기 */
-@media (max-height: 700px) {
+@media (max-height: 600px) {
   .left-navigation {
     position: static;
     margin-top: 0;

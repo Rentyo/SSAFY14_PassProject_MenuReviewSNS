@@ -1279,6 +1279,7 @@ const encodeURIComponent = window.encodeURIComponent
   order: 2; /* 오른쪽에 배치 */
   flex-shrink: 0;
   margin-top: 16px; /* 검색 바와 정확히 맞추기 위한 미세 조정 */
+  position: sticky; /* Added for sticky behavior */
   top: 100px; /* 스크롤 시 상단에서 100px 위치에 고정 */
   align-self: flex-start;
   width: 280px;

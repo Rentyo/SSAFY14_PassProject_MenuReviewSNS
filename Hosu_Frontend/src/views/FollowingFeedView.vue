@@ -1173,7 +1173,7 @@ onMounted(() => {
 }
 
 /* 화면 높이가 낮을 때 Sticky 풀기 (공통 로직) */
-@media (max-height: 750px) {
+@media (max-height: 600px) {
   .right-navigation {
     position: static;
   }

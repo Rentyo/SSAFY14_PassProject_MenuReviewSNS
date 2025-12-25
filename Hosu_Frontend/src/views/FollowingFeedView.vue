@@ -1135,9 +1135,48 @@ onMounted(() => {
   position: sticky;
   top: 100px;
   align-self: flex-start;
+  width: 280px; /* Fixed width restored */
+  
   max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
-/* Scrollbar styling */
+.right-navigation::-webkit-scrollbar {
+  display: none;
+}
+
+/* Responsive: 1200px 이하일 때 레이아웃 변경 (예: 사이드바 숨기거나 하단 배치) */
+@media (max-width: 1200px) {
+  .main-layout-feed {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .right-navigation {
+    order: 1; /* 상단으로 올리거나 
+                 HomeView처럼 2로 두고 width 100% 할 수도 있음. 
+                 여기서는 HomeView와 비슷하게 처리 */
+    width: 100%;
+    max-width: 600px;
+    position: static;
+    margin-bottom: 20px;
+    max-height: none; /* 높이 제한 해제 */
+  }
+  
+  .main-content-feed {
+    width: 100%;
+    padding: 0 1rem;
+    order: 2;
+  }
+}
+
+/* 화면 높이가 낮을 때 Sticky 풀기 (공통 로직) */
+@media (max-height: 750px) {
+  .right-navigation {
+    position: static;
+  }
+}
 
 </style>

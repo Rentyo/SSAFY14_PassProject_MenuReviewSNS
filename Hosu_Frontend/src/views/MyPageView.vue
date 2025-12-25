@@ -12,7 +12,7 @@
     <div class="main-layout-mypage">
       <!-- Main Content -->
       <div class="main-content-mypage">
-        <div class="mypage-box">
+        <div class="content-box">
           <!-- 로딩 상태 -->
           <div v-if="loading" class="loading">
             <p>로딩 중...</p>
@@ -84,10 +84,9 @@
             <p>사용자 정보를 불러올 수 없습니다.</p>
             <button @click="$router.push('/login')" class="btn-primary">로그인하기</button>
           </div>
-        </div>
 
-        <!-- 내 리뷰 섹션 -->
-        <div v-if="userProfile" class="reviews-container">
+          <!-- 내 리뷰 섹션 -->
+          <div v-if="userProfile" class="reviews-container">
           <div class="reviews-header">
             <h3>My Reviews</h3>
             <span class="review-count">{{ reviews.length }}개</span>
@@ -114,9 +113,10 @@
           </div>
         </div>
       </div>
-
-      <SidebarProfile class="right-navigation" />
     </div>
+
+    <SidebarProfile class="right-navigation" />
+  </div>
 
     <!-- 정보 수정 모달 -->
     <div v-if="showEditModal" class="modal-overlay" @click="showEditModal = false">
@@ -299,6 +299,50 @@ watch(userProfile, (newVal) => {
   box-shadow: 0 2px 8px rgba(31, 18, 7, 0.05);
 }
 
+/* Global box-sizing reset for this local scope */
+* {
+  box-sizing: border-box;
+}
+
+.main-layout-mypage {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 5rem; /* Increased to 5rem (80px) for very clear separation */
+  padding: 2rem;
+  max-width: 1600px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.main-content-mypage {
+  flex: 1; /* Let flex handle width */
+  max-width: 1100px; /* Reduced from 1200px */
+  min-width: 0; /* Prevent overflow */
+  margin: 0 auto; /* Center horizontally */
+  display: flex;
+  flex-direction: column;
+}
+
+.right-navigation {
+  order: 2;
+  flex-shrink: 0;
+  margin-left: auto; /* Push to the right */
+  position: sticky;
+  top: 100px;
+  align-self: flex-start;
+  width: 280px;
+  
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.right-navigation::-webkit-scrollbar {
+  display: none;
+}
+
 .hosu-logo {
   cursor: pointer;
   display: flex;
@@ -329,16 +373,22 @@ watch(userProfile, (newVal) => {
   text-transform: uppercase;
 }
 
-.mypage-box {
-  width: 60%;
-  max-width: 1400px;
-  margin: 40px auto;
+.content-box {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
   background: #FFFFFF;
   border: 1px solid var(--border-color);
   border-radius: 16px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  padding: 40px 80px;
+  overflow: hidden; /* Ensure children don't overflow */
+  padding: 0; /* Removing padding from container to handle in sections */
   flex-shrink: 0;
+  min-height: 600px;
+}
+
+.profile-section {
+  padding: 40px 80px;
 }
 
 .loading {
@@ -713,10 +763,11 @@ watch(userProfile, (newVal) => {
 }
 
 .reviews-container {
-  width: 60%;
-  max-width: 1400px;
-  margin: 40px auto;
-  padding: 0 40px;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 40px 80px;
+  border-top: 2px solid #f8f9fa; /* Separation line */
 }
 
 .reviews-header {
@@ -898,6 +949,30 @@ watch(userProfile, (newVal) => {
 @media (max-width: 1024px) {
   .reviews-grid {
     grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* 작은 태블릿/* 반응형 */
+@media (max-width: 1200px) {
+  .main-layout-mypage {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .right-navigation {
+    order: 1;
+    width: 100%;
+    position: static;
+    margin-bottom: 20px;
+    max-height: none;
+  }
+  
+  .main-content-mypage {
+    order: 2;
+  }
+  
+  .mypage-box, .reviews-container {
+     width: 100%;
   }
 }
 

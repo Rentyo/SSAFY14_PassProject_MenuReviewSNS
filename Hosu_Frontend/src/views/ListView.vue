@@ -1400,8 +1400,8 @@ export default {
 /* === RESPONSIVE === */
 @media (max-width: 1400px) {
   .content-wrapper {
-    grid-template-columns: 280px 1fr 260px;
-    gap: 24px;
+    grid-template-columns: 250px 1fr 240px; /* Reduced from 280/260 for better fit on 1280px screens */
+    gap: 20px; /* Reduced gap slightly */
   }
 }
 

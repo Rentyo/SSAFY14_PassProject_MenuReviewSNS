@@ -348,18 +348,22 @@ onMounted(() => {
 /* Main Layout */
 .main-layout-ceo {
   display: flex;
-  justify-content: center;
+  justify-content: center; /* Center items */
   align-items: flex-start;
-  gap: 2rem;
+  gap: 5rem; /* Increased gap for separation */
   padding: 2rem;
-  max-width: 1400px;
+  max-width: 1600px; /* Increased to match MyPageView */
   margin: 0 auto;
   width: 100%;
 }
 
 .main-content-ceo {
-  flex: 1;
-  max-width: 900px;
+  flex: 1; /* Match MyPageView */
+  max-width: 1100px;
+  min-width: 0;
+  margin: 0 auto; /* Center horizontally like MyPageView */
+  display: flex;
+  flex-direction: column;
 }
 
 .ceo-mypage-box {
@@ -753,12 +757,42 @@ onMounted(() => {
 
 /* Right Profile Section */
 .right-profile-section {
-  order: 2;
   flex-shrink: 0;
-  margin-top: 16px;
+  margin-left: auto; /* Push to right like MyPageView */
   position: sticky;
   top: 100px;
   align-self: flex-start;
+  width: 280px;
+
   max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.right-profile-section::-webkit-scrollbar {
+  display: none;
+}
+
+/* Responsive Layout */
+@media (max-width: 1200px) {
+  .main-layout-ceo {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .right-profile-section {
+    order: 1;
+    width: 100%;
+    position: static;
+    margin-left: 0; /* Reset auto margin */
+    margin-bottom: 2rem;
+    max-height: none;
+  }
+  
+  .main-content-ceo {
+    order: 2;
+    width: 100%;
+  }
 }
 </style>

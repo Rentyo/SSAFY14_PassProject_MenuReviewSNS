@@ -541,14 +541,49 @@ onMounted(() => {
   align-items: flex-start;
   gap: 2rem;
   padding: 2rem;
-  max-width: 1800px;
+  max-width: 1400px; /* Reduced from 1800px to match typical layouts better */
   margin: 0 auto;
+  width: 100%;
 }
 
 .main-content {
   flex: 1;
-  max-width: 1400px;
-  min-width: 800px;
+  width: 100%;
+  max-width: 960px; /* Limit content width */
+}
+
+.remote-control {
+  flex-shrink: 0;
+  width: 280px;
+  position: sticky;
+  top: 100px;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.remote-control::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 1200px) {
+  .main-layout {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .remote-control {
+    order: -1; /* Place above content on small screens */
+    width: 100%;
+    position: static;
+    margin-bottom: 2rem;
+    max-height: none;
+  }
+  
+  .main-content {
+    min-width: 0; /* Override previous min-width */
+  }
 }
 
 /* Review Detail Style */

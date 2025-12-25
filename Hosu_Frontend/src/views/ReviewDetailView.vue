@@ -430,6 +430,55 @@ onMounted(() => {
   text-transform: uppercase;
 }
 
+.main-layout-review {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.main-content-review {
+  flex: 1;
+  width: 100%;
+  max-width: 800px;
+  min-width: 0;
+}
+
+.right-navigation {
+  order: 2;
+  flex-shrink: 0;
+  width: 280px;
+  position: sticky;
+  top: 100px;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.right-navigation::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 1200px) {
+  .main-layout-review {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .right-navigation {
+    order: 1;
+    width: 100%;
+    position: static;
+    margin-bottom: 2rem;
+    max-height: none;
+  }
+}
+
 .review-detail {
   width: 100%;
   max-width: 675px;

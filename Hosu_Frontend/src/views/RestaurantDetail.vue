@@ -679,7 +679,31 @@ onMounted(() => {
   position: sticky;
   top: 100px;
   align-self: flex-start;
+  width: 280px;
+
   max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.left-navigation::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 1200px) {
+  .page-wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .left-navigation {
+    order: 1;
+    width: 100%;
+    position: static;
+    margin-bottom: 2rem;
+    max-height: none;
+  }
 }
 
 

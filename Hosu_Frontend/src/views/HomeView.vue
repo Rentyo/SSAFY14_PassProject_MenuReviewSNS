@@ -1279,10 +1279,26 @@ const encodeURIComponent = window.encodeURIComponent
   order: 2; /* 오른쪽에 배치 */
   flex-shrink: 0;
   margin-top: 16px; /* 검색 바와 정확히 맞추기 위한 미세 조정 */
-  position: sticky;
   top: 100px; /* 스크롤 시 상단에서 100px 위치에 고정 */
   align-self: flex-start;
-  max-height: calc(100vh - 120px); /* 화면 높이에서 120px 제외 */
+  width: 280px;
+  
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.left-navigation::-webkit-scrollbar {
+  display: none;
+}
+
+/* 화면 높이가 낮을 때 Sticky 풀기 */
+@media (max-height: 700px) {
+  .left-navigation {
+    position: static;
+    margin-top: 0;
+  }
 }
 
 /* Main Content Area */

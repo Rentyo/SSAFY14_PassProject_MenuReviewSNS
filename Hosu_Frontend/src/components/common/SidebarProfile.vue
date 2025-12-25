@@ -154,15 +154,21 @@ onMounted(() => {
   --main-color: var(--color-sub-1);
   --border-color: var(--color-sub-1);
 
-  width: 280px;
+  width: 100%;
   background: var(--bg-active);
   border-radius: 24px;
   border: 1px solid var(--border-color);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   padding: 2rem 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  /* Scroll handling */
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.sidebar-profile::-webkit-scrollbar {
+  display: none;
 }
 
 /* User Profile Card */
@@ -343,5 +349,72 @@ onMounted(() => {
 
 .logout-item {
   width: 100%;
+}
+
+/* Response: Height Adaptation (Shrink Logic) */
+@media (max-height: 850px) {
+  .sidebar-profile {
+    padding: 1.5rem 1rem;
+    gap: 1rem;
+    border-radius: 16px;
+  }
+  
+  .user-profile-card, .login-notice-card {
+    padding: 1.5rem 1rem;
+  }
+
+  .profile-image-wrapper {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 0.75rem;
+  }
+
+  .user-name {
+    margin-bottom: 0.75rem;
+    font-size: 1rem;
+  }
+  
+  .stat-value {
+    font-size: 1.1rem;
+  }
+  
+  .nav-menu {
+    gap: 1rem;
+  }
+  
+  .nav-item {
+    padding: 0.75rem 0.875rem;
+  }
+}
+
+@media (max-height: 700px) {
+  .sidebar-profile {
+    padding: 1rem 0.75rem;
+    gap: 0.75rem;
+  }
+
+  .user-profile-card {
+    padding: 1rem;
+  }
+  
+  .profile-image-wrapper {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .nav-item {
+     padding: 0.6rem 0.75rem;
+     font-size: 0.9rem;
+  }
+  
+  .icon {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .icon-image {
+    width: 20px;
+    height: 20px;
+  }
 }
 </style>

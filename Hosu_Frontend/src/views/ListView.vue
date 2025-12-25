@@ -779,8 +779,28 @@ export default {
 /* === SIDEBAR === */
 .sidebar {
   position: sticky;
-  top: 80px;
-  height: fit-content;
+  top: 90px;
+  width: 100%;
+  transition: all 0.3s ease;
+  max-height: calc(100vh - 110px); /* 헤더 높이 + 여유공간 제외 */
+  overflow-y: auto;
+  
+  /* 스크롤바 숨기기 (기능은 유지) */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.sidebar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+
+
+/* 화면이 너무 작아서 사이드바가 짤릴 위험이 있으면 sticky 해제 (배치 변경) */
+@media (max-height: 700px) {
+  .sidebar {
+    position: static;
+  }
 }
 
 .sidebar-header {
@@ -1442,6 +1462,96 @@ export default {
   position: sticky;
   top: 100px;
   align-self: flex-start;
-  max-height: calc(100vh - 120px);
+  width: 100%;
+}
+
+/* 화면 높이가 너무 작으면 사이드바 Sticky 해제 */
+@media (max-height: 700px) {
+  .remote-control {
+    position: static;
+  }
+}
+
+/* === RESPONSIVE HEIGHT (MOVED TO BOTTOM FOR PRIORITY) === */
+
+/* === RESPONSIVE HEIGHT (MOVED TO BOTTOM FOR PRIORITY) === */
+
+/* High-res screens but not super tall (Laptop 13/14 inches) -> Shrink slightly */
+@media (max-height: 1080px) {
+  .sidebar-header {
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .filter-box {
+    padding: 16px 16px;
+    margin-bottom: 16px;
+  }
+
+  .filter-title {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  .filter-group {
+    margin-bottom: 12px;
+  }
+
+  .filter-label {
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+
+  .filter-select, .search-input {
+    padding: 8px 10px;
+    height: 38px;
+    font-size: 13px;
+  }
+
+  .search-btn {
+    padding: 10px;
+    margin-top: 4px;
+  }
+  
+  .desktop-sort .sort-select {
+    padding: 8px 10px;
+    height: 38px;
+    font-size: 13px;
+  }
+
+  .sidebar {
+    top: 90px;
+  }
+}
+
+/* Shorter screens -> More Compact, BUT KEEP STICKY (Follow scroll) */
+@media (max-height: 900px) {
+  /* Removed position: static to keep it sticky */
+  
+  .filter-box {
+    padding: 12px 14px;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 12px rgba(89, 53, 39, 0.05);
+  }
+
+  .result-header {
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .result-title {
+    font-size: 22px;
+  }
+}
+
+/* Very short screens -> Disable Sticky to avoid cutoff */
+@media (max-height: 750px) {
+  .sidebar {
+    position: static;
+  }
+
+  .remote-control {
+    position: static;
+  }
 }
 </style>

@@ -54,7 +54,7 @@ HoSu는 맛집 정보를 요약하여 제공하는 AI 기반 맛집 추천 플�
 
 ## ERD (Entity Relationship Diagram)
 
-![이미지](ERD 이미지.png)
+![이미지](ERD.png)
 
 ---
 
